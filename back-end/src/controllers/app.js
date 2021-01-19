@@ -7,6 +7,7 @@ import root from './routes/root.js';
 import users from './routes/users.js';
 import games from './routes/games.js';
 import categories from './routes/categories.js';
+import platforms from './routes/platforms.js';
 import reviews from './routes/reviews.js';
 import other from './routes/other.js';
 
@@ -22,6 +23,7 @@ app
     .use('/', users)
     .use('/', games)
     .use('/', categories)
+    .use('/', platforms)
     .use('/', reviews)
     .use('/', other);
 

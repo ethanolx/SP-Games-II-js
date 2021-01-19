@@ -10,13 +10,22 @@ import query from '../utils/query.js';
 
 export default {
     /**
+     * Find all categories
+     * @param {import('../utils/callbacks.js').Callback} callback
+     */
+    findAll: (callback) => {
+        const GET_ALL_CATEGORIES_SQL = 'SELECT * FROM categories;';
+        query(GET_ALL_CATEGORIES_SQL, callback);
+    },
+
+    /**
      * Find the categories of a selected game
      * @param {number} gameid
      * @param {import('../utils/callbacks.js').Callback} callback
      */
     findByGame: (gameid, callback) => {
-        const GET_ALL_CATEGORIES_BY_GAME_ID = 'SELECT categories.id AS catid, catname FROM game_category_asc INNER JOIN categories ON game_category_asc.categoryid = categories.id WHERE game_category_asc.gameid = ?;';
-        query(GET_ALL_CATEGORIES_BY_GAME_ID, callback, gameid);
+        const GET_ALL_CATEGORIES_BY_GAME_ID_SQL = 'SELECT categories.id AS catid, catname FROM game_category_asc INNER JOIN categories ON game_category_asc.categoryid = categories.id WHERE game_category_asc.gameid = ?;';
+        query(GET_ALL_CATEGORIES_BY_GAME_ID_SQL, callback, gameid);
     },
 
     /**

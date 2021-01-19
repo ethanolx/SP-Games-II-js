@@ -9,6 +9,7 @@ import { emptyCallback } from '../utils/callbacks.js';
  * @typedef {Object} User
  * @property {string} username              - Username of a user
  * @property {string} email                 - User's email
+ * @property {string} password              - User's password
  * @property {'Admin' | 'Customer'} type    - Type of a user (either Admin or Customer)
  * @property {string} [profile_pic_url]     - URL to a user's profile pic (optional)
  */
@@ -40,9 +41,9 @@ export default {
      * @param {import('../utils/callbacks.js').Callback} callback
      */
     insert: (user, callback) => {
-        const CREATE_NEW_USER_SQL = 'INSERT INTO users (username, email, type, profile_pic_url) VALUES (?);';
-        const { username, email, type, profile_pic_url } = user;
-        query(CREATE_NEW_USER_SQL, callback, [[username, email, type, profile_pic_url]]);
+        const CREATE_NEW_USER_SQL = 'INSERT INTO users (username, email, type, password, profile_pic_url) VALUES (?);';
+        const { username, email, type, password, profile_pic_url } = user;
+        query(CREATE_NEW_USER_SQL, callback, [[username, email, type, password, profile_pic_url]]);
     },
 
     /**
@@ -59,6 +60,7 @@ export default {
             }
             else if (result instanceof Array && result.length === 1) {
                 const user = result[0];
+                // @ts-ignore
                 const token = jwt.sign({ id: user.userid, role: user.role }, KEY, {
                     expiresIn: 86400 //expires in 24 hrs
                 });
