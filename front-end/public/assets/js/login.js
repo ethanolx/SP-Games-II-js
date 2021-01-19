@@ -5,6 +5,7 @@ $(() => {
     $('#sign-in').on('click', toggleLogin);
     $('#register').on('click', register);
     $('#login').on('click', login);
+    watchEnter();
 });
 
 function setPageMode() {
@@ -25,19 +26,61 @@ function toggleLogin() {
 }
 
 function validateRegistration() {
-
+    return validatePasswordMatch() && validatePasswordStrength();
 }
 
-function register() {
-    const USERNAME = $('#new-username').val();
-    const PASSWORD = $('#new-password').val();
-    const EMAIL = $('#new-email').val();
+function validatePasswordStrength() {
+    const draftPwd = $('#new-password');
+    for (let req of [/[\W\S_]/, /[0-9]/, /[A-Z]/, /[a-z]/]) {
+        if (!req.test(draftPwd.val().toString())) {
+            return false;
+        }
+    }
+    return true;
+}
 
-    $.ajax({
-        url: 'http://localhost:5000/user',
-        type: 'POST',
-        contentType: 'application/json; charset=utf-8',
-    });
+function validatePasswordMatch() {
+    const draftPwd = $('#new-password').val();
+    const confirmPwd = $('#confirm-password').val();
+    return draftPwd === confirmPwd;
+}
+
+function register(event) {
+    event.preventDefault();
+    // @ts-ignore
+    $('#register-form')[0].reportValidity();
+    if (validateRegistration()) {
+        const USERNAME = $('#new-username').val();
+        const PASSWORD = $('#new-password').val();
+        const EMAIL = $('#new-email').val();
+
+        $.ajax({
+            url: 'http://localhost:5000/users',
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify({
+                username: USERNAME,
+                email: EMAIL,
+                password: PASSWORD,
+                type: 'Customer',
+                profile_pic_url: null
+            }),
+            dataType: 'json',
+            success: (data, textStatus, xhr) => {
+                window.localStorage.setItem('token', data['token']);
+                window.localStorage.setItem('user', JSON.stringify(data['user']));
+                window.location.assign('/');
+                alert('You have successfully registered for SP Games!');
+            },
+            error: (xhr, textStatus, err) => {
+                alert('Invalid username or password provided!')
+                console.log(err);
+            }
+        });
+    }
+    else {
+        alert('Bad');
+    }
 }
 
 function login() {
@@ -51,11 +94,24 @@ function login() {
         dataType: 'json',
         success: (data, textStatus, xhr) => {
             window.localStorage.setItem('token', data['token']);
-            window.localStorage.setItem('user', data['user']);
+            window.localStorage.setItem('user', JSON.stringify(data['user']));
             window.location.assign('/');
         },
         error: (xhr, textStatus, err) => {
-            console.log('er');
+            console.log('err');
+        }
+    });
+}
+
+function watchEnter() {
+    $('.form-group').on('keypress', (event) => {
+        if (event.which === 13) {
+            if (window.sessionStorage.getItem('mode') === 'sign-in') {
+                $('#login').trigger('click');
+            }
+            else {
+                $('#register').trigger('click');
+            }
         }
     });
 }
