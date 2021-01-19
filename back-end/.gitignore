@@ -1,0 +1,8 @@
+# Dependencies
+node_modules
+
+# VSCode Configurations
+.vscode
+
+# Marked For Deletion
+tmp

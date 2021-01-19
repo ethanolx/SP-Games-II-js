@@ -1,0 +1,30 @@
+{
+    "name": "spgames",
+    "version": "1.0.0",
+    "description": "Year 1 / Semester 2 Back-End Web Development End-Semester Assignment",
+    "main": "src/server.js",
+    "scripts": {
+        "test": "nodemon --exitcrash src/server.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ethanolx/SP-Games-II-js.git"
+    },
+    "author": "Ethan Tan",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/ethanolx/SP-Games-II-js/issues"
+    },
+    "homepage": "https://github.com/ethanolx/SP-Games-II-js#readme",
+    "type": "module",
+    "module": "es2020",
+    "devDependencies": {
+        "@types/jquery": "^3.5.5",
+        "nodemon": "^2.0.7"
+    },
+    "dependencies": {
+        "express": "^4.17.1",
+        "path": "^0.12.7",
+        "url": "^0.11.0"
+    }
+}
