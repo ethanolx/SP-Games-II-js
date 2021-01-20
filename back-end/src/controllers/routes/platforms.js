@@ -5,7 +5,7 @@ import express, { json, urlencoded } from 'express';
 import { invalidBody, invalidId } from '../../utils/common-errors.js';
 
 // Model
-import Categories from '../../models/Categories.js';
+import Platforms from '../../models/Platforms.js';
 
 /**@type {express.Router} */
 const router = express.Router();
@@ -15,9 +15,9 @@ router.use(json());
 router.use(urlencoded({ extended: false }));
 
 // Route Handlers
-router.route('/category')
+router.route('/platform')
     .get((req, res) => {
-        Categories.findAll((err, results) => {
+        Platforms.findAll((err, results) => {
             if (err) {
                 res.sendStatus(500);
             }
@@ -27,20 +27,20 @@ router.route('/category')
         });
     })
     .post((req, res) => {
-        /**@type {import('../../models/Categories.js').Category} */
-        const CATEGORY = req.body;
-        if (invalidBody(CATEGORY, {
-            catname: 'string',
-            description: 'string'
+        /**@type {import('../../models/Platforms.js').Platform} */
+        const PLATFORM = req.body;
+        if (invalidBody(PLATFORM, {
+            platform: 'string',
+            version: 'string'
         }, res)) {
             return;
         }
-        Categories.insert(CATEGORY, (err, _) => {
+        Platforms.insert(PLATFORM, (err, _) => {
             if (err) {
                 switch (err.code) {
                     case 'ER_DUP_KEY':
                     case 'ER_DUP_ENTRY':
-                        res.status(422).json({ message: `The category \'${ CATEGORY.catname }\' already exists` });
+                        res.status(422).json({ message: `The platform \'${ PLATFORM.platform }\' already exists` });
                         break;
                     default:
                         res.sendStatus(500);
@@ -52,24 +52,24 @@ router.route('/category')
         });
     });
 
-router.route('/category/:id')
+router.route('/platform/:id')
     .put((req, res) => {
-        /**@type {import('../../models/Categories.js').Category} */
-        const CATEGORY = req.body;
+        /**@type {import('../../models/Platforms.js').Platform} */
+        const PLATFORM = req.body;
         const { id } = req.params;
-        const categoryid = parseInt(id);
-        if (invalidId(id, res) || invalidBody(CATEGORY, {
-            catname: 'string',
-            description: 'string'
+        const platformid = parseInt(id);
+        if (invalidId(id, res) || invalidBody(PLATFORM, {
+            platform: 'string',
+            version: 'string'
         }, res)) {
             return;
         }
-        Categories.update(CATEGORY, categoryid, (err, _) => {
+        Platforms.update(PLATFORM, platformid, (err, _) => {
             if (err) {
                 switch (err.code) {
                     case 'ER_DUP_KEY':
                     case 'ER_DUP_ENTRY':
-                        res.status(422).json({ message: `The category \'${ CATEGORY.catname }\' already exists` });
+                        res.status(422).json({ message: `The platform \'${ PLATFORM.platform }\' already exists` });
                         break;
                     default:
                         res.sendStatus(500);
