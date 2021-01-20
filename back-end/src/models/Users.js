@@ -59,9 +59,11 @@ export default {
                 return callback(err, null);
             }
             else if (result instanceof Array && result.length === 1) {
+                /** @type {User} */
+                // @ts-ignore
                 const user = result[0];
                 // @ts-ignore
-                const token = jwt.sign({ id: user.userid, role: user.role }, KEY, {
+                const token = jwt.sign({ id: user.userid, type: user.type }, KEY, {
                     expiresIn: 86400 //expires in 24 hrs
                 });
                 console.log("@@token " + token);

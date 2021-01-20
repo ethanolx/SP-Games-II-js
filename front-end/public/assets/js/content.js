@@ -6,10 +6,21 @@ function loadContent() {
         case '/games':
             loadGameContent();
             break;
+        case '/profile':
+            loadProfileContent();
+            break;
         case '/admin':
             loadAdminContent();
             break;
     }
+}
+
+async function loadSingleGameContent(id) {
+    const game = await (fetch(`http://localhost:5000/game/${ id }`, { method: 'GET' })
+        .then(res => res.json())
+        .catch(console.log));
+    const { title, description, price, year, platforms, categories } = game;
+    console.log(game)
 }
 
 async function loadGameContent() {
@@ -27,7 +38,7 @@ async function loadGameContent() {
 
         /** @type {number} */
         const avgRating = (reviews.length > 1) ? reviews.reduce((r1, r2) => parseFloat(r1['rating']) + parseFloat(r2['rating'])) / numOfReviews : (reviews.length === 1 ? reviews[0]['rating'] : null);
-        content += GameCard(game['title'], game['description'], game['price'], `/game/${ gid }/image`, game['year'], avgRating, numOfReviews);
+        content += GameCard(gid, game['title'], game['price'], `/game/${ gid }/image`, avgRating, numOfReviews);
     }
     $('#games-content').html(content);
 }
@@ -46,4 +57,14 @@ async function loadAdminContent() {
     }
     $('#category-names').html(newCategoryName + categoryNames);
     $('#category-desc').html(newCategoryDesc + categoryDescs);
+}
+
+async function loadProfileContent() {
+    const user =JSON.parse(window.localStorage.getItem('user'));
+    console.log(user);
+    const { username, email, profile_pic_url } = user;
+    $('#profile-pic').attr('src', profile_pic_url)
+    $('#chg-username').val(username);
+    $('#chg-email').val(email);
+    $('#chg-password').val('');
 }

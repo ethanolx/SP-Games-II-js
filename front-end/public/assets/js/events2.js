@@ -1,6 +1,7 @@
 $(() => {
     watchAdministration();
     watchCategoryCreation();
+    watchGameSelection()
 });
 
 function watchAdministration() {
@@ -35,4 +36,11 @@ function watchCategoryCreation() {
             }
         }
     });
+}
+
+function watchGameSelection() {
+    $('.game-details').on('click', () => {
+        console.log('hi')
+        $(window).trigger('hashchange');
+    })
 }

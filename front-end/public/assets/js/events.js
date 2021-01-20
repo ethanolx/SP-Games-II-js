@@ -60,6 +60,8 @@ function loadNavbar() {
     else {
         $('#admin-nav').remove();
         $('#admin').remove();
+        $('#profile-nav').remove();
+        $('#profile').remove();
         $('#logout').hide();
     }
 }

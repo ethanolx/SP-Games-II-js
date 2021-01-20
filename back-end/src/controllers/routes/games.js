@@ -50,6 +50,22 @@ router.route('/game')
         });
     });
 
+router.route('/game/:gid')
+    .get((req, res) => {
+        const gid = parseInt(req.params.gid);
+        if (invalidId(req.params.gid, res)) {
+            return;
+        }
+        Games.findOneFull(gid, (err, result) => {
+            if (err) {
+                res.sendStatus(500);
+            }
+            else {
+                res.status(200).json(result);
+            }
+        });
+    });
+
 router.route('/games/:platform')
     .get((req, res) => {
         const { platform } = req.params;

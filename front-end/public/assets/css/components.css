@@ -1,0 +1,9 @@
+.card {
+    max-width: 30%;
+}
+
+fieldset {
+    border: 1px solid black;
+    border-radius: 1.2em;
+    padding: 2em;
+}

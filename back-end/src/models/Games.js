@@ -218,6 +218,45 @@ const Games = {
     },
 
     /**
+     * Find one game by its id (with categories and platforms)
+     * @param {number} gameid
+     * @param {import('../utils/callbacks.js').Callback} callback
+     */
+    findOneFull: (gameid, callback) => {
+        const GET_ONE_GAME_SQL = 'SELECT * FROM games WHERE id = ?;';
+        query(GET_ONE_GAME_SQL, emptyCallback, gameid, (err, result) => {
+            // @ts-ignore
+            if (err || result.length === 0) {
+                logError(err);
+                return callback(err, null);
+            }
+            else {
+                Platforms.findByGame(gameid, (er, resul) => {
+                    if (er) {
+                        logError(er);
+                        return callback(er, null);
+                    }
+                    else {
+                        Categories.findByGame(gameid, (e, resu) => {
+                            if (e) {
+                                logError(e);
+                                return callback(e, null);
+                            }
+                            else {
+                                return callback(null, {
+                                    ...result[0],
+                                    platforms: resul,
+                                    categories: resu
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    },
+
+    /**
      * @param {number} gameid
      * @param {number[]} catids
      * @param {import('../utils/callbacks.js').Callback} callback
