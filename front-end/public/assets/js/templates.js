@@ -25,17 +25,17 @@ function GameCard(id, title, price, pic, avgRating, numberOfReviews) {
     `;
 }
 
-function GameFull(id, title, desc, price, pic, reviews) {
-    return `
-    <div class="row">
-        <div class="col-6">
-            <img src="" alt="" class="img-thumbnail" onerror="this.src='/img/pic.jpg'">
-            <div class="row"></div>
-        </div>
-        <div class="col-6"></div>
-    </div>
-    `;
-}
+//! function GameFull(id, title, desc, price, pic, reviews) {
+//     return `
+//     <div class="row">
+//         <div class="col-6">
+//             <img src="" alt="" class="img-thumbnail" onerror="this.src='/img/pic.jpg'">
+//             <div class="row"></div>
+//         </div>
+//         <div class="col-6"></div>
+//     </div>
+//     `;
+// }
 
 function CategoryHead(title, id) {
     return `

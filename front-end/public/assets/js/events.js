@@ -5,6 +5,9 @@ $(() => {
     watchNavRouting();
     watchLogout();
     watchHashChange();
+    watchAdministration();
+    watchCategoryCreation();
+    watchGameSelection();
 });
 
 function watchHashChange() {
@@ -37,6 +40,9 @@ function loadPage() {
     $('.page').hide();
     if (path === '/') {
         $('#home').show();
+    }
+    else if (/\/game[^s].*/.test(path)) {
+        $('#game').show();
     }
     else {
         $(`#${ path.substr(1) }`).show();
@@ -81,5 +87,7 @@ function logout() {
     window.localStorage.removeItem('user');
     $('#admin-nav').remove();
     $('#admin').remove();
+    $('#profile-nav').remove();
+    $('#profile').remove();
     toggleLogin();
 }

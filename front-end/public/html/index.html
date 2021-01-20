@@ -19,10 +19,10 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <link rel="stylesheet" href="/css/components.css">
+    <script src="/js/events2.js"></script>
     <script src="/js/events.js"></script>
     <script src="/js/templates.js"></script>
     <script src="/js/content.js"></script>
-    <script src="/js/events2.js"></script>
 </head>
 
 <body>
@@ -53,29 +53,39 @@
         <div class="page col-12" id="game">
             <div class="row">
                 <div class="col-6">
-                    <img src="a" alt="" class="img-thumbnail" onerror="this.src='/img/pic.jpg'">
+                    <img src="a" alt="" class="img-thumbnail col-12" onerror="this.src='/img/pic.jpg'">
                     <ul class="list-group">
                         <li class="list-group-item" id="game-title"></li>
                         <li class="list-group-item" id="game-desc"></li>
                         <li class="list-group-item" id="game-price"></li>
                         <li class="list-group-item" id="game-year"></li>
-                        <li class="list-group-item" id="game-categories"></li>
-                        <li class="list-group-item" id="game-platforms"></li>
+                        <li class="list-group-item" id="game-categories">
+                        </li>
+                        <li class="list-group-item" id="game-platforms">
+                        </li>
                     </ul>
                 </div>
-                <div class="col-6"></div>
+                <div class="col-6" id="review-stack">
+                </div>
             </div>
         </div>
         <div class="page col-12" id="profile">
             <form action="" method="PUT" class="center">
                 <fieldset>
                     <legend>My Profile</legend>
-                    <img src="" alt="" id="profile-pic" class="img-top img-fluid">
-                    <form action="" method="POST" enctype="multipart/form-data">
-                        <div class="form-group">
-                            <label for="chg-pic" class="col-form-label">Profile Pic</label>
-                            <input type="file" name="profile-pic" id="chg-pic" class="btn btn-warning">
-                        </div>
+                    <img src="http://localhost:5000/game/1/image" alt="hello" id="profile-pic" class="img-top img-fluid" onerror="this.src='/img/pic.jpg'">
+                    <!-- <form action="" method="POST" enctype="multipart/form-data"> -->
+                    <div class="form-group">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text">Upload</span>
+                            </div>
+                            <div class="custom-file">
+                              <input type="file" class="custom-file-input" id="chg-pic">
+                              <label class="custom-file-label" for="chg-pic">Choose New Profile Pic</label>
+                            </div>
+                          </div>
+                    </div>
                     </p>
                     <div class="form-group">
                         <label for="chg-username">Username</label>
@@ -90,12 +100,15 @@
                         <input type="password" id="chg-password" class="form-control">
                     </div>
                     <div class="input-group">
-                        <button type="reset" class="btn btn-block btn-success">Save</button>
-                        <button type="submit" id="chg-profile" class="btn btn-block btn-success">Save</button>
+                        <div class="input-group-prepend">
+                            <button type="reset" class="btn btn-warning">Reset</button>
+                        </div>
+                        <div class="input-group-append">
+                            <button type="submit" id="chg-profile" class="btn btn-success">Save</button>
+                        </div>
                     </div>
                 </fieldset>
             </form>
-
         </div>
         <div class="page col-12" id="admin">
             <ul class="nav nav-pills nav-justified row">

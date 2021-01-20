@@ -1,15 +1,8 @@
-$(() => {
-    watchAdministration();
-    watchCategoryCreation();
-    watchGameSelection()
-});
-
 function watchAdministration() {
-
     $('#category-mode').on('click', (event) => {
         event.preventDefault();
         $('#category-overview').slideDown();
-    })
+    });
 }
 
 function watchCategoryCreation() {
@@ -20,8 +13,8 @@ function watchCategoryCreation() {
                 const NEW_CATEGORY = {
                     catname: $('#new-category-name').text(),
                     description: $('#new-category-desc').text()
-                }
-                console.log(NEW_CATEGORY)
+                };
+                console.log(NEW_CATEGORY);
                 fetch('http://localhost:5000/category', {
                     method: 'POST',
                     headers: {
@@ -39,8 +32,10 @@ function watchCategoryCreation() {
 }
 
 function watchGameSelection() {
-    $('.game-details').on('click', () => {
-        console.log('hi')
+    $('.game-details').on('click', (event) => {
+        const gameElementId = $(event.target).attr('id').split('-')
+        const gid = gameElementId[gameElementId.length - 1]
+        window.location.assign('/game/' + gid);
         $(window).trigger('hashchange');
-    })
+    });
 }

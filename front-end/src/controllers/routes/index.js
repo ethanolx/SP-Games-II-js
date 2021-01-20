@@ -3,7 +3,7 @@ import { HTML_ROOT } from '../../config/server.conf.js';
 
 const router = express.Router();
 
-router.get(['/', '/games', '/profile', '/admin'], (req, res) => {
+router.get(['/', '/games', '/game/:id', '/profile', '/admin'], (req, res) => {
     res.sendFile(HTML_ROOT + '/index.html');
 });
 

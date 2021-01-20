@@ -69,7 +69,7 @@ function logError(err) {
         `DATE:\t${ NOW.getDate() }/${ NOW.getMonth() + 1 }/${ NOW.getFullYear() }
 TIME:\t${ NOW.getHours() }:${ NOW.getMinutes() }:${ NOW.getSeconds() }
 -----------------------------
-NAME:\t\t${ err.name }
+NAME:\t\t${ err?.name }
 CODE:\t\t${ err.
             // @ts-ignore
             code || null }

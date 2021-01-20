@@ -7,3 +7,15 @@ fieldset {
     border-radius: 1.2em;
     padding: 2em;
 }
+
+img.thumbnail {
+    width: 100%;
+}
+
+#review-stack {
+    overflow: scroll;
+}
+
+.game-details {
+    background-color: rgba(255, 0, 0, 0.5);
+}
