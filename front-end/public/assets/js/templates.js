@@ -45,10 +45,22 @@ function CategoryHead(title, id) {
     `;
 }
 
-function CategoryBody(content, id) {
+function CategoryBody(name, desc, id) {
     return `
-    <div class="tab-pane fade show" id="category-${ id }" role="tabpanel">
-        ${ content }
-    </div>
+    <form action="" id="category-${id}" class="tab-pane fade show category-info" role="tabpanel">
+        <div class="form-row mt-2">
+            <label for="category-${id}-name" class=\"col-form-label\">Category Name</label>
+            <input type="text" id="category-${id}-name" value=\"${name}\" class=\"form-control\" required />
+        </div>
+        <div class="form-row mt-2">
+            <label for="category-${id}-desc" class=\"col-form-label\">Category Description</label>
+            <textarea id="category-${id}-desc" class=\"form-control\" required>${desc}</textarea>
+        </div>
+        <div class="form-row mt-5">
+            <button type=\"button\" class="btn btn-danger edit del-btn">DELETE</button>
+            <button type=\"reset\" class="btn btn-warning edit canc-btn">CANCEL</button>
+            <button type=\"submit\" class="btn btn-success edit save-btn">SAVE</button>
+        </div>
+    </form>
     `;
 }

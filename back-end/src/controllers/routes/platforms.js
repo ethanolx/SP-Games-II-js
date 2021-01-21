@@ -69,7 +69,7 @@ router.route('/platform/:id')
                 switch (err.code) {
                     case 'ER_DUP_KEY':
                     case 'ER_DUP_ENTRY':
-                        res.status(422).json({ message: `The platform \'${ PLATFORM.platform }\' already exists` });
+                        res.status(422).json({ message: `The platform \'${ PLATFORM.platform } ${PLATFORM.version}\' already exists` });
                         break;
                     default:
                         res.sendStatus(500);
@@ -79,6 +79,20 @@ router.route('/platform/:id')
                 res.sendStatus(204);
             }
         });
-    });
+    })
+    .delete((req, res) => {
+        const { id } = req.params;
+        if (invalidId(id, res)) {
+            return;
+        }
+        Platforms.delete(parseInt(id), (err, result) => {
+            if (err) {
+                res.sendStatus(500);
+            }
+            else {
+                res.sendStatus(204);
+            }
+        })
+    })
 
 export default router;

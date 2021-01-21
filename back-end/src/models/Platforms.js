@@ -58,5 +58,15 @@ export default {
     update: (PLATFORM, pid, callback) => {
         const UPDATE_EXISTING_PLATFORM_SQL = 'UPDATE categories SET ? WHERE id = ?;';
         query(UPDATE_EXISTING_PLATFORM_SQL, callback, [PLATFORM, pid]);
+    },
+
+    /**
+     * Remove an existing platform
+     * @param {number} pid
+     * @param {import('../utils/callbacks.js').Callback} callback
+     */
+    delete: (pid, callback) => {
+        const DELETE_PLATFORM_SQL = 'DELETE FROM platforms WHERE id = ?;';
+        query(DELETE_PLATFORM_SQL, callback, pid)
     }
 };

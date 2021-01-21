@@ -73,18 +73,19 @@
             <form action="" method="PUT" class="center">
                 <fieldset>
                     <legend>My Profile</legend>
-                    <img src="http://localhost:5000/game/1/image" alt="hello" id="profile-pic" class="img-top img-fluid" onerror="this.src='/img/pic.jpg'">
+                    <img src="http://localhost:5000/game/1/image" alt="hello" id="profile-pic" class="img-top img-fluid"
+                        onerror="this.src='/img/pic.jpg'">
                     <!-- <form action="" method="POST" enctype="multipart/form-data"> -->
                     <div class="form-group">
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
-                              <span class="input-group-text">Upload</span>
+                                <span class="input-group-text">Upload</span>
                             </div>
                             <div class="custom-file">
-                              <input type="file" class="custom-file-input" id="chg-pic">
-                              <label class="custom-file-label" for="chg-pic">Choose New Profile Pic</label>
+                                <input type="file" class="custom-file-input" id="chg-pic">
+                                <label class="custom-file-label" for="chg-pic">Choose New Profile Pic</label>
                             </div>
-                          </div>
+                        </div>
                     </div>
                     </p>
                     <div class="form-group">
@@ -127,13 +128,31 @@
             </ul>
             <div class="tab-content row" id="pills-tabContent">
                 <div class="tab-pane fade show active col-12" id="category-edit-panel" role="tabpanel">
-                    <div class="row" id="category-overview">
-                        <div class="col-4">
-                            <div class="list-group" id="category-names" role="tablist">
+                    <div id="category-overview">
+                        <form action="" class="pt-4" id="new-category">
+                            <legend>Create a New Category</legend>
+                            <div class="input-group">
+                                <input type="text" class="col-4 form-control" placeholder="New Category Name"
+                                    id="new-category-name" required>
+                                <input type="text" class="col-8 form-control" placeholder="New Category Description"
+                                    id="new-category-desc" required>
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-outline-success"
+                                        id="create-new-category">CREATE</button>
+                                </div>
                             </div>
+                        </form>
+                        <div class="row mb-2">
+                            <h4 class="col-12 mt-5">Manage Existing Categories</h4>
                         </div>
-                        <div class="col-8">
-                            <div class="tab-content" id="category-desc">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="list-group" id="category-names" role="tablist">
+                                </div>
+                            </div>
+                            <div class="col-8">
+                                <div class="tab-content" id="category-desc">
+                                </div>
                             </div>
                         </div>
                     </div>

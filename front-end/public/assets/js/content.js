@@ -72,22 +72,28 @@ async function loadGameContent() {
         content += GameCard(gid, game['title'], game['price'], `/game/${ gid }/image`, avgRating, numOfReviews);
     }
     $('#games-content').html(content);
+    watchGameSelection();
 }
 
-async function loadAdminContent() {
-    let newCategoryName = '<a class=\"list-group-item list-group-item-action active new-category\" data-toggle=\"list\" href=\"#new-category-desc\" role=\"tab\" contenteditable=\"true\" id=\"new-category-name\">New Category</a>';
-    let newCategoryDesc = '<div class=\"tab-pane fade show active new-category\" id=\"new-category-desc\" role=\"tabpanel\" contenteditable=\"true\">...description</div>';
-    let categoryNames = '';
-    let categoryDescs = '';
-    const categories = await (fetch('http://localhost:5000/category', { method: 'GET' })
+function loadAdminContent() {
+    loadCategoryContent();
+}
+
+function loadCategoryContent() {
+    fetch('http://localhost:5000/category', { method: 'GET' })
         .then(res => res.json())
-        .catch(console.log));
-    for (let category of categories) {
-        categoryNames += CategoryHead(category['catname'], category['id']);
-        categoryDescs += CategoryBody(category['description'], category['id']);
-    }
-    $('#category-names').html(newCategoryName + categoryNames);
-    $('#category-desc').html(newCategoryDesc + categoryDescs);
+        .then(categories => {
+            let categoryNames = '';
+            let categoryDescs = '';
+            for (let category of categories) {
+                categoryNames += CategoryHead(category['catname'], category['id']);
+                categoryDescs += CategoryBody(category['catname'], category['description'], category['id']);
+            }
+            $('#category-names').html(categoryNames);
+            $('#category-desc').html(categoryDescs);
+            watchCategoryDeletion();
+        })
+        .catch(console.log);
 }
 
 async function loadProfileContent() {

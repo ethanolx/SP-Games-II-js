@@ -58,6 +58,7 @@ router.route('/category/:id')
         const CATEGORY = req.body;
         const { id } = req.params;
         const categoryid = parseInt(id);
+        console.log(CATEGORY)
         if (invalidId(id, res) || invalidBody(CATEGORY, {
             catname: 'string',
             description: 'string'
@@ -79,6 +80,20 @@ router.route('/category/:id')
                 res.sendStatus(204);
             }
         });
-    });
+    })
+    .delete((req, res) => {
+        const { id } = req.params;
+        if (invalidId(id, res)) {
+            return;
+        }
+        Categories.delete(parseInt(id), (err, result) => {
+            if (err) {
+                res.sendStatus(500);
+            }
+            else {
+                res.sendStatus(204);
+            }
+        })
+    })
 
 export default router;

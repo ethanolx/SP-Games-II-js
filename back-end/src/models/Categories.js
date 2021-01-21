@@ -48,5 +48,15 @@ export default {
     update: (category, catid, callback) => {
         const UPDATE_EXISTING_CATEGORY_SQL = 'UPDATE categories SET ? WHERE id = ?;';
         query(UPDATE_EXISTING_CATEGORY_SQL, callback, [category, catid]);
+    },
+
+    /**
+     * Remove an existing category
+     * @param {number} catid
+     * @param {import('../utils/callbacks.js').Callback} callback
+     */
+    delete: (catid, callback) => {
+        const DELETE_CATEGORY_SQL = 'DELETE FROM categories WHERE id = ?;';
+        query(DELETE_CATEGORY_SQL, callback, catid)
     }
 };
