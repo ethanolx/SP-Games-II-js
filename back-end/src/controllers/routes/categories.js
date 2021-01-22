@@ -58,7 +58,6 @@ router.route('/category/:id')
         const CATEGORY = req.body;
         const { id } = req.params;
         const categoryid = parseInt(id);
-        console.log(CATEGORY)
         if (invalidId(id, res) || invalidBody(CATEGORY, {
             catname: 'string',
             description: 'string'

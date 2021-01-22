@@ -56,7 +56,7 @@ export default {
      * @param {import('../utils/callbacks.js').Callback} callback
      */
     update: (PLATFORM, pid, callback) => {
-        const UPDATE_EXISTING_PLATFORM_SQL = 'UPDATE categories SET ? WHERE id = ?;';
+        const UPDATE_EXISTING_PLATFORM_SQL = 'UPDATE platforms SET ? WHERE id = ?;';
         query(UPDATE_EXISTING_PLATFORM_SQL, callback, [PLATFORM, pid]);
     },
 

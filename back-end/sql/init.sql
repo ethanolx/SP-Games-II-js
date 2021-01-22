@@ -10,6 +10,7 @@ CREATE TABLE users (
     userid INT AUTO_INCREMENT UNIQUE NOT NULL,
     username VARCHAR(30) UNIQUE NOT NULL,
     email VARCHAR(45) UNIQUE NOT NULL,
+    `password` VARCHAR(25) NOT NULL,
     `type` ENUM('Customer', 'Admin') NOT NULL,
     profile_pic_url VARCHAR(80) NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -29,7 +30,9 @@ CREATE TABLE platforms (
     platform VARCHAR(15) NOT NULL,
     `version` VARCHAR(20) DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    UNIQUE KEY `unique_index` (platform, `version`);
+
 );
 
 CREATE TABLE games (

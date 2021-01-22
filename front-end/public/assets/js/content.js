@@ -8,6 +8,7 @@ function loadContent() {
             case '/':
                 break;
             case '/games':
+                // watchSearchConditions();
                 loadGameContent();
                 break;
             case '/profile':
@@ -15,6 +16,7 @@ function loadContent() {
                 break;
             case '/admin':
                 loadAdminContent();
+                loadAdminGameContent();
                 break;
         }
     }
@@ -54,49 +56,145 @@ async function loadSingleGameContent(id) {
     $('#review-stack').html(reviews.map(r => `<div class\"jumbotron\">${ r.content }</div>`).join(''));
 }
 
-async function loadGameContent() {
-    let content = '';
-    const games = await (fetch('http://localhost:5000/games/PC', { method: 'GET' })
-        .then(res => res.json())
-        .catch(console.log));
-    for (let game of games) {
-        let gid = game['gameid'];
-        /** @type {Object[]} */
-        const reviews = await (fetch(`http://localhost:5000/game/${ gid }/review`, { method: 'GET' })
-            .then(res => res.json())
-            .catch(console.log));
-        const numOfReviews = reviews.length;
+let currentFilter = filter([]);
 
-        /** @type {number} */
-        const avgRating = (reviews.length > 1) ? reviews.reduce((r1, r2) => parseFloat(r1['rating']) + parseFloat(r2['rating'])) / numOfReviews : (reviews.length === 1 ? reviews[0]['rating'] : null);
-        content += GameCard(gid, game['title'], game['price'], `/game/${ gid }/image`, avgRating, numOfReviews);
-    }
-    $('#games-content').html(content);
-    watchGameSelection();
+let conditions = [];
+
+function watchSearchConditions() {
+    $('#search input').on('input', (event) => {
+        const filterIds = ['#title-filter', '#min-price-filter', '#max-price-filter', '#category-filter', '#platform-filter'];
+        /** @type {((game: Game) => boolean)[]} */
+        let c = [];
+        const [title, minPrice, maxPrice, categoryids, platformids] = filterIds;
+        if ($(title).val() !== '') {
+            // @ts-ignore
+            c.push(((game) => RegExp($(title).val()).test(game['title'])));
+        }
+        // const title = $('#title-filter').val();
+        // const minPrice = $('#min-price-filter').val();
+        // const maxPrice = $('#max-price-filter').val();
+        // const categoryids = $('#category-filter').val();
+        // const platformids = $('#platform-filter').val();
+
+        conditions = c;
+        loadGameContent();
+    });
+}
+
+/** @typedef {{
+ *      title: string,
+ *      description: string,
+ *      price: number,
+ *      year: number,
+ *      categories: {
+ *          catid: number,
+ *          catname: string
+ *      }[],
+ *      platforms: {
+ *          pid: number,
+ *          platform: string,
+ *          version: string
+ *      }[]}
+ * } Game */
+
+/**
+ *
+ * @param {((game: Game) => boolean)[]} conditions
+ * @returns
+ */
+function filter(conditions) {
+    return (
+        /** @type {Game[]} */
+        games
+    ) => {
+        let copy = [...games];
+        for (let f of conditions) {
+            copy = copy.filter(f);
+        }
+        return copy;
+    };
+}
+
+/**
+ *
+ * @param {Game} game
+ * @param {RegExp} title
+ */
+// function filterByTitle(game, title) {
+//     return title.test(game['title']);
+// }
+
+function loadGameContent() {
+    $('#games-content').empty();
+    (fetch('http://localhost:5000/games/PC', { method: 'GET' })
+        .then(res => res.json())
+        .then(games => {
+            let content = '';
+            // const gamesFiltered = currentFilter(games);
+            const gamesFiltered = filter(conditions)(games);
+            gamesFiltered.forEach(game => {
+                let gid = game['gameid'];
+                (fetch(`http://localhost:5000/game/${ gid }/review`, { method: 'GET' })
+                    .then(res => res.json())
+                    .then(reviews => {
+                        const numOfReviews = reviews.length;
+
+                        /** @type {number} */
+                        const avgRating = (reviews.length > 1) ? reviews.reduce((r1, r2) => parseFloat(r1['rating']) + parseFloat(r2['rating'])) / numOfReviews : (reviews.length === 1 ? reviews[0]['rating'] : null);
+                        content += GameCard(gid, game['title'], game['price'], `/game/${ gid }/image`, avgRating, numOfReviews);
+                    })
+                    .then(() => {
+                        $('#games-content').html(content);
+                        watchGameSelection();
+                    })
+                    .catch(console.log));
+            });
+        })
+        .catch(console.log));
 }
 
 function loadAdminContent() {
     loadCategoryContent();
+    loadPlatformContent();
 }
 
 function loadCategoryContent() {
     fetch('http://localhost:5000/category', { method: 'GET' })
         .then(res => res.json())
         .then(categories => {
-            let categoryNames = '';
-            let categoryDescs = '';
+            let categoryLabels = '';
+            let categoryData = '';
             for (let category of categories) {
-                categoryNames += CategoryHead(category['catname'], category['id']);
-                categoryDescs += CategoryBody(category['catname'], category['description'], category['id']);
+                categoryLabels += CategoryLabel(category['id'], category['catname']);
+                categoryData += CategoryBody(category['id'], category['catname'], category['description']);
             }
-            $('#category-names').html(categoryNames);
-            $('#category-desc').html(categoryDescs);
+            $('#category-labels').html(categoryLabels);
+            $('#category-details').html(categoryData);
             watchCategoryDeletion();
+            watchCategoryEdition();
         })
         .catch(console.log);
 }
 
-async function loadProfileContent() {
+function loadPlatformContent() {
+    fetch('http://localhost:5000/platform', { method: 'GET' })
+        .then(res => res.json())
+        .then(platforms => {
+            let platformLabels = '';
+            let platformData = '';
+            for (let platform of platforms) {
+                platformLabels += PlatformLabel(platform['id'], `${ platform['platform'] } ${ platform['version'] }`);
+                platformData += PlatformBody(platform['id'], platform['platform'], platform['version']);
+            }
+            $('#platform-labels').html(platformLabels);
+            $('#platform-details').html(platformData);
+            watchPlatformDeletion();
+            watchPlatformEdition();
+        })
+        .catch(console.log);
+}
+
+function loadProfileContent() {
     const user = JSON.parse(window.localStorage.getItem('user'));
     console.log(user);
     const { username, email, profile_pic_url } = user;

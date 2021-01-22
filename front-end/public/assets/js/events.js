@@ -6,8 +6,8 @@ $(() => {
     watchLogout();
     watchHashChange();
     watchAdministration();
-    watchCategoryCreation();
     watchGameSelection();
+    watchGameCreation();
 });
 
 function watchHashChange() {
