@@ -24,6 +24,40 @@ import { emptyCallback } from '../utils/callbacks.js';
  */
 
 const Games = {
+
+    /**
+     * Find all games
+     * @param {import('../utils/callbacks.js').Callback} callback
+     */
+    findAll: (callback) => {
+        const GET_ALL_GAMES_SQL = 'SELECT id AS gameid, title, description, price, year, created_at FROM games;';
+        query(GET_ALL_GAMES_SQL, emptyCallback, null, async (err, games) => {
+            if (err) {
+                logError(err);
+                return callback(err, null);
+            }
+            else if (games instanceof Array) {
+                /** @type {Game[]} */
+                const GAMES_FULL = [];
+                for (let game of games) {
+                    // @ts-ignore
+                    const { price, ...rest } = game;
+                    const CATEGORIES = await promisify(Categories.findByGame)(game['gameid']).catch(logError);
+                    const PLATFORMS = await promisify(Platforms.findByGame)(game['gameid']).catch(logError);
+                    GAMES_FULL.push({
+                        price: parseFloat(price),
+                        // @ts-ignore
+                        categories: CATEGORIES,
+                        platforms: PLATFORMS,
+                        ...rest
+                    });
+                }
+                // @ts-ignore
+                return callback(null, GAMES_FULL);
+            }
+        })
+    },
+
     /**
      * Find all games of a platform
      * @param {string} platform

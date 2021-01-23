@@ -50,6 +50,18 @@ router.route('/game')
         });
     });
 
+router.route('/games')
+    .get((req, res) => {
+        Games.findAll((err, result) => {
+            if (err) {
+                res.sendStatus(500);
+            }
+            else {
+                res.status(200).json(result);
+            }
+        });
+    });
+
 router.route('/game/:gid')
     .get((req, res) => {
         const gid = parseInt(req.params.gid);

@@ -17,11 +17,11 @@ function GameCard(id, title, price, pic, avgRating, numberOfReviews) {
         <section class=\"card-body\">
             <h5 class=\"card-title\">${ title }</h5>
             <p class=\"card-text\">$${ price.toFixed(2) }</p>
-            <button type=\"button\" id=\"game-card-${id}\" class=\"btn btn-info stretched-link game-details\">Read More</button>
+            <button type=\"button\" id=\"game-card-${ id }\" class=\"btn btn-info stretched-link game-details\">Read More</button>
         </section>
         <footer class=\"card-footer\">
-            ${ avgRating ? `<p class=\"card-text\">Rating: ${ avgRating.toFixed(2) }/10</p>` : '' }
-            ${ numberOfReviews ? `<p class=\"card-text\">${ numberOfReviews } reviews</p>` : '' }
+            <p class=\"card-text\">Rating: ${ avgRating ? `${ avgRating.toFixed(2) } / 10` : '~' }</p>
+            <p class=\"card-text\">${ numberOfReviews } ${ numberOfReviews === 1 ? 'review' : 'reviews' }</p>
         </footer>
     </div>
     `;
@@ -64,7 +64,7 @@ function PlatformLabel(id, platform) {
  */
 function GeneralLabel(type, id, label) {
     return `
-    <a class="list-group-item list-group-item-action" data-toggle="list" href="#${type}-${ id }" role="tab">
+    <a class="list-group-item list-group-item-action" data-toggle="list" href="#${ type }-${ id }" role="tab">
         ${ label }
     </a>
     `;
@@ -100,16 +100,16 @@ function GeneralLabel(type, id, label) {
  */
 function Body(type, id, p1, p2) {
     const P1 = (type === 'category' ? 'Category Name' : 'Platform Name');
-    const P2 = (type === 'category' ? 'Category Description': 'Platform Version')
+    const P2 = (type === 'category' ? 'Category Description' : 'Platform Version');
     return `
-    <form action="" id="${type}-${id}" class="tab-pane fade show ${type}-info" role="tabpanel">
+    <form action="" id="${ type }-${ id }" class="tab-pane fade show ${ type }-info" role="tabpanel">
         <div class="form-row mt-2">
-            <label for="${type}-${id}-name" class=\"col-form-label\">${P1}</label>
-            <input type="text" id="${type}-${id}-name" value=\"${p1}\" class=\"form-control\" required />
+            <label for="${ type }-${ id }-name" class=\"col-form-label\">${ P1 }</label>
+            <input type="text" id="${ type }-${ id }-name" value=\"${ p1 }\" class=\"form-control\" required />
         </div>
         <div class="form-row mt-2">
-            <label for="${type}-${id}-desc" class=\"col-form-label\">${P2}</label>
-            <textarea id="${type}-${id}-desc" class=\"form-control\" required>${p2}</textarea>
+            <label for="${ type }-${ id }-desc" class=\"col-form-label\">${ P2 }</label>
+            <textarea id="${ type }-${ id }-desc" class=\"form-control\" required>${ p2 }</textarea>
         </div>
         <div class="form-row mt-5">
             <button type=\"button\" class="btn btn-danger col del-btn">DELETE</button>
@@ -131,8 +131,8 @@ function PlatformBody(id, platform, version) {
 function GenericCheckbox(type, id, val) {
     return `
     <div class="form-check">
-        <input type="checkbox" id="new-game-${type}-${id}" class="form-check-input" value="${id}" />
-        <label for="new-game-${type}-${id}" class="form-check-label">${val}</label>
+        <input type="checkbox" id="new-game-${ type }-${ id }" class="form-check-input" value="${ id }" />
+        <label for="new-game-${ type }-${ id }" class="form-check-label">${ val }</label>
     </div>
     `;
 }
@@ -143,4 +143,18 @@ function CategoryCheckbox(id, catname) {
 
 function PlatformCheckbox(id, platformFull) {
     return GenericCheckbox('platform', id, platformFull);
+}
+
+function GenericFilterOption(type, id, text) {
+    return `
+    <option value="${type}-filter-${id}">${text}</option>
+    `;
+}
+
+function CategoryFilterOption(id, catname) {
+    return GenericFilterOption('category', id, catname);
+}
+
+function PlatformFilterOption(id, platformFull) {
+    return GenericFilterOption('platform', id, platformFull);
 }

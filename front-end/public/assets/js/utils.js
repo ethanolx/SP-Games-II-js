@@ -1,0 +1,3 @@
+function ignore(err) {
+    return;
+}
