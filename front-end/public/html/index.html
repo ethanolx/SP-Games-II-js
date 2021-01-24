@@ -102,8 +102,8 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">$</span>
                                 </div>
-                                <input type="number" id="min-price-filter" class="form-control"
-                                    placeholder="Min. Price" min="0" step="10">
+                                <input type="number" id="min-price-filter" class="form-control" placeholder="Min. Price"
+                                    min="0" step="10">
                                 <div class="input-group-append">
                                     <span class="input-group-text">.00</span>
                                 </div>
@@ -112,8 +112,8 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">$</span>
                                 </div>
-                                <input type="number" id="max-price-filter" class="form-control"
-                                    placeholder="Max. Price" min="0" step="10">
+                                <input type="number" id="max-price-filter" class="form-control" placeholder="Max. Price"
+                                    min="0" step="10">
                                 <div class="input-group-append">
                                     <span class="input-group-text">.00</span>
                                 </div>
@@ -130,21 +130,50 @@
         </div>
         <div class="page col-12" id="game">
             <div class="row">
-                <div class="col-6">
-                    <img src="a" alt="" class="img-thumbnail col-12" onerror="this.src='/img/pic.jpg'">
-                    <ul class="list-group">
-                        <li class="list-group-item" id="game-title"></li>
-                        <li class="list-group-item" id="game-desc"></li>
-                        <li class="list-group-item" id="game-price"></li>
-                        <li class="list-group-item" id="game-year"></li>
-                        <li class="list-group-item" id="game-categories">
-                        </li>
-                        <li class="list-group-item" id="game-platforms">
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-6" id="review-stack">
-                </div>
+                <img src="a" alt="" class="img-fluid img-thumbnail col-6" onerror="this.src='/img/pic.jpg'">
+                <ul class="list-group col-6">
+                    <li class="list-group-item" id="game-title"></li>
+                    <li class="list-group-item" id="game-desc"></li>
+                    <li class="list-group-item" id="game-price"></li>
+                    <li class="list-group-item" id="game-year"></li>
+                    <li class="list-group-item" id="game-categories">
+                    </li>
+                    <li class="list-group-item" id="game-platforms">
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+                <h3 class="col-12">Reviews</h3>
+                <div id="review-stack" class="col-12"></div>
+            </div>
+            <div class="row">
+                <form id="new-review" class="col-6">
+                    <legend>Leave a Comment</legend>
+                    <div class="form-row">
+                        <label for="new-review-rating">Rating (out of 10): <span id="current-rating">5</span></label>
+                    </div>
+                    <div class="form-row">
+                        <span class="col-1 text-center">0</span>
+                        <input id="new-review-rating" class="form-range col-10" type="range" value="5" min="0" max="10" step="0.5">
+                        <span class="col-1 text-center">10</span>
+                    </div>
+                    <div class="form-row">
+                        <label for="new-review-content">Feedback:</label>
+                        <textarea id="new-review-content" rows="7" class="form-control" required>NA</textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-group-prepend w-50">
+                            <button type="reset" class="btn btn-secondary w-100">
+                                <span class="bi bi-x-square"></span>
+                            </button>
+                        </div>
+                        <div class="input-group-append w-50">
+                            <button type="submit" class="btn btn-success w-100">
+                                <span class="bi bi-save"></span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
         <div class="page col-12" id="profile">

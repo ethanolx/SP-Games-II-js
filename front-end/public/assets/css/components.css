@@ -9,11 +9,12 @@ fieldset {
 }
 
 img.thumbnail {
+    height: 30%;
     width: 100%;
 }
 
 #review-stack {
-    overflow: scroll;
+    overflow: auto;
 }
 
 .game-details {

@@ -23,10 +23,39 @@ function loadContent() {
     }
 }
 
+function watchReviewCreation() {
+    $('#new-review-rating').on('input', (event) => {
+        const $this = event.target;
+        const CURRENT_RATING = $($this).val().toString();
+        $('#current-rating').text(CURRENT_RATING);
+    });
+    $('#new-review').on('submit', (event) => {
+        event.preventDefault();
+        const RATING = parseFloat($('#new-review-rating').val().toString());
+        const CONTENT = $('#new-review-content').val();
+        const userid = JSON.parse(localStorage.getItem('user'))['userid'];
+        const gameid = $('#new-review button[type=\"submit\"]').attr('id');
+        fetch(`http://localhost:5000/user/${ userid }/game/${ gameid }/review`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                rating: RATING,
+                content: CONTENT
+            })
+        })
+            .then(res => res.json())
+            .finally(() => {
+                loadSingleGameContent(gameid);
+            });
+    });
+}
+
 function loadSingleGameContent(id) {
     fetch(`http://localhost:5000/game/${ id }`, { method: 'GET' })
         .then(res => res.json())
-        .then(game => {
+        .then((/** @type {Game} */ game) => {
             if (game === undefined) {
                 return;
             }
@@ -49,28 +78,18 @@ function loadSingleGameContent(id) {
                     $("#review-stack").html(r);
                 })
                 .catch(console.log);
-            /** @type {{
-             * title: string,
-             * description: string,
-             * price: number,
-             * year: number,
-             * platforms: {
-             *      platform: string,
-             *      version: string
-             * }[],
-             * categories: {
-             *      catname: string,
-             *      description: string
-             * }[]}} */
+            /** @type {Game} */
             let { title, description, price, year, platforms, categories } = game;
             $('#game-title').text(title);
             $('#game-desc').text(description);
             $('#game-price').text(price);
             $('#game-year').text(year);
+            $('#new-review button[type=\"submit\"]').attr('id', game.id);
             $('#game-categories').html(`<h5>Categories</h5><ul class=\"list-group\">${ categories.map(c => `<li class=\"list-group-item\">${ c.catname }</li>`).join('') }</ul>`);
             $('#game-platforms').html(`<h5>Platforms</h5><ul class=\"list-group\">${ platforms.map(p => `<li class=\"list-group-item\">${ p.platform } ${ p.version }</li>`).join('') }</ul>`);
         })
         .catch(console.log);
+    watchReviewCreation();
 }
 
 let conditions = [];
@@ -97,18 +116,19 @@ function watchSearchConditions() {
         if ($(maxPrice).val() !== '') {
             c.push(((game) => game.price < parseInt($(maxPrice).val().toString())));
         }
-            // const title = $('#title-filter').val();
-            // const minPrice = $('#min-price-filter').val();
-            // const maxPrice = $('#max-price-filter').val();
-            // const categoryids = $('#category-filter').val();
-            // const platformids = $('#platform-filter').val();
+        // const title = $('#title-filter').val();
+        // const minPrice = $('#min-price-filter').val();
+        // const maxPrice = $('#max-price-filter').val();
+        // const categoryids = $('#category-filter').val();
+        // const platformids = $('#platform-filter').val();
 
-            conditions = c;
+        conditions = c;
         loadGameContent();
     });
 }
 
 /** @typedef {{
+ *      id: number,
  *      title: string,
  *      description: string,
  *      price: number,
