@@ -7,7 +7,6 @@ $(() => {
     watchHashChange();
     watchAdministration();
     watchGameSelection();
-    watchGameCreation();
 });
 
 let GLOBAL_USER;

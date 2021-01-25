@@ -126,53 +126,53 @@ function Body(type, id, p1, p2) {
 
 function GameBody(id, title, description, price, year) {
     return `
-    <form action="" class="pt-4" id="${id}">
-        <legend>${title}</legend>
+    <form class="tab-pane fade game-info pt-4" id="game-${ id }">
+        <legend>${ title }</legend>
         <div class="form-row form-group pl-2">
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text">Upload</span>
                 </div>
                 <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="new-game-img">
+                    <input type="file" class="custom-file-input" id="game-${ id }-img">
                     <label class="custom-file-label" for="new-game-img">Choose Image for
                         Game</label>
                 </div>
             </div>
         </div>
         <div class="form-row form-group pl-2">
-            <label for="game-${id}-title">Title</label>
-            <input type="text" id="game-${id}-title" class="form-control" value="${title}" required>
+            <label for="game-${ id }-title">Title</label>
+            <input type="text" id="game-${ id }-title" class="form-control" value="${ title }" required>
         </div>
         <div class="form-row form-group pl-2">
-            <label for="game-${id}-desc">Description</label>
-            <textarea type="text" id="game-${id}-desc" class="form-control" rows="3" required>${description}</textarea>
+            <label for="game-${ id }-desc">Description</label>
+            <textarea type="text" id="game-${ id }-desc" class="form-control" rows="3" required>${ description }</textarea>
         </div>
         <div class="form-row">
             <div class="form-group col-6">
-                <label for="game-${id}-price">New Game Price</label>
+                <label for="game-${ id }-price">New Game Price</label>
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text">S$</span>
                     </div>
-                    <input type="number" id="game-${id}-price" class="form-control" value="${price}" min="0" max="100"
+                    <input type="number" id="game-${ id }-price" class="form-control" value="${ price }" min="0" max="100"
                         step="0.01" required>
                 </div>
             </div>
             <div class="form-group col-6">
-                <label for="game-${id}-year">New Game Year</label>
-                <input type="number" id="game-${id}-year" class="form-control" placeholder="2000" min="1980" max="2021"
-                    step="1" value="${year ? year : ''}">
+                <label for="game-${ id }-year">New Game Year</label>
+                <input type="number" id="game-${ id }-year" class="form-control" placeholder="2000" min="1980" max="2021"
+                    step="1" value="${ year ? year : '' }">
             </div>
         </div>
         <div class="form-row">
-            <div class="form-group col-12 col-md-6">
+            <div class="form-group col-6">
                 <label>Categories</label>
-                <div id="game-${id}-categories"></div>
+                <div id="game-${ id }-categories"></div>
             </div>
-            <div class="form-group col-12 col-md-6">
+            <div class="form-group col-6">
                 <label>Platforms</label>
-                <div id="game-${id}-platforms"></div>
+                <div id="game-${ id }-platforms"></div>
             </div>
         </div>
         <div class="form-row">
@@ -192,11 +192,11 @@ function PlatformBody(id, platform, version) {
     return Body('platform', id, platform, version);
 }
 
-function GenericCheckbox(type, id, val) {
+function GenericCheckbox(type, id, val, gid = null, nw = true, isSelected = false) {
     return `
     <div class="form-check">
-        <input type="checkbox" id="new-game-${ type }-${ id }" class="form-check-input" value="${ id }" />
-        <label for="new-game-${ type }-${ id }" class="form-check-label">${ val }</label>
+        <input type="checkbox" id="${ nw ? 'new-' : '' }game-${ gid ? gid + '-' : '' }${ type }-${ id }" class="form-check-input" value="${ id }" ${ isSelected ? 'checked' : '' } />
+        <label for="${ nw ? 'new-' : '' }game-${ gid ? gid + '-' : '' }${ type }-${ id }" class="form-check-label">${ val }</label>
     </div>
     `;
 }
@@ -207,6 +207,13 @@ function CategoryCheckbox(id, catname) {
 
 function PlatformCheckbox(id, platformFull) {
     return GenericCheckbox('platform', id, platformFull);
+}
+
+function CategoryExistingCheckbox(id, catname, gid, isSelected = false) {
+    return GenericCheckbox('category', id, catname, gid, false, isSelected);
+}
+function PlatformExistingCheckbox(id, platformFull, gid, isSelected = false) {
+    return GenericCheckbox('platform', id, platformFull, gid, false, isSelected);
 }
 
 function GenericFilterOption(type, id, text) {
@@ -238,5 +245,65 @@ function ReviewCard(username, rating, content,) {
             </div>
         </div>
     </div>
+    `;
+}
+
+function GameBaseBody() {
+    return `
+    <form class="tab-pane fade show active pt-4" id="new-game">
+        <legend>Create a New Game</legend>
+        <div class="form-row form-group pl-2">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Upload</span>
+                </div>
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="new-game-img">
+                    <label class="custom-file-label" for="new-game-img">Choose Image for
+                        Game</label>
+                </div>
+            </div>
+        </div>
+        <div class="form-row form-group pl-2">
+            <label for="new-game-title">New Game Title</label>
+            <input type="text" id="new-game-title" class="form-control" placeholder="Diablo III"
+                required>
+        </div>
+        <div class="form-row form-group pl-2">
+            <label for="new-game-desc">New Game Description</label>
+            <textarea type="text" id="new-game-desc" class="form-control"
+                placeholder="Fun and Exciting!" rows="3" required></textarea>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-6">
+                <label for="new-game-price">New Game Price</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">S$</span>
+                    </div>
+                    <input type="number" id="new-game-price" class="form-control" value="10.00"
+                        min="0" max="100" step="0.01" required>
+                </div>
+            </div>
+            <div class="form-group col-6">
+                <label for="new-game-year">New Game Year</label>
+                <input type="number" id="new-game-year" class="form-control" placeholder="2000"
+                    min="1980" max="2021" step="1">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-6">
+                <label>Categories</label>
+                <div id="new-game-categories"></div>
+            </div>
+            <div class="form-group col-6">
+                <label>Platforms</label>
+                <div id="new-game-platforms"></div>
+            </div>
+        </div>
+        <div class="form-row">
+            <button type="submit" class="btn btn-block btn-success">CREATE</button>
+        </div>
+    </form>
     `;
 }

@@ -94,6 +94,8 @@ function loadSingleGameContent(id) {
 }
 
 let conditions = [];
+/** @type {'title' | 'date'} */
+let sortCondition = 'date';
 
 function watchSearchConditions() {
     $('#search input, #search select').on('input', (event) => {
@@ -103,7 +105,7 @@ function watchSearchConditions() {
         const [title, minPrice, maxPrice, categoryids, platformids] = filterIds;
         if ($(title).val() !== '') {
             // @ts-ignore
-            c.push(((game) => RegExp($(title).val()).test(game['title'])));
+            c.push(((game) => RegExp($(title).val(), 'i').test(game['title'])));
         }
         if ($(categoryids).children(':selected').val() !== 'Any') {
             c.push(((game) => game.categories.map(cat => cat.catid).includes(parseInt($(categoryids).children(':selected').val().toString().split('-')[2]))));
@@ -116,6 +118,9 @@ function watchSearchConditions() {
         }
         if ($(maxPrice).val() !== '') {
             c.push(((game) => game.price < parseInt($(maxPrice).val().toString())));
+        }
+        if ($('#title-sort').prop('checked')) {
+            sortCondition = 'title';
         }
         // const title = $('#title-filter').val();
         // const minPrice = $('#min-price-filter').val();
@@ -163,6 +168,20 @@ function filter(conditions) {
     };
 }
 
+/**
+ *
+ * @param {'title' | 'date'} by
+ */
+function sort(by = 'date') {
+    return (
+        /** @type {Game[]} */
+        games
+    ) => {
+        let copy = [...games];
+        return by === 'title' ? copy.sort((a, b) => a.title.toLowerCase().localeCompare(b.title.toLowerCase())) : copy.sort((a, b) => a.id - b.id);
+    };
+}
+
 // /**
 //  *
 //  * @param {Game} game
@@ -194,6 +213,7 @@ function loadGameContent() {
     fetch('http://localhost:5000/games', { method: 'GET' })
         .then(res => res.json())
         .then(filter(conditions))
+        .then(sort(sortCondition))
         .then(gamesFiltered => {
             let content = '';
             gamesFiltered.forEach(game => {
