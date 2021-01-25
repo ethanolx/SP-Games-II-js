@@ -37,7 +37,7 @@ function watchGameCreation() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + localStorage['token']
+                    'Authorization': 'Bearer ' + localStorage['sp-games-token']
                 },
                 body: JSON.stringify(NEW_GAME)
             })

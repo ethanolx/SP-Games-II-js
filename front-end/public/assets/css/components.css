@@ -39,3 +39,7 @@ img.thumbnail {
     max-height: 50vh;
     overflow: auto;
 }
+
+.card {
+    max-width: none;
+}

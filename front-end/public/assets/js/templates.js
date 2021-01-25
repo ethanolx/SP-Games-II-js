@@ -13,7 +13,7 @@
 function GameCard(id, title, price, pic, avgRating, numberOfReviews) {
     return `
     <div class=\"card border-dark\">
-        <img src=\"${ pic }\" alt=\"Image for \'${ title }\'\" class=\"card-img-top\" onerror=\"this.src=\'/img/pic.jpg\'\">
+        <!-- <img src=\"${ pic }\" alt=\"Image for \'${ title }\'\" class=\"card-img-top\" onerror=\"this.src=\'/img/pic.jpg\'\"> -->
         <section class=\"card-body\">
             <h5 class=\"card-title\">${ title }</h5>
             <p class=\"card-text\">$${ price.toFixed(2) }</p>
@@ -48,21 +48,25 @@ function GameCard(id, title, price, pic, avgRating, numberOfReviews) {
 // }
 
 function CategoryLabel(id, name) {
-    return GeneralLabel('category', id, name);
+    return GenericLabel('category', id, name);
 }
 
 function PlatformLabel(id, platform) {
-    return GeneralLabel('platform', id, platform);
+    return GenericLabel('platform', id, platform);
+}
+
+function GameLabel(id, title) {
+    return GenericLabel('game', id, title);
 }
 
 /**
  *
- * @param {'category' | 'platform'} type
+ * @param {'category' | 'platform' | 'game'} type
  * @param {number} id
  * @param {string} label
  * @returns
  */
-function GeneralLabel(type, id, label) {
+function GenericLabel(type, id, label) {
     return `
     <a class="list-group-item list-group-item-action" data-toggle="list" href="#${ type }-${ id }" role="tab">
         ${ label }
@@ -120,6 +124,66 @@ function Body(type, id, p1, p2) {
     `;
 }
 
+function GameBody(id, title, description, price, year) {
+    return `
+    <form action="" class="pt-4" id="${id}">
+        <legend>${title}</legend>
+        <div class="form-row form-group pl-2">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Upload</span>
+                </div>
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="new-game-img">
+                    <label class="custom-file-label" for="new-game-img">Choose Image for
+                        Game</label>
+                </div>
+            </div>
+        </div>
+        <div class="form-row form-group pl-2">
+            <label for="game-${id}-title">Title</label>
+            <input type="text" id="game-${id}-title" class="form-control" value="${title}" required>
+        </div>
+        <div class="form-row form-group pl-2">
+            <label for="game-${id}-desc">Description</label>
+            <textarea type="text" id="game-${id}-desc" class="form-control" rows="3" required>${description}</textarea>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-6">
+                <label for="game-${id}-price">New Game Price</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">S$</span>
+                    </div>
+                    <input type="number" id="game-${id}-price" class="form-control" value="${price}" min="0" max="100"
+                        step="0.01" required>
+                </div>
+            </div>
+            <div class="form-group col-6">
+                <label for="game-${id}-year">New Game Year</label>
+                <input type="number" id="game-${id}-year" class="form-control" placeholder="2000" min="1980" max="2021"
+                    step="1" value="${year ? year : ''}">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-12 col-md-6">
+                <label>Categories</label>
+                <div id="game-${id}-categories"></div>
+            </div>
+            <div class="form-group col-12 col-md-6">
+                <label>Platforms</label>
+                <div id="game-${id}-platforms"></div>
+            </div>
+        </div>
+        <div class="form-row">
+            <button type="button" class="btn btn-danger col del-btn">DELETE</button>
+            <button type="reset" class="btn btn-warning col canc-btn">CANCEL</button>
+            <button type="submit" class="btn btn-success col save-btn">SAVE</button>
+        </div>
+    </form>
+    `;
+}
+
 function CategoryBody(id, name, desc) {
     return Body('category', id, name, desc);
 }
@@ -147,7 +211,7 @@ function PlatformCheckbox(id, platformFull) {
 
 function GenericFilterOption(type, id, text) {
     return `
-    <option value="${type}-filter-${id}">${text}</option>
+    <option value="${ type }-filter-${ id }">${ text }</option>
     `;
 }
 
@@ -157,4 +221,22 @@ function CategoryFilterOption(id, catname) {
 
 function PlatformFilterOption(id, platformFull) {
     return GenericFilterOption('platform', id, platformFull);
+}
+
+function ReviewCard(username, rating, content,) {
+    return `
+    <div class="col-4">
+        <div class="card h-100">
+            <div class="card-header">
+                <span class="bi bi-star-fill">${ rating } / 10</span>
+            </div>
+            <div class="card-body">
+                <span class="card-text">${ content }</span>
+            </div>
+            <div class="card-footer text-right">
+                <span class="card-text">~ ${ username }</span>
+            </div>
+        </div>
+    </div>
+    `;
 }

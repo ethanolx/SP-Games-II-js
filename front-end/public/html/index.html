@@ -27,6 +27,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
 
     <link rel="stylesheet" href="/css/components.css">
+
+    <script src="/js/login.js"></script>
     <script src="/js/utils.js"></script>
     <script src="/js/events2.js"></script>
     <script src="/js/events.js"></script>
@@ -49,8 +51,8 @@
                     <li class="nav-item"><a href="/games" class="nav-link">Games</a></li>
                     <li class="nav-item" id="profile-nav"><a href="/profile" class="nav-link">Profile</a></li>
                     <li class="nav-item" id="admin-nav"><a href="/admin" class="nav-link">Admin</a></li>
-                    <li class="nav-item"><a href="/login" class="nav-link" id="login">Login</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link" id="logout">Logout</a></li>
+                    <li class="nav-item" id="login-nav"><a href="/login" class="nav-link">Login</a></li>
+                    <li class="nav-item" id="logout-nav"><a href="#" class="nav-link" id="logout">Logout</a></li>
                 </ul>
             </div>
         </nav>
@@ -144,7 +146,9 @@
             </div>
             <div class="row">
                 <h3 class="col-12">Reviews</h3>
-                <div id="review-stack" class="col-12"></div>
+                <div class="col-12">
+                    <div id="review-stack" class="row"></div>
+                </div>
             </div>
             <div class="row">
                 <form id="new-review" class="col-6">
@@ -154,12 +158,14 @@
                     </div>
                     <div class="form-row">
                         <span class="col-1 text-center">0</span>
-                        <input id="new-review-rating" class="form-range col-10" type="range" value="5" min="0" max="10" step="0.5">
+                        <input id="new-review-rating" class="form-range col-10" type="range" value="5" min="0" max="10"
+                            step="0.5">
                         <span class="col-1 text-center">10</span>
                     </div>
                     <div class="form-row">
                         <label for="new-review-content">Feedback:</label>
-                        <textarea id="new-review-content" rows="7" class="form-control" required>NA</textarea>
+                        <textarea id="new-review-content" rows="7" class="form-control" placeholder="NA"
+                            required></textarea>
                     </div>
                     <div class="form-row">
                         <div class="input-group-prepend w-50">
@@ -177,7 +183,7 @@
             </div>
         </div>
         <div class="page col-12" id="profile">
-            <form action="" method="PUT" class="center">
+            <form id="chg-profile" class="center">
                 <fieldset>
                     <legend>My Profile</legend>
                     <img src="http://localhost:5000/game/1/image" alt="hello" id="profile-pic" class="img-top img-fluid"
@@ -204,14 +210,14 @@
                     </div>
                     <div class="form-group">
                         <label for="chg-password">Password</label>
-                        <input type="password" id="chg-password" class="form-control">
+                        <input type="password" id="chg-password" class="form-control" value="">
                     </div>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <button type="reset" class="btn btn-warning">Reset</button>
                         </div>
                         <div class="input-group-append">
-                            <button type="submit" id="chg-profile" class="btn btn-success">Save</button>
+                            <button type="submit" class="btn btn-success">Save</button>
                         </div>
                     </div>
                 </fieldset>
@@ -294,78 +300,118 @@
                     </div>
                 </div>
                 <div class="tab-pane fade col-12" id="game-edit-panel" role="tabpanel">
-                    <div class="row">
-                        <div class="col-md-1 col-lg-2"></div>
-                        <div id="game-overview" class="col-md-10 col-lg-8">
-                            <form action="" class="pt-4" id="new-game">
-                                <legend>Create a New Game</legend>
-                                <div class="form-row form-group pl-2">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">Upload</span>
-                                        </div>
-                                        <div class="custom-file">
-                                            <input type="file" class="custom-file-input" id="new-game-img">
-                                            <label class="custom-file-label" for="new-game-img">Choose Image for
-                                                Game</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-row form-group pl-2">
-                                    <label for="new-game-title">New Game Title</label>
-                                    <input type="text" id="new-game-title" class="form-control" placeholder="Diablo III"
-                                        required>
-                                </div>
-                                <div class="form-row form-group pl-2">
-                                    <label for="new-game-desc">New Game Description</label>
-                                    <textarea type="text" id="new-game-desc" class="form-control"
-                                        placeholder="Fun and Exciting!" rows="3" required></textarea>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group col-6">
-                                        <label for="new-game-price">New Game Price</label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text">S$</span>
-                                            </div>
-                                            <input type="number" id="new-game-price" class="form-control" value="10.00"
-                                                min="0" max="100" step="0.01" required>
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-6">
-                                        <label for="new-game-year">New Game Year</label>
-                                        <input type="number" id="new-game-year" class="form-control" placeholder="2000"
-                                            min="1980" max="2021" step="1">
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group col-12 col-md-6">
-                                        <label>Categories</label>
-                                        <div id="new-game-categories"></div>
-                                    </div>
-                                    <div class="form-group col-12 col-md-6">
-                                        <label>Platforms</label>
-                                        <div id="new-game-platforms"></div>
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <button type="submit" class="btn btn-block btn-success">CREATE</button>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="col-md-1 col-lg-2"></div>
-                    </div>
-                    <div class="row">
+                    <div id="game-overview" class="col-12">
                         <div class="col-4">
                             <div class="list-group edit-labels" id="game-labels" role="tablist">
+                                <a class="list-group-item list-group-item-action active fade show" data-toggle="list" href="#new-game" role="tab">
+                                    New Game
+                                </a>
                             </div>
                         </div>
                         <div class="col-8">
                             <div class="tab-content" id="game-details">
+                                <form action="" class="pt-4" id="new-game">
+                                    <legend>Create a New Game</legend>
+                                    <div class="form-row form-group pl-2">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Upload</span>
+                                            </div>
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" id="new-game-img">
+                                                <label class="custom-file-label" for="new-game-img">Choose Image for
+                                                    Game</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row form-group pl-2">
+                                        <label for="new-game-title">New Game Title</label>
+                                        <input type="text" id="new-game-title" class="form-control" placeholder="Diablo III"
+                                            required>
+                                    </div>
+                                    <div class="form-row form-group pl-2">
+                                        <label for="new-game-desc">New Game Description</label>
+                                        <textarea type="text" id="new-game-desc" class="form-control"
+                                            placeholder="Fun and Exciting!" rows="3" required></textarea>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-6">
+                                            <label for="new-game-price">New Game Price</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">S$</span>
+                                                </div>
+                                                <input type="number" id="new-game-price" class="form-control" value="10.00"
+                                                    min="0" max="100" step="0.01" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <label for="new-game-year">New Game Year</label>
+                                            <input type="number" id="new-game-year" class="form-control" placeholder="2000"
+                                                min="1980" max="2021" step="1">
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-12 col-md-6">
+                                            <label>Categories</label>
+                                            <div id="new-game-categories"></div>
+                                        </div>
+                                        <div class="form-group col-12 col-md-6">
+                                            <label>Platforms</label>
+                                            <div id="new-game-platforms"></div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <button type="submit" class="btn btn-block btn-success">CREATE</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="page col-12" id="login">
+            <button class="btn btn-light text-right" id="sign-up">Sign Up</button>
+            <div class="row" id="login-section">
+                <div class="col-3"></div>
+                <form id="login-form" class="col-6">
+                    <div class="form-group">
+                        <label for="username">Username or Email</label>
+                        <input type="text" id="username" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-block btn-success">Login</button>
+                </form>
+                <div class="col-3"></div>
+            </div>
+            <div class="row" id="register-section">
+                <div class="col-3"></div>
+                <form class="col-6 needs-validation" id="register-form">
+                    <div class="form-group">
+                        <label for="new-username">Create a New Username</label>
+                        <input type="text" id="new-username" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-email">Enter your Email</label>
+                        <input type="email" id="new-email" class="form-control" pattern="^[\S]+@[\w\.]+$" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-password">Create a Strong Password</label>
+                        <input type="password" id="new-password" class="form-control" pattern="^[\S]+$" minlength="8"
+                            maxlength="25" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm-password">Confirm your Password</label>
+                        <input type="password" id="confirm-password" class="form-control" pattern="^[\S]+$"
+                            minlength="8" maxlength="25" required>
+                    </div>
+                    <button type="submit" class="btn btn-block btn-success">Register</button>
+                </form>
+                <div class="col-3"></div>
             </div>
         </div>
     </article>

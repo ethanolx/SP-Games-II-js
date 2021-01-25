@@ -6,6 +6,7 @@ import { invalidBody, invalidId } from '../../utils/common-errors.js';
 
 // Model
 import Users from '../../models/Users.js';
+import isLoggedIn from '../../utils/is-logged-in.js';
 
 /**@type {express.Router} */
 const router = express.Router();
@@ -52,12 +53,19 @@ router.route('/users')
         });
     });
 
+router.route('/user/verify-login')
+    .post(isLoggedIn);
+
 router.route('/users/:id')
-    .get((req, res) => {
-        const USER_ID = parseInt(req.params.id);
+    .all((req, res, next) => {
         if (invalidId(req.params.id, res)) {
             return;
         }
+        next();
+    })
+    .get((req, res) => {
+        const USER_ID = parseInt(req.params.id);
+        const {token} = req.body;
         Users.findOne(USER_ID, (err, result) => {
             if (err) {
                 res.sendStatus(500);
@@ -69,16 +77,30 @@ router.route('/users/:id')
                 res.status(200).json(result[0]);
             }
         });
-    });
+    })
+    .put((req, res) => {
+        const USER_ID = parseInt(req.params.id);
+        /** @type {import('../../models/Users.js').User} */
+        const USER = req.body;
+        Users.update(USER_ID, USER, (err, result) => {
+            if (err) {
+                res.sendStatus(500);
+            }
+            else {
+                res.status(200).json(result);
+            }
+        })
+    })
 
 router.route('/user/login')
     .post((req, res) => {
         const { username, password } = req.body;
         Users.login(username, password, (err, result) => {
             if (!err) {
-                res.status(200).json({ token: result[0], user: result[1] });
+                res.status(200).json({ token: result });
             }
             else {
+                // @ts-ignore
                 if (err.status === 500) {
                     res.sendStatus(403);
                 }

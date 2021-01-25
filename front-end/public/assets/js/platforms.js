@@ -11,7 +11,7 @@ function watchPlatformCreation() {
             fetch('http://localhost:5000/platform', {
                 method: 'POST',
                 headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                    'Authorization': 'Bearer ' + localStorage.getItem('sp-games-token'),
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(NEW_PLATFORM)

@@ -1,41 +1,51 @@
 $(() => {
-    setPageMode();
+    // setPageMode();
     $('#register-section').hide();
-    $('#sign-up').on('click', toggleLogin);
-    $('#sign-in').on('click', toggleLogin);
-    $('#register').on('click', register);
-    $('#login').on('click', login);
-    watchEnter();
+    $('#sign-up').on('click', () => {
+        toggleLogin2();
+    });
+    $('#sign-in').on('click', () => {
+        toggleLogin2
+    });
+    $('#register-form').on('submit', register);
+    $('#login-form').on('submit', (event) => {
+        event.preventDefault();
+        login();
+    });
+    // watchEnter();
 });
 
-function setPageMode() {
-    window.sessionStorage.setItem('mode', 'sign-in');
-}
+let MODE = 'sign-in';
 
-function toggleLogin() {
-    if (window.sessionStorage.getItem('mode') === 'sign-in') {
+// function setPageMode() {
+//     MODE =
+// }
+
+function toggleLogin2() {
+    if (MODE === 'sign-in') {
         $('#sign-up').text('Sign In').attr('id', 'sign-in');
-        window.sessionStorage.setItem('mode', 'sign-up');
+        MODE = 'sign-up';
     }
     else {
         $('#sign-in').text('Sign Up').attr('id', 'sign-up');
-        window.sessionStorage.setItem('mode', 'sign-in');
+        MODE = 'sign-in';
     }
     $('#login-section').toggle();
     $('#register-section').toggle();
 }
 
 function validateRegistration() {
+    console.log(validatePasswordMatch(), validatePasswordStrength())
     return validatePasswordMatch() && validatePasswordStrength();
 }
 
 function validatePasswordStrength() {
     const draftPwd = $('#new-password');
-    for (let req of [/[\W\S_]/, /[0-9]/, /[A-Z]/, /[a-z]/]) {
-        if (!req.test(draftPwd.val().toString())) {
-            return false;
-        }
-    }
+    // for (let req of [/[`~@#\$%\^\&\*\(\)]/, /[0-9]/, /[A-Z]/, /[a-z]/]) {
+    //     if (!req.test(draftPwd.val().toString())) {
+    //         return false;
+    //     }
+    // }
     return true;
 }
 
@@ -48,70 +58,73 @@ function validatePasswordMatch() {
 function register(event) {
     event.preventDefault();
     // @ts-ignore
-    $('#register-form')[0].reportValidity();
+    // $('#register-form')[0].reportValidity();
     if (validateRegistration()) {
         const USERNAME = $('#new-username').val();
         const PASSWORD = $('#new-password').val();
         const EMAIL = $('#new-email').val();
 
-        $.ajax({
-            url: 'http://localhost:5000/users',
-            type: 'POST',
-            contentType: 'application/json; charset=utf-8',
-            data: JSON.stringify({
-                username: USERNAME,
-                email: EMAIL,
-                password: PASSWORD,
-                type: 'Customer',
-                profile_pic_url: null
-            }),
-            dataType: 'json',
-            success: (data, textStatus, xhr) => {
-                window.localStorage.setItem('token', data['token']);
-                window.localStorage.setItem('user', JSON.stringify(data['user']));
-                window.location.assign('/');
-                alert('You have successfully registered for SP Games!');
+        const NEW_USER = {
+            username: USERNAME,
+            email: EMAIL,
+            password: PASSWORD,
+            type: 'Customer',
+            profile_pic_url: null
+        };
+        fetch('http://localhost:5000/users', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
             },
-            error: (xhr, textStatus, err) => {
-                alert('Invalid username or password provided!')
-                console.log(err);
-            }
-        });
+            body: JSON.stringify(NEW_USER)
+        })
+            .then(res => res.json())
+            .then(data => {
+                const userid = data['userid'];
+                login(USERNAME, PASSWORD);
+            })
+            .then(() => alert('You have successfully registered for SP Games!'))
+            // .catch(ignore);
     }
     else {
-        alert('Bad');
+        alert();
     }
 }
 
-function login() {
-    const USERNAME_OR_EMAIL = $('#username').val();
-    const PASSWORD = $('#password').val();
-    $.ajax({
-        url: 'http://localhost:5000/user/login',
-        type: 'POST',
-        contentType: 'application/json; charset=utf-8',
-        data: JSON.stringify({ username: USERNAME_OR_EMAIL, password: PASSWORD }),
-        dataType: 'json',
-        success: (data, textStatus, xhr) => {
-            window.localStorage.setItem('token', data['token']);
-            window.localStorage.setItem('user', JSON.stringify(data['user']));
-            window.location.assign('/');
+function login(username = null, password = null) {
+    const USERNAME_OR_EMAIL = username || $('#username').val();
+    const PASSWORD = password || $('#password').val();
+    const CREDENTIALS = {
+        username: USERNAME_OR_EMAIL,
+        password: PASSWORD
+    };
+    fetch('http://localhost:5000/user/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
         },
-        error: (xhr, textStatus, err) => {
-            console.log('err');
-        }
-    });
+        body: JSON.stringify(CREDENTIALS)
+    })
+        .then(res => res.json())
+        .then(data => {
+            const TOKEN = data['token'];
+            localStorage.setItem('sp-games-token', TOKEN);
+            history.pushState(null, null, '/');
+            $(window).trigger('hashchange');
+            location.reload();
+            // window.location.assign('/');
+        })
 }
 
-function watchEnter() {
-    $('.form-group').on('keypress', (event) => {
-        if (event.which === 13) {
-            if (window.sessionStorage.getItem('mode') === 'sign-in') {
-                $('#login').trigger('click');
-            }
-            else {
-                $('#register').trigger('click');
-            }
-        }
-    });
-}
+// function watchEnter() {
+//     $('.form-group').on('keypress', (event) => {
+//         if (event.which === 13) {
+//             if (window.sessionStorage.getItem('mode') === 'sign-in') {
+//                 $('#login').trigger('click');
+//             }
+//             else {
+//                 $('#register').trigger('click');
+//             }
+//         }
+//     });
+// }

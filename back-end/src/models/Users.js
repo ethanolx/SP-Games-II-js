@@ -47,10 +47,21 @@ export default {
     },
 
     /**
+     * Update a user's profile
+     * @param {number} userid
+     * @param {User} user
+     * @param {import('../utils/callbacks.js').Callback} callback
+     */
+    update: (userid, user, callback) => {
+        const UPDATE_EXISTING_USER_SQL = 'UPDATE users SET ? WHERE userid = ?;';
+        query(UPDATE_EXISTING_USER_SQL, callback, [user, userid]);
+    },
+
+    /**
      * Login a user
      * @param {string} username_or_email
      * @param {string} password
-     * @param {(err: import('mysql2').QueryError, result: [string | null, object]) => void} callback
+     * @param {(err: import('mysql2').QueryError, result: string | null) => void} callback
      */
     login: (username_or_email, password, callback) => {
         const LOGIN_USER_SQL = 'SELECT * FROM users WHERE (username = ? OR email = ?) AND password = ?;';
@@ -68,7 +79,7 @@ export default {
                 });
                 console.log("@@token " + token);
                 delete user['password'];
-                return callback(null, [token, user]);
+                return callback(null, token);
             }
             else {
                 var err2 = new Error("UserID/Password does not match.");

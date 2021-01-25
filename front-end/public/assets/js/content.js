@@ -14,6 +14,7 @@ function loadContent() {
                 break;
             case '/profile':
                 loadProfileContent();
+                watchProfileEdition();
                 break;
             case '/admin':
                 loadAdminContent();
@@ -33,7 +34,7 @@ function watchReviewCreation() {
         event.preventDefault();
         const RATING = parseFloat($('#new-review-rating').val().toString());
         const CONTENT = $('#new-review-content').val();
-        const userid = JSON.parse(localStorage.getItem('user'))['userid'];
+        const userid = GLOBAL_USER['userid'];
         const gameid = $('#new-review button[type=\"submit\"]').attr('id');
         fetch(`http://localhost:5000/user/${ userid }/game/${ gameid }/review`, {
             method: 'POST',
@@ -72,7 +73,7 @@ function loadSingleGameContent(id) {
                     }
                 })
                 .then(reviews => {
-                    return reviews.map(r => `<div class\"jumbotron\">${ r.content }</div>`).join('');
+                    return reviews.map(r => ReviewCard(r['username'], r['rating'], r['content'])).join('');
                 })
                 .then(r => {
                     $("#review-stack").html(r);
@@ -272,7 +273,7 @@ function loadPlatformContent() {
 }
 
 function loadProfileContent() {
-    const user = JSON.parse(window.localStorage.getItem('user'));
+    const user = { ...GLOBAL_USER };
     console.log(user);
     const { username, email, profile_pic_url } = user;
     if (profile_pic_url !== null) {
@@ -280,5 +281,32 @@ function loadProfileContent() {
     }
     $('#chg-username').val(username);
     $('#chg-email').val(email);
-    $('#chg-password').val('');
+}
+
+function watchProfileEdition() {
+    $('#chg-profile').on('submit', (event) => {
+        console.log('hi');
+        event.preventDefault();
+        const USER_ID = GLOBAL_USER['userid'];
+        const NEW_USERNAME = $('#chg-username').val();
+        const NEW_EMAIL = $('#chg-email').val();
+        const NEW_PASSWORD_RAW = $('#chg-password').val();
+        const UPDATED_DETAILS = {
+            username: NEW_USERNAME,
+            email: NEW_EMAIL,
+            profile_pic_url: ''
+        };
+        if (NEW_PASSWORD_RAW !== '') {
+            UPDATED_DETAILS.password = NEW_PASSWORD_RAW;
+        }
+        fetch(`http://localhost:5000/users/${ USER_ID }`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(UPDATED_DETAILS)
+        })
+            .catch(ignore)
+            .finally(loadProfileContent);
+    });
 }

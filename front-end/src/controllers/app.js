@@ -13,7 +13,6 @@ app.use(express.static(ROOT));
 
 app
     .use(index)
-    .use(login)
     .use(other);
 
 export default app;

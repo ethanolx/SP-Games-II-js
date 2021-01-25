@@ -10,6 +10,8 @@ $(() => {
     watchGameCreation();
 });
 
+let GLOBAL_USER;
+
 function watchHashChange() {
     $(window).on('hashchange', loadPage);
 }
@@ -21,7 +23,7 @@ function watchBackButton() {
 }
 
 function watchNavRouting() {
-    $('a.nav-link:not(#login)').on('click', changePage);
+    $('a.nav-link:not(#logout)').on('click', changePage);
 }
 
 function watchLogout() {
@@ -51,16 +53,18 @@ function loadPage() {
 }
 
 function toggleLogin() {
+    $('#login-nav').toggle();
     $('#login').toggle();
-    $('#logout').toggle();
+    $('#logout-nav').toggle();
 }
 
-function loadNavbar() {
-    if (checkLogin()) {
+async function loadNavbar() {
+    if (await checkLogin()) {
         if (!checkPermissions()) {
             $('#admin-nav').remove();
             $('#admin').remove();
         }
+        $('#login-nav').hide();
         $('#login').hide();
     }
     else {
@@ -68,26 +72,41 @@ function loadNavbar() {
         $('#admin').remove();
         $('#profile-nav').remove();
         $('#profile').remove();
-        $('#logout').hide();
+        $('#logout-nav').hide();
     }
 }
 
-function checkLogin() {
-    const TOKEN = localStorage.getItem('token');
-    const USER = JSON.parse(localStorage.getItem('user'));
-    return TOKEN !== undefined && TOKEN !== null && USER !== undefined && USER !== null;
+async function checkLogin() {
+    const TOKEN = localStorage.getItem('sp-games-token');
+    return await fetch('http://localhost:5000/user/verify-login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ token: TOKEN })
+    })
+        .then(res => res.json())
+        .then(user => {
+            GLOBAL_USER = user;
+            return true;
+        })
+        .catch(err => false);
+    // const USER = JSON.parse(localStorage.getItem('user'))
+    // return TOKEN !== undefined && TOKEN !== null && USER !== undefined && USER !== null;
 }
 
 function checkPermissions() {
-    return JSON.parse(localStorage['user'])['type'] === 'Admin';
+    return GLOBAL_USER['type'] === 'Admin';
 }
 
 function logout() {
-    window.localStorage.removeItem('token');
-    window.localStorage.removeItem('user');
+    window.localStorage.removeItem('sp-games-token');
+    GLOBAL_USER = {};
     $('#admin-nav').remove();
     $('#admin').remove();
     $('#profile-nav').remove();
     $('#profile').remove();
+    history.pushState(null, null, '/');
+    $(window).trigger('hashchange');
     toggleLogin();
 }

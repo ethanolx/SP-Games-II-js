@@ -11,8 +11,8 @@ CREATE TABLE users (
     username VARCHAR(30) UNIQUE NOT NULL,
     email VARCHAR(45) UNIQUE NOT NULL,
     `password` VARCHAR(25) NOT NULL,
-    `type` ENUM('Customer', 'Admin') NOT NULL,
-    profile_pic_url VARCHAR(80) NULL,
+    `type` ENUM('Customer', 'Admin') NOT NULL DEFAULT 'Customer',
+    profile_pic_url VARCHAR(80) NULL DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (userid)
 );
