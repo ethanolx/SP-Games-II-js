@@ -7,10 +7,10 @@ import { emptyCallback } from '../utils/callbacks.js';
 /**
  * Object representing each user
  * @typedef {Object} User
- * @property {string} username              - Username of a user
- * @property {string} email                 - User's email
- * @property {string} password              - User's password
- * @property {'Admin' | 'Customer'} type    - Type of a user (either Admin or Customer)
+ * @property {string} [username]            - Username of a user
+ * @property {string} [email]               - User's email
+ * @property {string} [password]            - User's password
+ * @property {'Admin' | 'Customer'} [type]  - Type of a user (either Admin or Customer)
  * @property {string} [profile_pic_url]     - URL to a user's profile pic (optional)
  */
 

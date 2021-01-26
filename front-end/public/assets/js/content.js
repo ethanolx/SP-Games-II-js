@@ -46,7 +46,7 @@ function watchReviewCreation() {
                 content: CONTENT
             })
         })
-            .then(res => res.json())
+            .then(res => $('#new-review').trigger('reset'))
             .finally(() => {
                 loadSingleGameContent(gameid);
             });
@@ -79,8 +79,10 @@ function loadSingleGameContent(id) {
                     $("#review-stack").html(r);
                 })
                 .catch(console.log);
+
             /** @type {Game} */
             let { title, description, price, year, platforms, categories } = game;
+            $('#game-image').attr('src', `http://localhost:5000/game/${ game.id }/image`);
             $('#game-title').text(title);
             $('#game-desc').text(description);
             $('#game-price').text(price);
@@ -119,9 +121,7 @@ function watchSearchConditions() {
         if ($(maxPrice).val() !== '') {
             c.push(((game) => game.price < parseInt($(maxPrice).val().toString())));
         }
-        if ($('#title-sort').prop('checked')) {
-            sortCondition = 'title';
-        }
+        sortCondition = $('#title-sort').is(':checked') ? 'title' : 'date';
         // const title = $('#title-filter').val();
         // const minPrice = $('#min-price-filter').val();
         // const maxPrice = $('#max-price-filter').val();
@@ -178,7 +178,7 @@ function sort(by = 'date') {
         games
     ) => {
         let copy = [...games];
-        return by === 'title' ? copy.sort((a, b) => a.title.toLowerCase().localeCompare(b.title.toLowerCase())) : copy.sort((a, b) => a.id - b.id);
+        return by === 'title' ? copy.sort() : copy.sort((a, b) => a.id - b.id);
     };
 }
 
@@ -294,31 +294,40 @@ function loadPlatformContent() {
 
 function loadProfileContent() {
     const user = { ...GLOBAL_USER };
-    console.log(user);
     const { username, email, profile_pic_url } = user;
-    if (profile_pic_url !== null) {
-        $('#profile-pic').attr('src', profile_pic_url);
-    }
-    $('#chg-username').val(username);
-    $('#chg-email').val(email);
+    // console.log(user)
+    // if (profile_pic_url !== null) {
+    //     $('#profile-pic').attr('src', profile_pic_url);
+    // }
+    // $('#chg-username').val(username);
+    // $('#chg-email').val(email);
+    $('#chg-profile').html(ProfileCard(username, email, profile_pic_url || ''))
 }
 
 function watchProfileEdition() {
     $('#chg-profile').on('submit', (event) => {
         console.log('hi');
         event.preventDefault();
+        const formData = new FormData();
         const USER_ID = GLOBAL_USER['userid'];
+        const NEW_PROFILE_IMG = $('#chg-pic').prop('files')[0];
+        formData.append('userImage', NEW_PROFILE_IMG);
         const NEW_USERNAME = $('#chg-username').val();
         const NEW_EMAIL = $('#chg-email').val();
         const NEW_PASSWORD_RAW = $('#chg-password').val();
         const UPDATED_DETAILS = {
             username: NEW_USERNAME,
-            email: NEW_EMAIL,
-            profile_pic_url: ''
+            email: NEW_EMAIL
         };
         if (NEW_PASSWORD_RAW !== '') {
             UPDATED_DETAILS.password = NEW_PASSWORD_RAW;
         }
+        fetch(`http://localhost:5000/user/${ USER_ID }/image`, {
+            method: 'PATCH',
+            body: formData
+        })
+            .then(res => alert('Success'))
+            .catch(ignore);
         fetch(`http://localhost:5000/users/${ USER_ID }`, {
             method: 'PUT',
             headers: {

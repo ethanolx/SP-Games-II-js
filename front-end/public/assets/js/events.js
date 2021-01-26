@@ -1,5 +1,5 @@
-$(() => {
-    loadNavbar();
+$(async () => {
+    await loadNavbar();
     loadPage();
     watchBackButton();
     watchNavRouting();
@@ -72,6 +72,7 @@ async function loadNavbar() {
         $('#profile-nav').remove();
         $('#profile').remove();
         $('#logout-nav').hide();
+        $('#new-review').remove();
     }
 }
 

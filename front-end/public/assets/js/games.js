@@ -53,11 +53,25 @@ function watchGameCreation() {
                         default:
                             alert('Game successfully created!');
                     }
+                    return res.json();
                 })
-                .then(() => {
-                    loadAdminGameContent();
+                .then(result => {
+                    const gid = result['gameid'];
+                    const file = $('#new-game-img').prop('files')[0];
+                    const formData = new FormData();
+                    formData.append('gameImage', file);
+                    if (file !== '') {
+                        fetch(`http://localhost:5000/game/${ gid }/image`, {
+                            method: 'POST',
+                            body: formData
+                        })
+                            .then(res => res.json())
+                            .then(alert)
+                            .catch(err => alert(err['message']));
+                    }
                 })
-                .catch(console.log);
+                .catch(console.log)
+                .finally(loadAdminGameContent);
         }
     });
 }
@@ -129,6 +143,7 @@ function watchGameEdition() {
         event.preventDefault();
         const $this = event.target;
         const gid = $($this).attr('id').split('-')[1];
+        const NEW_GAME_IMG = $(`#game-${ gid }-img`).prop('files')[0];
         const NEW_GAME_TITLE = $(`#game-${ gid }-title`).val();
         const NEW_GAME_DESC = $(`#game-${ gid }-desc`).val();
         const NEW_GAME_PRICE = parseFloat($(`#game-${ gid }-price`).val().toString());
@@ -156,6 +171,12 @@ function watchGameEdition() {
             platformids: platformids
         };
         console.log(UPDATED_GAME);
+        const formData = new FormData();
+        formData.append('gameImage', NEW_GAME_IMG);
+        fetch(`http://localhost:5000/game/${ gid }/image`, {
+            method: 'POST',
+            body: formData
+        });
         fetch(`http://localhost:5000/game/${ gid }`, {
             method: 'PUT',
             headers: {
@@ -177,7 +198,8 @@ function watchGameEdition() {
                         alert('Successfully updated!');
                 }
             })
-            .catch(console.log);
+            .catch(console.log)
+            .finally(loadAdminGameContent);
     });
 }
 

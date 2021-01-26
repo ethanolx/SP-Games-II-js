@@ -5,7 +5,7 @@ $(() => {
         toggleLogin2();
     });
     $('#sign-in').on('click', () => {
-        toggleLogin2
+        toggleLogin2;
     });
     $('#register-form').on('submit', register);
     $('#login-form').on('submit', (event) => {
@@ -35,7 +35,7 @@ function toggleLogin2() {
 }
 
 function validateRegistration() {
-    console.log(validatePasswordMatch(), validatePasswordStrength())
+    console.log(validatePasswordMatch(), validatePasswordStrength());
     return validatePasswordMatch() && validatePasswordStrength();
 }
 
@@ -83,8 +83,8 @@ function register(event) {
                 const userid = data['userid'];
                 login(USERNAME, PASSWORD);
             })
-            .then(() => alert('You have successfully registered for SP Games!'))
-            // .catch(ignore);
+            .then(() => alert('You have successfully registered for SP Games!'));
+        // .catch(ignore);
     }
     else {
         alert();
@@ -105,15 +105,21 @@ function login(username = null, password = null) {
         },
         body: JSON.stringify(CREDENTIALS)
     })
-        .then(res => res.json())
+        .then(res => {
+            switch (res.status) {
+                case 403:
+                    throw new Error('Invalid username, email or password provided!');
+            }
+            return res.json();
+        })
         .then(data => {
             const TOKEN = data['token'];
             localStorage.setItem('sp-games-token', TOKEN);
             history.pushState(null, null, '/');
             $(window).trigger('hashchange');
             location.reload();
-            // window.location.assign('/');
         })
+        .catch(err => alert(err['message']));
 }
 
 // function watchEnter() {

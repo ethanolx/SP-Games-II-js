@@ -258,7 +258,7 @@ function GameBaseBody() {
                     <span class="input-group-text">Upload</span>
                 </div>
                 <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="new-game-img">
+                    <input type="file" class="custom-file-input" id="new-game-img" accept="image/png, image/jpg, image/jpeg">
                     <label class="custom-file-label" for="new-game-img">Choose Image for
                         Game</label>
                 </div>
@@ -305,5 +305,46 @@ function GameBaseBody() {
             <button type="submit" class="btn btn-block btn-success">CREATE</button>
         </div>
     </form>
+    `;
+}
+
+function ProfileCard(username, email, profile_pic_url) {
+    return `
+    <fieldset>
+        <legend>My Profile</legend>
+        <img src="${profile_pic_url}" alt="hello" id="profile-pic" class="img-top img-fluid"
+            onerror="this.src='/img/pic.jpg'">
+        <div class="form-group">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Upload</span>
+                </div>
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="chg-pic">
+                    <label class="custom-file-label" for="chg-pic">Choose New Profile Pic</label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="chg-username">Username</label>
+            <input type="text" id="chg-username" class="form-control" value="${username}">
+        </div>
+        <div class="form-group">
+            <label for="chg-email">Email</label>
+            <input type="email" id="chg-email" class="form-control" value="${email}">
+        </div>
+        <div class="form-group">
+            <label for="chg-password">Password</label>
+            <input type="password" id="chg-password" class="form-control" value="">
+        </div>
+        <div id="profile-edit-btns" class="input-group">
+            <div class="input-group-prepend">
+                <button type="reset" class="btn btn-warning">Reset</button>
+            </div>
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-success">Save</button>
+            </div>
+        </div>
+    </fieldset>
     `;
 }
