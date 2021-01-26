@@ -1,4 +1,0 @@
-keep only token in localstorage,
-cos ppl can fake user data or steal
-
-reauthenticate every session (use memory instead)

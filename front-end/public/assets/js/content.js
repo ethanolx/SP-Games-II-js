@@ -91,13 +91,9 @@ function loadSingleGameContent(id) {
             $('#game-categories').html(`<h5>Categories</h5><ul class=\"list-group\">${ categories.map(c => `<li class=\"list-group-item\">${ c.catname }</li>`).join('') }</ul>`);
             $('#game-platforms').html(`<h5>Platforms</h5><ul class=\"list-group\">${ platforms.map(p => `<li class=\"list-group-item\">${ p.platform } ${ p.version }</li>`).join('') }</ul>`);
         })
-        .catch(console.log);
-    watchReviewCreation();
+        .catch(console.log)
+        .finally(watchReviewCreation);
 }
-
-let conditions = [];
-/** @type {'title' | 'date'} */
-let sortCondition = 'date';
 
 function watchSearchConditions() {
     $('#search input, #search select').on('input', (event) => {
@@ -122,33 +118,10 @@ function watchSearchConditions() {
             c.push(((game) => game.price < parseInt($(maxPrice).val().toString())));
         }
         sortCondition = $('#title-sort').is(':checked') ? 'title' : 'date';
-        // const title = $('#title-filter').val();
-        // const minPrice = $('#min-price-filter').val();
-        // const maxPrice = $('#max-price-filter').val();
-        // const categoryids = $('#category-filter').val();
-        // const platformids = $('#platform-filter').val();
-
         conditions = c;
         loadGameContent();
     });
 }
-
-/** @typedef {{
- *      id: number,
- *      title: string,
- *      description: string,
- *      price: number,
- *      year: number,
- *      categories: {
- *          catid: number,
- *          catname: string
- *      }[],
- *      platforms: {
- *          pid: number,
- *          platform: string,
- *          version: string
- *      }[]}
- * } Game */
 
 /**
  *
@@ -178,18 +151,10 @@ function sort(by = 'date') {
         games
     ) => {
         let copy = [...games];
-        return by === 'title' ? copy.sort() : copy.sort((a, b) => a.id - b.id);
+        console.log(by)
+        return by === 'title' ? copy.sort((a, b) => a.title.localeCompare(b.title)) : copy.sort((a, b) => a.id - b.id);
     };
 }
-
-// /**
-//  *
-//  * @param {Game} game
-//  * @param {RegExp} title
-//  */
-// function filterByTitle(game, title) {
-//     return title.test(game['title']);
-// }
 
 function loadFilterBar() {
     fetch('http://localhost:5000/category', { method: 'GET' })
@@ -224,7 +189,7 @@ function loadGameContent() {
                             return res.json();
                         }
                         else if (res.status === 404) {
-                            return Promise.resolve([]);
+                            return [];
                         }
                         else {
                             throw new Error();
@@ -248,7 +213,8 @@ function loadGameContent() {
                     });
             });
         })
-        .catch(console.log);
+        .catch(err => {
+        });
 }
 
 function loadAdminContent() {
@@ -295,13 +261,7 @@ function loadPlatformContent() {
 function loadProfileContent() {
     const user = { ...GLOBAL_USER };
     const { username, email, profile_pic_url } = user;
-    // console.log(user)
-    // if (profile_pic_url !== null) {
-    //     $('#profile-pic').attr('src', profile_pic_url);
-    // }
-    // $('#chg-username').val(username);
-    // $('#chg-email').val(email);
-    $('#chg-profile').html(ProfileCard(username, email, profile_pic_url || ''))
+    $('#chg-profile').html(ProfileCard(username, email, profile_pic_url || ''));
 }
 
 function watchProfileEdition() {

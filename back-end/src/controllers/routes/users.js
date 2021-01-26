@@ -11,7 +11,7 @@ import { invalidBody, invalidId } from '../../utils/common-errors.js';
 
 // Model
 import Users from '../../models/Users.js';
-import isLoggedIn from '../../utils/is-logged-in.js';
+import isLoggedIn from '../../middleware/auth/verify-login.js';
 
 // Configurations
 import { HOST, MAX_FILE_SIZE, MEDIA_TYPES_SUPPORTED, PORT } from '../../config/server.config.js';
@@ -37,6 +37,9 @@ const IMAGE_STORAGE = multer({
 // Parsing Middleware
 router.use(json());
 router.use(urlencoded({ extended: false }));
+
+// Static File Serving Middleware
+router.use(express.static(join(__dirname, '..', '..', '..', 'assets', 'user-images')));
 
 // Route Handlers
 router.route('/users')
@@ -75,8 +78,6 @@ router.route('/users')
             }
         });
     });
-
-router.use(express.static(join(__dirname, '..', '..', '..', 'assets', 'user-images')));
 
 router.patch('/user/:uid/image', (req, res, next) => {
     if (invalidId(req.params.uid, res)) {

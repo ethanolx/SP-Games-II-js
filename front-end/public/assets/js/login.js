@@ -1,5 +1,4 @@
 $(() => {
-    // setPageMode();
     $('#register-section').hide();
     $('#sign-up').on('click', () => {
         toggleLogin2();
@@ -12,14 +11,10 @@ $(() => {
         event.preventDefault();
         login();
     });
-    // watchEnter();
 });
 
 let MODE = 'sign-in';
 
-// function setPageMode() {
-//     MODE =
-// }
 
 function toggleLogin2() {
     if (MODE === 'sign-in') {
@@ -35,17 +30,16 @@ function toggleLogin2() {
 }
 
 function validateRegistration() {
-    console.log(validatePasswordMatch(), validatePasswordStrength());
     return validatePasswordMatch() && validatePasswordStrength();
 }
 
 function validatePasswordStrength() {
     const draftPwd = $('#new-password');
-    // for (let req of [/[`~@#\$%\^\&\*\(\)]/, /[0-9]/, /[A-Z]/, /[a-z]/]) {
-    //     if (!req.test(draftPwd.val().toString())) {
-    //         return false;
-    //     }
-    // }
+    for (let req of [/[`!~@#\$%\^\&\*\(\)]/, /[0-9]/, /[A-Z]/, /[a-z]/]) {
+        if (!req.test(draftPwd.val().toString())) {
+            return false;
+        }
+    }
     return true;
 }
 
@@ -80,14 +74,17 @@ function register(event) {
         })
             .then(res => res.json())
             .then(data => {
-                const userid = data['userid'];
+                // const userid = data['userid'];
                 login(USERNAME, PASSWORD);
             })
-            .then(() => alert('You have successfully registered for SP Games!'));
-        // .catch(ignore);
+            .then(() => alert('You have successfully registered for SP Games!'))
+            .catch(ignore);
     }
-    else {
-        alert();
+    else if (validatePasswordMatch()) {
+        alert('Your passwords are not strong enough\n(Ensure your password contains at least 1 lowercase,\n1 uppercase letter, 1 number and 1 special character)');
+    }
+    else if (validatePasswordStrength()) {
+        alert('Your passwords do not match!');
     }
 }
 
@@ -122,15 +119,3 @@ function login(username = null, password = null) {
         .catch(err => alert(err['message']));
 }
 
-// function watchEnter() {
-//     $('.form-group').on('keypress', (event) => {
-//         if (event.which === 13) {
-//             if (window.sessionStorage.getItem('mode') === 'sign-in') {
-//                 $('#login').trigger('click');
-//             }
-//             else {
-//                 $('#register').trigger('click');
-//             }
-//         }
-//     });
-// }

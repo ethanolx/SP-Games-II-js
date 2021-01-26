@@ -62,7 +62,7 @@ function watchGameCreation() {
                     formData.append('gameImage', file);
                     if (file !== '') {
                         fetch(`http://localhost:5000/game/${ gid }/image`, {
-                            method: 'POST',
+                            method: 'PATCH',
                             body: formData
                         })
                             .then(res => res.json())

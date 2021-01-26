@@ -3,13 +3,20 @@ $(async () => {
     loadPage();
     watchBackButton();
     watchNavRouting();
-    watchLogout();
     watchHashChange();
+    watchLogout();
     watchAdministration();
     watchGameSelection();
 });
 
+/** @type {Object} */
 let GLOBAL_USER;
+
+/** @type {((game: Game) => boolean)[]} */
+let conditions = [];
+
+/** @type {'title' | 'date'} */
+let sortCondition = 'date';
 
 function watchHashChange() {
     $(window).on('hashchange', loadPage);
@@ -22,13 +29,17 @@ function watchBackButton() {
 }
 
 function watchNavRouting() {
-    $('a.nav-link:not(#logout)').on('click', changePage);
+    $('a.router:not(#logout)').on('click', changePage);
 }
 
 function watchLogout() {
     $('#logout').on('click', logout);
 }
 
+/**
+ *
+ * @param {Event} event
+ */
 function changePage(event) {
     const $this = event.target;
     event.preventDefault();
@@ -81,18 +92,22 @@ async function checkLogin() {
     return await fetch('http://localhost:5000/user/verify-login', {
         method: 'POST',
         headers: {
+            'Authorization': 'Bearer ' + TOKEN,
             'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ token: TOKEN })
+        }
     })
-        .then(res => res.json())
+        .then(res => {
+            switch (res.status) {
+                case 403:
+                    throw new Error();
+            }
+            return res.json();
+        })
         .then(user => {
             GLOBAL_USER = user;
             return true;
         })
         .catch(err => false);
-    // const USER = JSON.parse(localStorage.getItem('user'))
-    // return TOKEN !== undefined && TOKEN !== null && USER !== undefined && USER !== null;
 }
 
 function checkPermissions() {
@@ -109,4 +124,19 @@ function logout() {
     history.pushState(null, null, '/');
     $(window).trigger('hashchange');
     toggleLogin();
+}
+
+function watchAdministration() {
+    watchCategoryCreation();
+    watchPlatformCreation();
+}
+
+function watchGameSelection() {
+    $('.game-details').on('click', (event) => {
+        event.preventDefault();
+        const gameElementId = $(event.target).attr('id').split('-');
+        const gid = gameElementId[gameElementId.length - 1];
+        history.pushState(null, null, '/game/' + gid);
+        $(window).trigger('hashchange');
+    });
 }

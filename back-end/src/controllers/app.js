@@ -3,6 +3,7 @@ import express from 'express';
 import cors from 'cors';
 
 // Routers
+import restrictions from './restricted.js';
 import root from './routes/root.js';
 import users from './routes/users.js';
 import games from './routes/games.js';
@@ -17,6 +18,8 @@ import other from './routes/other.js';
 const app = express();
 
 app.use(cors({ origin: 'http://localhost:3000' }));
+
+app.use('/', restrictions);
 
 app
     .use('/', root)

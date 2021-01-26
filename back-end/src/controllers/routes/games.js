@@ -175,7 +175,7 @@ router.route('/game/:gid/image')
             res.sendStatus(404);
         }
     })
-    .post((req, res, next) => {
+    .patch((req, res, next) => {
         const GAME_ID = parseInt(req.params.gid);
         Games.findOne(GAME_ID, async (err, result) => {
             if (err) {
@@ -193,8 +193,8 @@ router.route('/game/:gid/image')
             }
         });
     })
-    .post(IMAGE_STORAGE.single('gameImage'))
-    .post((req, res) => {
+    .patch(IMAGE_STORAGE.single('gameImage'))
+    .patch((req, res) => {
         req.file ?
             res.sendStatus(204) :
             res.status(415).json({ media_types_supported: MEDIA_TYPES_SUPPORTED, max_file_size_bytes: MAX_FILE_SIZE });

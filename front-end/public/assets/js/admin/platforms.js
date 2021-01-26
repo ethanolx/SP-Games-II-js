@@ -37,10 +37,6 @@ function watchPlatformCreation() {
     });
 }
 
-function aliasPlatformEdition() {
-
-}
-
 function watchPlatformEdition() {
     $('.platform-info').on('submit', (event) => {
         event.preventDefault();
@@ -55,7 +51,8 @@ function watchPlatformEdition() {
         fetch(`http://localhost:5000/platform/${ cid }`, {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage['sp-games-token']
             },
             body: JSON.stringify(UPDATED_PLATFORM)
         })
@@ -87,7 +84,12 @@ function watchPlatformDeletion() {
         /** @type {string} */
         const platformSelected = $($this).parent().parent().prop('id');
         const pid = platformSelected.split('-')[1];
-        fetch(`http://localhost:5000/platform/${ pid }`, { method: 'DELETE' })
+        fetch(`http://localhost:5000/platform/${ pid }`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage['sp-games-token']
+            }
+        })
             .then(res => res.status)
             .then(status => {
                 if (status === 204) {
