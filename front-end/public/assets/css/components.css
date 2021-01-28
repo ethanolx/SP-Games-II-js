@@ -1,6 +1,6 @@
-.card {
+/* .card {
     max-width: 30%;
-}
+} */
 
 fieldset {
     border: 1px solid black;
@@ -17,9 +17,18 @@ img.thumbnail {
     overflow: auto;
 }
 
-.game-details {
-    background-color: rgba(255, 0, 0, 0.5);
+.game-details:hover {
+    cursor: pointer;
+    background-color: lightgoldenrodyellow;
 }
+
+p.brief-game-details {
+    margin-bottom: 0;
+}
+
+/* .game-details {
+    background-color: rgba(255, 0, 0, 0.5);
+} */
 
 .del-btn {
     border-top-right-radius: 0;

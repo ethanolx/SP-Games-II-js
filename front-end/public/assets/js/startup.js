@@ -42,6 +42,7 @@ function watchLogout() {
  */
 function changePage(event) {
     const $this = event.target;
+    console.log('hey')
     event.preventDefault();
     window.history.pushState(null, null, $($this).attr('href'));
     $(window).trigger('hashchange');
@@ -71,16 +72,16 @@ function toggleLogin() {
 async function loadNavbar() {
     if (await checkLogin()) {
         if (!checkPermissions()) {
-            $('#admin-nav').remove();
-            $('#admin').remove();
+            $('.admin-nav').remove();
+            $('.admin').remove();
         }
         $('#login-nav').hide();
         $('#login').hide();
     }
     else {
-        $('#admin-nav').remove();
-        $('#admin').remove();
-        $('#profile-nav').remove();
+        $('.admin-nav').remove();
+        $('.admin').remove();
+        $('.personalisation').remove();
         $('#profile').remove();
         $('#logout-nav').hide();
         $('#new-review').remove();
@@ -134,7 +135,8 @@ function watchAdministration() {
 function watchGameSelection() {
     $('.game-details').on('click', (event) => {
         event.preventDefault();
-        const gameElementId = $(event.target).attr('id').split('-');
+        const $this = $(event.target).parents('.game-details');
+        const gameElementId = $($this).attr('id').split('-');
         const gid = gameElementId[gameElementId.length - 1];
         history.pushState(null, null, '/game/' + gid);
         $(window).trigger('hashchange');

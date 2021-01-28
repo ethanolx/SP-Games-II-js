@@ -20,7 +20,7 @@
  * @param {number} [numberOfReviews]
  * @returns
  */
-function GameCard(id, title, price, pic, avgRating, numberOfReviews) {
+function GameCardOld(id, title, price, pic, avgRating, numberOfReviews) {
     return `
     <div class=\"card border-dark\">
         <!-- <img src=\"${ pic }\" alt=\"Image for \'${ title }\'\" class=\"card-img-top\" onerror=\"this.src=\'/img/pic.jpg\'\"> -->
@@ -33,6 +33,34 @@ function GameCard(id, title, price, pic, avgRating, numberOfReviews) {
             <p class=\"card-text\">Rating: ${ avgRating ? `${ avgRating.toFixed(2) } / 10` : '~' }</p>
             <p class=\"card-text\">${ numberOfReviews } ${ numberOfReviews === 1 ? 'review' : 'reviews' }</p>
         </footer>
+    </div>
+    `;
+}
+
+function GameCard(id, title, price, pic, avgRating, numberOfReviews) {
+    return `
+    <div class="col-xl-4 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2 game-details" id="game-card-${id}">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            ${title}
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">$${ price.toFixed(2) }</div>
+                    </div>
+                </div>
+                <div class="row no-gutters align-items-center mt-2">
+                    <div class="col mr-2">
+                        <p class="card-text brief-game-details">Rating: ${ avgRating ? `${ avgRating.toFixed(2) } / 10` : '~' }</p>
+                        <p class="card-text brief-game-details">${ numberOfReviews } ${ numberOfReviews === 1 ? 'review' : 'reviews' }</p>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-gamepad fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     `;
 }

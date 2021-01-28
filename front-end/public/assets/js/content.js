@@ -16,8 +16,13 @@ function loadContent() {
                 loadProfileContent();
                 watchProfileEdition();
                 break;
-            case '/admin':
-                loadAdminContent();
+            case '/categories':
+                loadCategoryContent();
+                break;
+            case '/platforms':
+                loadPlatformContent();
+                break;
+            case '/games-admin':
                 loadAdminGameContent();
                 break;
         }
@@ -151,7 +156,6 @@ function sort(by = 'date') {
         games
     ) => {
         let copy = [...games];
-        console.log(by)
         return by === 'title' ? copy.sort((a, b) => a.title.localeCompare(b.title)) : copy.sort((a, b) => a.id - b.id);
     };
 }
@@ -179,11 +183,11 @@ function loadGameContent() {
         .then(res => res.json())
         .then(filter(conditions))
         .then(sort(sortCondition))
-        .then(gamesFiltered => {
-            let content = '';
-            gamesFiltered.forEach(game => {
+        .then(async gamesFiltered => {
+            let cont = '';
+            for (let game of gamesFiltered) {
                 const gid = game['gameid'];
-                fetch(`http://localhost:5000/game/${ gid }/review`, { method: 'GET' })
+                cont += await fetch(`http://localhost:5000/game/${ gid }/review`, { method: 'GET' })
                     .then(res => {
                         if (res.ok) {
                             return res.json();
@@ -196,31 +200,35 @@ function loadGameContent() {
                         }
                     })
                     .then(reviews => {
+                        let content = '';
+                        /** @type {number} */
                         const numOfReviews = reviews.length;
                         if (numOfReviews === 0) {
                             content += GameCard(gid, game['title'], game['price'], `/game/${ gid }/image`, null, numOfReviews);
                         }
                         else {
                             /** @type {number} */
-                            const avgRating = (reviews.length > 1) ? reviews.reduce((r1, r2) => parseFloat(r1['rating']) + parseFloat(r2['rating'])) / numOfReviews : (reviews.length === 1 ? reviews[0]['rating'] : null);
+                            const avgRating = (numOfReviews > 1) ? reviews.reduce((r1, r2) => (typeof r1 === 'number' ? r1 : parseFloat(r1['rating'])) + parseFloat(r2['rating'])) / numOfReviews : parseFloat(reviews[0]['rating']);
                             content += GameCard(gid, game['title'], game['price'], `/game/${ gid }/image`, avgRating, numOfReviews);
                         }
+                        return content;
                     })
                     .catch(ignore)
-                    .finally(() => {
-                        $('#games-content').html(content);
-                        watchGameSelection();
-                    });
-            });
+            }
+            return cont;
+        })
+        .then(content => {
+            $('#games-content').html(content);
+            watchGameSelection();
         })
         .catch(err => {
         });
 }
 
-function loadAdminContent() {
-    loadCategoryContent();
-    loadPlatformContent();
-}
+// function loadAdminContent() {
+//     loadCategoryContent();
+//     loadPlatformContent();
+// }
 
 function loadCategoryContent() {
     fetch('http://localhost:5000/category', { method: 'GET' })

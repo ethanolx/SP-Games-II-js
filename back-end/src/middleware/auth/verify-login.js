@@ -18,14 +18,19 @@ export default (req, res, next) => {
         return;
     }
     jwt.verify(token, key, (err, decoded) => {
-        const DECODED_TOKEN = decoded;
-        Users.findOne(DECODED_TOKEN['id'], (err, result) => {
-            if (err) {
-                next();
-            }
-            else {
-                res.status(200).json(result[0]);
-            }
-        })
+        if (err) {
+            res.sendStatus(401);
+        }
+        else {
+            const DECODED_TOKEN = decoded;
+            Users.findOne(DECODED_TOKEN['id'], (err, result) => {
+                if (err) {
+                    next();
+                }
+                else {
+                    res.status(200).json(result[0]);
+                }
+            });
+        }
     })
 }
