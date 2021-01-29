@@ -3,3 +3,6 @@ node_modules
 
 # Temporary
 tmp
+
+public/assets/vendor
+public/assets/vendor_

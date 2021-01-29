@@ -58,6 +58,49 @@ function watchReviewCreation() {
     });
 }
 
+function watchReviewSort() {
+    const routes = window.location.pathname.split('/');
+    const gameid = parseInt(routes[routes.length - 1]);
+    $('#sort-reviews-condition').on('input', (event) => {
+        const $this = event.target;
+        const SORT_CONDITION = $($this).val().toString();
+        // @ts-ignore
+        reviewsSortCondition = SORT_CONDITION;
+        loadSingleGameContent(gameid);
+    });
+    $('#sort-reviews-order').on('input', (event) => {
+        const $this = event.target;
+        const SORT_ORDER = $($this).val().toString();
+        // @ts-ignore
+        reviewsSortOrder = SORT_ORDER;
+        loadSingleGameContent(gameid);
+    });
+}
+
+/**
+ *
+ * @param {{}[]} reviews
+ * @returns
+ */
+function sortReviews(reviews) {
+    const copy = [...reviews];
+    switch (reviewsSortCondition) {
+        case 'date':
+            copy.sort((r1, r2) => r1['created_at'] - r2['created_at']);
+            break;
+        case 'rating':
+            copy.sort((r1, r2) => r1['rating'] - r2['rating']);
+            break;
+        case 'user':
+            copy.sort((r1, r2) => r1['username'].localeCompare(r2['username']));
+            break;
+    }
+    if (reviewsSortOrder === 'dsc') {
+        copy.reverse();
+    }
+    return copy;
+}
+
 function loadSingleGameContent(id) {
     fetch(`http://localhost:5000/game/${ id }`, { method: 'GET' })
         .then(res => res.json())
@@ -70,13 +113,11 @@ function loadSingleGameContent(id) {
                     if (res.ok) {
                         return res.json();
                     }
-                    else if (res.status === 404) {
-                        throw new Error('No reviews');
-                    }
                     else {
                         throw new Error();
                     }
                 })
+                .then(sortReviews)
                 .then(reviews => {
                     return reviews.map(r => ReviewCard(r['username'], r['rating'], r['content'])).join('');
                 })
@@ -87,7 +128,6 @@ function loadSingleGameContent(id) {
 
             /** @type {Game} */
             let { title, description, price, year, platforms, categories } = game;
-            console.log(game)
             $('#game-image').attr('src', `http://localhost:5000/game/${ game.id }/image`);
             $('#game-title').text(title);
             $('#game-desc').text(description);
@@ -98,6 +138,7 @@ function loadSingleGameContent(id) {
             $('#game-platforms').html(`<h5>Platforms</h5><ul class=\"list-group\">${ platforms.map(p => `<li class=\"list-group-item\">${ p.platform } ${ p.version }</li>`).join('') }</ul>`);
         })
         .catch(console.log)
+        .finally(watchReviewSort)
         .finally(watchReviewCreation);
 }
 
@@ -123,7 +164,7 @@ function watchSearchConditions() {
         if ($(maxPrice).val() !== '') {
             c.push(((game) => game.price < parseInt($(maxPrice).val().toString())));
         }
-        sortCondition = $('#title-sort').is(':checked') ? 'title' : 'date';
+        gamesSortCondition = $('#title-sort').is(':checked') ? 'title' : 'date';
         conditions = c;
         loadGameContent();
     });
@@ -183,7 +224,7 @@ function loadGameContent() {
     fetch('http://localhost:5000/games', { method: 'GET' })
         .then(res => res.json())
         .then(filter(conditions))
-        .then(sort(sortCondition))
+        .then(sort(gamesSortCondition))
         .then(async gamesFiltered => {
             let cont = '';
             for (let game of gamesFiltered) {

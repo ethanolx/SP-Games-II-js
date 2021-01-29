@@ -40,12 +40,12 @@ function GameCardOld(id, title, price, pic, avgRating, numberOfReviews) {
 function GameCard(id, title, price, pic, avgRating, numberOfReviews) {
     return `
     <div class="col-xl-4 col-md-6 mb-4">
-        <div class="card border-left-primary shadow h-100 py-2 game-details" id="game-card-${id}">
+        <div class="card border-left-primary shadow h-100 py-2 game-details" id="game-card-${ id }">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                            ${title}
+                            ${ title }
                         </div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">$${ price.toFixed(2) }</div>
                     </div>
@@ -110,17 +110,27 @@ function PlatformFilterOption(id, platformFull) {
  * @returns
  */
 function ReviewCard(username, rating, content) {
+    let quality;
+    if (rating > 7) {
+        quality = 'border-success';
+    }
+    else if (rating >= 3) {
+        quality = 'border-secondary';
+    }
+    else {
+        quality = 'border-danger';
+    }
     return `
-    <div class="col-4">
-        <div class="card border-info h-100">
-            <div class="card-header border-info text-dark">
+    <div class="col-4 mb-4">
+        <div class="card ${ quality } h-100">
+            <div class="card-header ${ quality } text-dark">
                 <i class="fas fa-star"></i>
                 <span>${ rating } / 10</span>
             </div>
-            <div class="card-body border-info px-3 text-justify">
+            <div class="card-body ${ quality } px-3 text-justify">
                 <span class="card-text">${ content }</span>
             </div>
-            <div class="card-footer text-right border-info text-dark">
+            <div class="card-footer text-right ${ quality } text-dark">
                 <span class="card-text">~ ${ username }</span>
             </div>
         </div>

@@ -3,9 +3,17 @@
 } */
 
 fieldset {
-    border: 1px solid black;
-    border-radius: 1.2em;
+    border: 8px outset slategrey;
+    border-radius: 1em;
     padding: 2em;
+}
+
+fieldset legend {
+    padding-left: 1em;
+}
+
+.filter {
+    border-bottom: none;
 }
 
 img.thumbnail {
@@ -51,4 +59,28 @@ p.brief-game-details {
 
 .card {
     max-width: none;
+}
+
+.form-row {
+    margin: 1em 0;
+}
+
+#search-bar {
+    padding: 0;
+}
+
+#review-sort-label {
+    margin: 0;
+}
+
+.admin {
+    padding: 0 3em;
+}
+
+#game-labels {
+    margin-top: 4.7em;
+}
+
+#games-admin {
+    padding: 0 1.5em;
 }

@@ -16,7 +16,13 @@ let GLOBAL_USER;
 let conditions = [];
 
 /** @type {'title' | 'date'} */
-let sortCondition = 'date';
+let gamesSortCondition = 'date';
+
+/** @type {'date' | 'rating' | 'user'} */
+let reviewsSortCondition = 'date';
+
+/** @type {'asc' | 'dsc'} */
+let reviewsSortOrder = 'asc';
 
 function watchHashChange() {
     $(window).on('hashchange', loadPage);
@@ -121,10 +127,11 @@ function checkPermissions() {
 function logout() {
     window.localStorage.removeItem('sp-games-token');
     GLOBAL_USER = {};
-    $('#admin-nav').remove();
-    $('#admin').remove();
-    $('#profile-nav').remove();
+    $('.admin-nav').remove();
+    $('.admin').remove();
+    $('.personalisation').remove();
     $('#profile').remove();
+    $('#new-review').remove();
     history.pushState(null, null, '/');
     $(window).trigger('hashchange');
     toggleLogin();
