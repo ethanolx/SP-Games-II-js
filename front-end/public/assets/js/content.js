@@ -87,10 +87,11 @@ function loadSingleGameContent(id) {
 
             /** @type {Game} */
             let { title, description, price, year, platforms, categories } = game;
+            console.log(game)
             $('#game-image').attr('src', `http://localhost:5000/game/${ game.id }/image`);
             $('#game-title').text(title);
             $('#game-desc').text(description);
-            $('#game-price').text(price);
+            $('#game-price').text(`S$${ price }`);
             $('#game-year').text(year);
             $('#new-review button[type=\"submit\"]').attr('id', game.id);
             $('#game-categories').html(`<h5>Categories</h5><ul class=\"list-group\">${ categories.map(c => `<li class=\"list-group-item\">${ c.catname }</li>`).join('') }</ul>`);
@@ -192,9 +193,6 @@ function loadGameContent() {
                         if (res.ok) {
                             return res.json();
                         }
-                        else if (res.status === 404) {
-                            return [];
-                        }
                         else {
                             throw new Error();
                         }
@@ -213,7 +211,7 @@ function loadGameContent() {
                         }
                         return content;
                     })
-                    .catch(ignore)
+                    .catch(ignore);
             }
             return cont;
         })

@@ -41,8 +41,8 @@ function watchLogout() {
  * @param {Event} event
  */
 function changePage(event) {
-    const $this = event.target;
-    console.log('hey')
+    const target = event.target;
+    const $this = $(target).hasClass('router') ? target : $(target).parents('.router');
     event.preventDefault();
     window.history.pushState(null, null, $($this).attr('href'));
     $(window).trigger('hashchange');
@@ -90,6 +90,9 @@ async function loadNavbar() {
 
 async function checkLogin() {
     const TOKEN = localStorage.getItem('sp-games-token');
+    if (!TOKEN) {
+        return false;
+    }
     return await fetch('http://localhost:5000/user/verify-login', {
         method: 'POST',
         headers: {

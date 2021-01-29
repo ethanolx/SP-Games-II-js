@@ -61,12 +61,12 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <div class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
-            </a>
+                <div class="sidebar-brand-text mx-3">SP Games <sup>@</sup></div>
+            </div>
 
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
@@ -244,11 +244,24 @@
                         <div class="col-12">
                             <form id="search">
                                 <div class="form-row">
-                                    <div class="col input-group">
+                                    <div class="col-8 input-group">
                                         <input id="title-filter" class="form-control" type="search"
                                             placeholder="Search by Title (regex accepted)">
-                                        <div class="input-group-append"><button class="btn btn-outline-light"
-                                                type="submit"><i class="bi bi-search"></i></button></div>
+                                        <div class="input-group-append">
+                                            <button class="btn btn-light" disabled><i
+                                                    class="fas fa-search fa-sm"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="col input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text border-right-0">
+                                                <input type="checkbox" id="title-sort">
+                                            </div>
+                                        </div>
+                                        <div class="input-group-append w-75">
+                                            <label for="title-sort" class="input-group-text border-left-0 w-100">Sort by
+                                                Title</label>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-row mt-1">
@@ -268,7 +281,7 @@
                                     </div>
                                 </div>
                                 <div class="form-row mt-1">
-                                    <div class="col input-group">
+                                    <!-- <div class="col input-group">
                                         <div class="input-group-prepend">
                                             <div class="input-group-text border-right-0">
                                                 <input type="checkbox" id="title-sort">
@@ -278,7 +291,7 @@
                                             <label for="title-sort" class="input-group-text border-left-0">Sort by
                                                 Title</label>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <div class="col input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">$</span>
@@ -313,16 +326,18 @@
                     <div class="row">
                         <img id="game-image" src="" alt="" class="img-fluid img-thumbnail col-6"
                             onerror="this.src='/img/pic.jpg'">
-                        <ul class="list-group col-6">
+                        <ul class="list-group col-6 h-100 border-0">
                             <li class="list-group-item" id="game-title"></li>
                             <li class="list-group-item" id="game-desc"></li>
                             <li class="list-group-item" id="game-price"></li>
                             <li class="list-group-item" id="game-year"></li>
-                            <li class="list-group-item" id="game-categories">
-                            </li>
-                            <li class="list-group-item" id="game-platforms">
-                            </li>
                         </ul>
+                    </div>
+                    <div class="row">
+                        <div class="col-6" id="game-categories">
+                        </div>
+                        <div class="col-6" id="game-platforms">
+                        </div>
                     </div>
                     <div class="row">
                         <h3 class="col-12">Reviews</h3>

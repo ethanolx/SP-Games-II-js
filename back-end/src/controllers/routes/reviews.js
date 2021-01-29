@@ -29,7 +29,7 @@ router.route('/game/:id/review')
                 res.sendStatus(500);
             }
             else if (result === null) {
-                res.sendStatus(404);
+                res.status(200).json([]);
             }
             else {
                 res.status(200).json(result);

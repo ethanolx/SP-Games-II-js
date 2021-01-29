@@ -109,17 +109,18 @@ function PlatformFilterOption(id, platformFull) {
  * @param {string} content
  * @returns
  */
-function ReviewCard(username, rating, content,) {
+function ReviewCard(username, rating, content) {
     return `
     <div class="col-4">
-        <div class="card h-100">
-            <div class="card-header">
-                <span class="bi bi-star-fill">${ rating } / 10</span>
+        <div class="card border-info h-100">
+            <div class="card-header border-info text-dark">
+                <i class="fas fa-star"></i>
+                <span>${ rating } / 10</span>
             </div>
-            <div class="card-body">
+            <div class="card-body border-info px-3 text-justify">
                 <span class="card-text">${ content }</span>
             </div>
-            <div class="card-footer text-right">
+            <div class="card-footer text-right border-info text-dark">
                 <span class="card-text">~ ${ username }</span>
             </div>
         </div>
