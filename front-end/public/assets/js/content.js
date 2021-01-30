@@ -44,7 +44,8 @@ function watchReviewCreation() {
         fetch(`http://localhost:5000/user/${ userid }/game/${ gameid }/review`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('sp-games-token')
             },
             body: JSON.stringify({
                 rating: RATING,
@@ -104,11 +105,11 @@ function sortReviews(reviews) {
 function loadSingleGameContent(id) {
     fetch(`http://localhost:5000/game/${ id }`, { method: 'GET' })
         .then(res => res.json())
-        .then((/** @type {Game} */ game) => {
+        .then(async (/** @type {Game} */ game) => {
             if (game === undefined) {
                 return;
             }
-            fetch(`http://localhost:5000/game/${ id }/review`, { method: 'GET' })
+            await fetch(`http://localhost:5000/game/${ id }/review`, { method: 'GET' })
                 .then(res => {
                     if (res.ok) {
                         return res.json();
@@ -119,6 +120,10 @@ function loadSingleGameContent(id) {
                 })
                 .then(sortReviews)
                 .then(reviews => {
+                    const numOfReviews = reviews.length;
+                    const avgRating = reviews.map(r => parseFloat(r['rating'])).reduce((r1, r2) => r1 + r2) / numOfReviews;
+                    $('#game-num-reviews').html(GameDetailsBlock('Number of Reviews: ', numOfReviews.toString()));
+                    $('#game-avg-rating').html(GameDetailsBlock('Mean Rating: ', `${avgRating.toFixed(2)} / 10`));
                     return reviews.map(r => ReviewCard(r['username'], r['rating'], r['content'])).join('');
                 })
                 .then(r => {
@@ -128,11 +133,12 @@ function loadSingleGameContent(id) {
 
             /** @type {Game} */
             let { title, description, price, year, platforms, categories } = game;
+            $('#game-id').text(`Game ${ id }: ${ title }`);
             $('#game-image').attr('src', `http://localhost:5000/game/${ game.id }/image`);
             $('#game-title').text(title);
             $('#game-desc').text(description);
-            $('#game-price').text(`S$${ price }`);
-            $('#game-year').text(year);
+            $('#game-price').html(GameDetailsBlock('Price: ', `S$${price}`));
+            $('#game-year').html(GameDetailsBlock('Year of Release: ', year.toString()));
             $('#new-review button[type=\"submit\"]').attr('id', game.id);
             $('#game-categories').html(`<h5>Categories</h5><ul class=\"list-group\">${ categories.map(c => `<li class=\"list-group-item\">${ c.catname }</li>`).join('') }</ul>`);
             $('#game-platforms').html(`<h5>Platforms</h5><ul class=\"list-group\">${ platforms.map(p => `<li class=\"list-group-item\">${ p.platform } ${ p.version }</li>`).join('') }</ul>`);
@@ -159,10 +165,10 @@ function watchSearchConditions() {
             c.push(((game) => game.platforms.map(platf => platf.pid).includes(parseInt($(platformids).children(':selected').val().toString().split('-')[2]))));
         }
         if ($(minPrice).val() !== '') {
-            c.push(((game) => game.price > parseInt($(minPrice).val().toString())));
+            c.push(((game) => parseFloat(game.price) > parseInt($(minPrice).val().toString())));
         }
         if ($(maxPrice).val() !== '') {
-            c.push(((game) => game.price < parseInt($(maxPrice).val().toString())));
+            c.push(((game) => parseFloat(game.price) < parseInt($(maxPrice).val().toString())));
         }
         gamesSortCondition = $('#title-sort').is(':checked') ? 'title' : 'date';
         conditions = c;
@@ -338,7 +344,8 @@ function watchProfileEdition() {
         fetch(`http://localhost:5000/users/${ USER_ID }`, {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('sp-games-token')
             },
             body: JSON.stringify(UPDATED_DETAILS)
         })

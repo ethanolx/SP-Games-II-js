@@ -11,7 +11,7 @@ function watchCategoryCreation() {
             fetch('http://localhost:5000/category', {
                 method: 'POST',
                 headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                    'Authorization': 'Bearer ' + localStorage.getItem('sp-games-token'),
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(NEW_CATEGORY)
@@ -55,7 +55,8 @@ function watchCategoryEdition() {
         fetch(`http://localhost:5000/category/${ cid }`, {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('sp-games-token')
             },
             body: JSON.stringify(UPDATED_CATEGORY)
         })

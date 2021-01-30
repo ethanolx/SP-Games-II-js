@@ -11,7 +11,7 @@ function ignore(err) {
  *      id: number,
  *      title: string,
  *      description: string,
- *      price: number,
+ *      price: string,
  *      year: number,
  *      categories: {
  *          catid: number,

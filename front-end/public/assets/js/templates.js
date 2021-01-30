@@ -110,31 +110,46 @@ function PlatformFilterOption(id, platformFull) {
  * @returns
  */
 function ReviewCard(username, rating, content) {
-    let quality;
+    let border;
     if (rating > 7) {
-        quality = 'border-success';
+        border = 'border-success';
     }
     else if (rating >= 3) {
-        quality = 'border-secondary';
+        border = 'border-secondary';
     }
     else {
-        quality = 'border-danger';
+        border = 'border-danger';
     }
     return `
-    <div class="col-4 mb-4">
-        <div class="card ${ quality } h-100">
-            <div class="card-header ${ quality } text-dark">
+    <div class="col-xl-3 col-lg-4 col-md-6 col-12 mb-4">
+        <div class="card ${ border } h-100">
+            <div class="card-header ${ border } text-dark">
                 <i class="fas fa-star"></i>
                 <span>${ rating } / 10</span>
             </div>
-            <div class="card-body ${ quality } px-3 text-justify">
+            <div class="card-body ${ border } px-3 text-justify">
                 <span class="card-text">${ content }</span>
             </div>
-            <div class="card-footer text-right ${ quality } text-dark">
+            <div class="card-footer text-right ${ border } text-dark">
                 <span class="card-text">~ ${ username }</span>
             </div>
         </div>
     </div>
+    `;
+}
+
+//> DETAILS
+
+/**
+ *
+ * @param {string} label
+ * @param {string} text
+ * @returns
+ */
+function GameDetailsBlock(label, text) {
+    return `
+    <h5 class="d-inline-block">${ label }</h5>
+    <p class="d-inline-block float-right">${ text }</p>
     `;
 }
 

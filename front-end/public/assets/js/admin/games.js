@@ -37,7 +37,7 @@ function watchGameCreation() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + localStorage['sp-games-token']
+                    'Authorization': 'Bearer ' + localStorage.getItem('sp-games-token')
                 },
                 body: JSON.stringify(NEW_GAME)
             })
@@ -63,6 +63,9 @@ function watchGameCreation() {
                     if (file !== '') {
                         fetch(`http://localhost:5000/game/${ gid }/image`, {
                             method: 'PATCH',
+                            headers: {
+                                'Authorization': 'Bearer ' + localStorage.getItem('sp-games-token')
+                            },
                             body: formData
                         })
                             .then(res => res.json())
@@ -174,13 +177,17 @@ function watchGameEdition() {
         const formData = new FormData();
         formData.append('gameImage', NEW_GAME_IMG);
         fetch(`http://localhost:5000/game/${ gid }/image`, {
-            method: 'POST',
+            method: 'PATCH',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('sp-games-token')
+            },
             body: formData
         });
         fetch(`http://localhost:5000/game/${ gid }`, {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('sp-games-token')
             },
             body: JSON.stringify(UPDATED_GAME)
         })

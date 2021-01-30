@@ -11,7 +11,7 @@
 
     <link rel="shortcut icon" type="image/png" href="/img/favicon.png" />
 
-    <title>SB Admin 2 - Dashboard</title>
+    <title>SP Games</title>
 
     <!-- Custom fonts for this template-->
     <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -254,6 +254,10 @@
 
                 </nav>
 
+                <nav class="navbar navbar-dark bg-dark w-100">
+                    <span class="text-center float-center">Search <i class="fas fa-search"></i> , Filter <i class="fas fa-filter"></i> and Sort <i class="fas fa-sort-amount-down"></i></span>
+                </nav>
+
                 <article>
                     <div class="page col-12" id="home">
                         Home
@@ -263,7 +267,7 @@
                             <div class="col-12">
                                 <form id="search">
                                     <div class="form-row">
-                                        <div class="col-xl-10 col-lg-9 col-md-8 input-group">
+                                        <div class="col-xl-10 col-lg-9 col-md-8 col-sm-7 col-12 input-group">
                                             <input id="title-filter" class="form-control" type="search"
                                                 placeholder="Search by Title (regex accepted)">
                                             <div class="input-group-append">
@@ -271,26 +275,25 @@
                                                         class="fas fa-search fa-sm text-dark"></i></span>
                                             </div>
                                         </div>
-                                        <div class="col align-items-center align-bottom">
-                                            <div class="custom-control custom-switch h-100 align-bottom">
-                                                <input type="checkbox" id="title-sort"
-                                                    class="custom-control-input align-bottom">
+                                        <div class="col align-items-center mt-2 mt-sm-0">
+                                            <div class="custom-control custom-switch h-100 pt-1">
+                                                <input type="checkbox" id="title-sort" class="custom-control-input">
                                                 <label for="title-sort"
-                                                    class="custom-control-label text-white align-bottom d-inline-block">Sort
+                                                    class="custom-control-label text-white d-inline-block">Sort
                                                     by
                                                     Title</label>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-row">
-                                        <div class="col input-group mr-1">
+                                    <div class="form-row mb-2 mb-sm-3">
+                                        <div class="col-sm-6 input-group pr-sm-1">
                                             <div class="input-group-prepend">
                                                 <label for="category-filter" class="input-group-text">Category</label>
                                             </div>
                                             <select id="category-filter" class="custom-select dropdown">
                                             </select>
                                         </div>
-                                        <div class="col input-group ml-1">
+                                        <div class="col-sm-6 input-group pl-sm-1 pt-2 pt-sm-0">
                                             <div class="input-group-prepend">
                                                 <label for="platform-filter" class="input-group-text">Platform</label>
                                             </div>
@@ -298,7 +301,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="form-row">
+                                    <div class="form-row mt-2 mt-sm-3">
                                         <!-- <div class="col input-group">
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text border-right-0">
@@ -310,7 +313,7 @@
                                                     Title</label>
                                             </div>
                                         </div> -->
-                                        <div class="col input-group mr-1">
+                                        <div class="col-sm-6 input-group pr-sm-1">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">$</span>
                                             </div>
@@ -320,7 +323,7 @@
                                                 <span class="input-group-text">.00</span>
                                             </div>
                                         </div>
-                                        <div class="col input-group ml-1">
+                                        <div class="col-sm-6 input-group pl-sm-1 pt-2 pt-sm-0">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">$</span>
                                             </div>
@@ -342,34 +345,44 @@
                     </div>
                     <div class="page col-12" id="game">
                         <div class="row">
-                            <img id="game-image" src="" alt="" class="img-fluid img-thumbnail col-6"
+                            <h3 class="col-12" id="game-id">
+                            </h3>
+                        </div>
+                        <div class="row">
+                            <img id="game-image" src="" alt="" class="col-xl-6 col-lg-5 col-md-4"
                                 onerror="this.src='/img/pic.jpg'">
-                            <ul class="list-group col-6 h-100 border-0">
+                            <ul class="list-group list-group-flush col h-100 border-0">
                                 <li class="list-group-item" id="game-title"></li>
                                 <li class="list-group-item" id="game-desc"></li>
-                                <li class="list-group-item" id="game-price"></li>
-                                <li class="list-group-item" id="game-year"></li>
                             </ul>
                         </div>
-                        <div class="row">
-                            <div class="col-6" id="game-categories">
+                        <div class="row mt-4 p-sm-1">
+                            <div class="col-sm-6 pt-1 pt-md-0" id="game-price"></div>
+                            <div class="col-sm-6 pt-1 pt-md-0" id="game-year"></div>
+                        </div>
+                        <div class="row mt-md-2 p-sm-1">
+                            <div class="col-sm-6 pt-1 pt-md-0" id="game-avg-rating"></div>
+                            <div class="col-sm-6 pt-1 pt-md-0" id="game-num-reviews"></div>
+                        </div>
+                        <div class="row mt-md-2 p-sm-1">
+                            <div class="col-sm-6 pt-1 pt-md-0" id="game-categories">
                             </div>
-                            <div class="col-6" id="game-platforms">
+                            <div class="col-sm-6 mt-3 mt-sm-0" id="game-platforms">
                             </div>
                         </div>
-                        <div class="row">
-                            <h3 class="col-lg-5 col-md-3 col-sm-1">Reviews</h3>
-                            <div class="col text-right m-auto">
+                        <div class="row mt-5">
+                            <h3 class="col-lg-5 col-md-3 mb-3 mb-md-0">Reviews</h3>
+                            <div class="col text-left  text-md-right m-auto">
                                 <label for="sort-reviews-condition" id="review-sort-label">Sort By</label>
                             </div>
-                            <div class="col">
+                            <div class="col-5 col-md-auto">
                                 <select id="sort-reviews-condition" class="form-control">
                                     <option value="date" selected>Date Created</option>
                                     <option value="rating">Rating</option>
                                     <option value="user">User</option>
                                 </select>
                             </div>
-                            <div class="col">
+                            <div class="col-5 col-md-auto">
                                 <select id="sort-reviews-order" class="form-control">
                                     <option value="asc" selected>Ascending</option>
                                     <option value="dsc">Descending</option>
@@ -387,11 +400,11 @@
                                     <option value="dsc">Descending</option>
                                 </select>
                             </div> -->
-                            <div class="col-12">
+                            <div class="col-12 mt-4">
                                 <div id="review-stack" class="row"></div>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row mt-3">
                             <form id="new-review" class="col-6">
                                 <legend>Leave a Comment</legend>
                                 <div class="form-row">
@@ -410,22 +423,20 @@
                                         required></textarea>
                                 </div>
                                 <div class="form-row">
-                                    <div class="input-group-prepend w-50">
-                                        <button type="reset" class="btn btn-secondary w-100">
-                                            <span class="bi bi-x-square"></span>
-                                        </button>
-                                    </div>
-                                    <div class="input-group-append w-50">
-                                        <button type="submit" class="btn btn-success w-100">
-                                            <span class="bi bi-save"></span>
-                                        </button>
-                                    </div>
+                                    <button type="reset" class="btn-secondary w-50 rounded-left p-2">
+                                        <span>cancel</span>
+                                        <i class="pl-1 fas fa-ban"></i>
+                                    </button>
+                                    <button type="submit" class="btn-success w-50 rounded-right p-2">
+                                        <span>submit</span>
+                                        <i class="pl-1 fas fa-paper-plane"></i>
+                                    </button>
                                 </div>
                             </form>
                         </div>
                     </div>
                     <div class="page col-12" id="profile">
-                        <form id="chg-profile" class="center">
+                        <form id="chg-profile" class="center m-3 m-sm-4 mx-md-5">
                         </form>
                     </div>
                     <!-- <div class="page col-12" id="admin">
@@ -524,11 +535,12 @@
                             <form id="login-form" class="col-6">
                                 <div class="form-group">
                                     <label for="username">Username or Email</label>
-                                    <input type="text" id="username" class="form-control">
+                                    <input type="text" id="username" class="form-control" autocomplete="username">
                                 </div>
                                 <div class="form-group">
                                     <label for="password">Password</label>
-                                    <input type="password" id="password" class="form-control">
+                                    <input type="password" id="password" class="form-control"
+                                        autocomplete="current-password">
                                 </div>
                                 <button type="submit" class="btn btn-block btn-success">Login</button>
                             </form>
@@ -550,6 +562,8 @@
                                     <label for="new-password">Create a Strong Password</label>
                                     <input type="password" id="new-password" class="form-control" pattern="^[\S]+$"
                                         minlength="8" maxlength="25" required>
+                                    <small class="form-text text-muted">*Must contain at least 1 number, 1 lowercase
+                                        letter, 1 uppercase letter, and 1 special character</small>
                                 </div>
                                 <div class="form-group">
                                     <label for="confirm-password">Confirm your Password</label>

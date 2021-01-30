@@ -84,3 +84,13 @@ p.brief-game-details {
 #games-admin {
     padding: 0 1.5em;
 }
+
+#game-img {
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+}
+
+#game {
+    padding: 2em 1.5em 1em;
+}

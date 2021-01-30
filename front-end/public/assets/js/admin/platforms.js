@@ -52,7 +52,7 @@ function watchPlatformEdition() {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage['sp-games-token']
+                'Authorization': 'Bearer ' + localStorage.getItem('sp-games-token')
             },
             body: JSON.stringify(UPDATED_PLATFORM)
         })
