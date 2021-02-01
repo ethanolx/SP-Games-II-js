@@ -1,0 +1,156 @@
+/*
+    Author:     Ethan Tan
+    Admin:      p2012085
+    Class:      DAAA/FT/1B/03
+    Date:       01/02/2021
+*/
+
+/* Image Styles */
+
+img.thumbnail {
+    height: 30%;
+    width: 100%;
+}
+
+/* Edit Button Styles*/
+
+.del-btn {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.canc-btn {
+    border-radius: 0;
+}
+
+.save-btn {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+/* Card Styles */
+
+.card {
+    max-width: none;
+}
+
+/* Form Styles */
+
+.form-row {
+    margin: 1em 0;
+}
+
+fieldset {
+    border: 8px outset slategrey;
+    border-radius: 1em;
+    padding: 2em;
+}
+
+fieldset legend {
+    padding-left: 1em;
+}
+
+/* Games Search Bar Styles */
+
+#search-bar {
+    padding: 0;
+}
+
+.filter {
+    border-bottom: none;
+}
+
+/* Review Styles */
+
+#review-sort-label {
+    margin: 0;
+}
+
+#review-stack {
+    max-height: 80vh;
+    overflow: auto;
+}
+
+/* Game Administration Styles */
+
+#game-labels {
+    margin-top: 4.7em;
+}
+
+#games-admin {
+    padding: 0 1.5em;
+}
+
+/* Game Display Styles */
+
+#game-img {
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+}
+
+#game {
+    padding: 2em 1.5em 1em;
+}
+
+.game-details:hover {
+    cursor: pointer;
+    background-color: lightgoldenrodyellow;
+}
+
+p.brief-game-details {
+    margin-bottom: 0;
+}
+
+/* Responsive Styles */
+
+/* Small Screens */
+
+@media only screen and (max-width: 576px) {
+    .admin {
+        padding: 0 1rem;
+    }
+    .admin .list-group>.list-group-item {
+        padding: 0.5rem;
+    }
+    .edit-labels {
+        max-height: 50vh;
+        overflow: auto;
+    }
+    .review-card .card-header, .review-card .card-footer {
+        padding: 0.3em 1em;
+    }
+    .review-card .card-body {
+        padding: 0.7em 1em;
+    }
+}
+
+/* Medium Screens */
+
+@media only screen and (min-width: 577px) and (max-width: 768px) {
+    .admin {
+        padding: 0 2rem;
+    }
+    .admin .list-group>.list-group-item {
+        padding: 0.75rem;
+    }
+    .edit-labels {
+        max-height: 70vh;
+        overflow: auto;
+    }
+}
+
+/* Large and XL Screens */
+
+@media only screen and (min-width: 769px) {
+    .admin {
+        padding: 0 3rem;
+    }
+    .admin .list-group>.list-group-item {
+        padding: 1rem;
+    }
+    .edit-labels {
+        max-height: 80vh;
+        overflow: auto;
+    }
+}

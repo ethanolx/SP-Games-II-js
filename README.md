@@ -8,9 +8,15 @@
 |   Languages       | : |   JS, HTML, (CSS)     |
 |   Date            | : |   December 2020       |
 
+## Front-End
+
+### Setup
+
+## Back-End
+
 ## Program
 
-### General Setup
+### Setup
 
 1. Install NodeJS locally (at least v14.0)
 2. Ensure npm is installed too (run `npm --version`)
@@ -27,11 +33,11 @@
 9. Configure Express Server API settings in the following file:
     - `src/config/server.config.js`
 
-### Run Program
+### Running Program
 
 10. Run `npm start`
 
-### Run Tests
+### Running Tests
 
 10. Run `npm test`
 
@@ -139,6 +145,10 @@
 9.  More specific error response codes (404, 415, 422, etc.)
 10. ES6 Import/Export Syntax
 11. JSDoc annotations
+
+### Modifications (from CA1)
+
+1.  Added middleware to evaluate
 
 ## See Also
 

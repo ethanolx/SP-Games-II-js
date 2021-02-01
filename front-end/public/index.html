@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!--
+        Author:     Ethan Tan
+        Admin:      p2012085
+        Class:      DAAA/FT/1B/03
+        Date:       01/02/2021
+     -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="SP Online Games Collection">
+    <meta name="author" content="Ethan Tan">
+
+    <link rel="shortcut icon" type="image/png" href="/img/generic/favicon.png" />
+
+    <title>SP Games</title>
+
+    <!-- Dependencies -->
+
+    <!-- Static -->
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+    <link href="/vendor_/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Dynamic -->
+    <script src="/vendor_/jquery/jquery.min.js"></script>
+    <script src="/vendor_/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/vendor_/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Template Theme -->
+    <link href="/css/theme/sb-admin-2.min.css" rel="stylesheet">
+
+    <script src="/js/theme/sb-admin-2.min.js"></script>
+
+    <!-- Custom -->
+
+    <!-- Static -->
+    <link rel="stylesheet" href="/css/custom.css">
+
+    <script src="/js/utils.js"></script>
+    <script src="/js/templates.js"></script>
+
+    <!-- Dynamic -->
+    <script src="/js/session.js"></script>
+    <script src="/js/startup.js"></script>
+    <script src="/js/admin/categories.js"></script>
+    <script src="/js/admin/platforms.js"></script>
+    <script src="/js/admin/games.js"></script>
+    <script src="/js/content.js"></script>
+</head>
+
+<body id="page-top">
+
+    <div id="wrapper">
+
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+            <div class="sidebar-brand d-flex align-items-center justify-content-center bg-light">
+                <img src="/img/generic/logo.png" alt="not available" class="img-fluid">
+            </div>
+
+            <div class="text-light p-4 d-inline-block text-center h6 mb-0" style="width: 100%;">
+                SP Games Catalog
+            </div>
+
+            <hr class="sidebar-divider mt-0">
+
+            <div class="sidebar-heading">
+                General
+            </div>
+
+            <li class="nav-item">
+                <a class="nav-link router" href="/home">
+                    <i class="fas fa-fw fa-home"></i>
+                    <span>Home</span></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link router" href="/games" id>
+                    <i class="fas fa-fw fa-ghost"></i>
+                    <span>Games</span></a>
+            </li>
+
+            <hr class="sidebar-divider personalisation">
+
+            <div class="sidebar-heading personalisation">
+                Personal
+            </div>
+
+            <li class="nav-item personalisation">
+                <a class="nav-link router" href="/profile">
+                    <i class="fas fa-fw fa-user"></i>
+                    <span>Profile</span></a>
+            </li>
+
+            <hr class="sidebar-divider admin-nav">
+
+            <div class="sidebar-heading admin-nav">
+                Admin
+            </div>
+
+            <li class="nav-item admin-nav">
+                <a class="nav-link router" href="/categories">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Categories</span></a>
+            </li>
+
+            <li class="nav-item admin-nav">
+                <a class="nav-link router" href="/platforms">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Platforms</span></a>
+            </li>
+
+            <li class="nav-item admin-nav">
+                <a class="nav-link router" href="/games-admin">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Games</span></a>
+            </li>
+
+            <hr class="sidebar-divider">
+
+            <div class="sidebar-heading">
+                Session
+            </div>
+
+            <li class="nav-item" id="login-nav">
+                <a class="nav-link router" href="/login">
+                    <i class="fas fa-fw fa-lock"></i>
+                    <span>Login</span></a>
+            </li>
+
+            <li class="nav-item" id="logout-nav">
+                <a class="nav-link" id="logout" href="#">
+                    <i class="fas fa-fw fa-unlock"></i>
+                    <span>Logout</span></a>
+            </li>
+
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+        </ul>
+
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <div id="content">
+
+                <nav class="navbar navbar-expand navbar-light bg-white topbar static-top shadow d-md-none">
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-ellipsis-v"></i>
+                    </button>
+                </nav>
+
+                <article>
+                    <div class="page col-12 p-md-5 p-sm-4 p-3" id="home">
+                        <h1>Welcome, dear Patrons!</h1>
+                        <img src="/img/generic/online-games.jpg" alt="" class="img-fluid mt-md-3 mb-md-4 mb-sm-3 mb-2 rounded img-thumbnail bg-primary">
+                        <p>We would like to invite you to join us on our quest to gaming domination. We spare no expense in bringing you the cream of the crop, at heavily subsidised prices. Satisfaction is our guarantee!</p>
+                        <h3 class="mt-4">Our Vision</h3>
+                        <p>Here at SP Games, we aim to make fun and engaging online games available and affordable to all.</p>
+                        <h3 class="mt-4">History</h3>
+                        <p>SP Games was founded in the year 1960 by Singapore Polytechnic Alumni John and Jane Smith. Since then, we have not stopped to carry on their work.</p>
+                        <br />
+                        <p>So come, take a look, and browse our wide collection of mobile, pc and console games...</p>
+                    </div>
+                    <div class="page col-12" id="games">
+                        <nav class="navbar navbar-secondary bg-secondary row rounded my-4 mx-2" id="search-bar">
+                            <div class="col-12">
+                                <form id="search">
+                                    <div class="form-row mb-2 mb-sm-3">
+                                        <div class="col-12 input-group">
+                                            <input id="title-filter" class="form-control" type="search"
+                                                placeholder="Search by Title">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text text-white"><i
+                                                        class="fas fa-search fa-sm text-dark"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row my-2 my-sm-3">
+                                        <div class="col-sm-6 input-group pr-sm-1">
+                                            <div class="input-group-prepend">
+                                                <label for="category-filter" class="input-group-text">Category</label>
+                                            </div>
+                                            <select id="category-filter" class="custom-select dropdown">
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-6 input-group pl-sm-1 pt-2 pt-sm-0">
+                                            <div class="input-group-prepend">
+                                                <label for="platform-filter" class="input-group-text">Platform</label>
+                                            </div>
+                                            <select id="platform-filter" class="custom-select">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-row mt-2 mt-sm-3">
+                                        <!-- <div class="col input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text border-right-0">
+                                                    <input type="checkbox" id="title-sort">
+                                                </div>
+                                            </div>
+                                            <div class="input-group-append">
+                                                <label for="title-sort" class="input-group-text border-left-0">Sort by
+                                                    Title</label>
+                                            </div>
+                                        </div> -->
+                                        <div class="col-sm-6 input-group pr-sm-1">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">$</span>
+                                            </div>
+                                            <input type="number" id="min-price-filter" class="form-control filter"
+                                                placeholder="Min. Price" min="0" step="10">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">.00</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 input-group pl-sm-1 pt-2 pt-sm-0">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">$</span>
+                                            </div>
+                                            <input type="number" id="max-price-filter" class="form-control filter"
+                                                placeholder="Max. Price" min="0" step="10">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">.00</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </nav>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card-deck" id="games-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page col-12" id="game">
+                        <div class="row">
+                            <h3 class="col-12" id="game-id">
+                            </h3>
+                        </div>
+                        <div class="row">
+                            <img id="game-image" src="" alt="" class="col-xl-6 col-lg-5"
+                                onerror="this.src='/img/generic/not-found.jpg'">
+                            <ul class="list-group list-group-flush col h-100 border-0">
+                                <li class="list-group-item" id="game-title"></li>
+                                <li class="list-group-item" id="game-desc"></li>
+                            </ul>
+                        </div>
+                        <div class="row mt-4 p-sm-1">
+                            <div class="col-sm-6 pt-1 pt-md-0" id="game-price"></div>
+                            <div class="col-sm-6 pt-1 pt-md-0" id="game-year"></div>
+                        </div>
+                        <div class="row mt-md-2 p-sm-1">
+                            <div class="col-sm-6 pt-1 pt-md-0" id="game-avg-rating"></div>
+                            <div class="col-sm-6 pt-1 pt-md-0" id="game-num-reviews"></div>
+                        </div>
+                        <div class="row mt-md-2 p-sm-1">
+                            <div class="col-sm-6 pt-1 pt-md-0" id="game-categories">
+                            </div>
+                            <div class="col-sm-6 mt-3 mt-sm-0" id="game-platforms">
+                            </div>
+                        </div>
+                        <div class="row mt-5">
+                            <h3 class="col-lg-5 col-md-3 col-12 mb-3 mb-md-0">Reviews</h3>
+                            <div class="col text-left text-md-right">
+                                <label for="sort-reviews-condition" id="review-sort-label">Sort By</label>
+                            </div>
+                            <div class="col-sm-5 col-12">
+                                <select id="sort-reviews-condition" class="form-control">
+                                    <option value="date" selected>Date Created</option>
+                                    <option value="rating">Rating</option>
+                                    <option value="user">User</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-5 col-12">
+                                <select id="sort-reviews-order" class="form-control">
+                                    <option value="asc" selected>Ascending</option>
+                                    <option value="dsc">Descending</option>
+                                </select>
+                            </div>
+                            <div class="col-12 mt-4">
+                                <div id="review-stack" class="row"></div>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <form id="new-review" class="col-10 col-sm-8 col-md-6">
+                                <legend>Leave a Comment</legend>
+                                <div class="form-row">
+                                    <label for="new-review-rating">Rating (out of 10): <span
+                                            id="current-rating">5</span></label>
+                                </div>
+                                <div class="form-row">
+                                    <span class="col-1 text-center">0</span>
+                                    <input id="new-review-rating" class="form-range col-10 p-0" type="range" value="5"
+                                        min="0" max="10" step="0.5">
+                                    <span class="col-1 text-center">10</span>
+                                </div>
+                                <div class="form-row">
+                                    <label for="new-review-content">Feedback:</label>
+                                    <textarea id="new-review-content" rows="7" class="form-control" placeholder="NA"
+                                        maxlength="200" required></textarea>
+                                </div>
+                                <div class="form-row">
+                                    <button type="reset" class="btn-secondary w-50 rounded-left p-2">
+                                        <span>cancel</span>
+                                        <i class="pl-1 fas fa-ban"></i>
+                                    </button>
+                                    <button type="submit" class="btn-success w-50 rounded-right p-2">
+                                        <span>submit</span>
+                                        <i class="pl-1 fas fa-paper-plane"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="page col-12" id="profile">
+                        <form id="chg-profile" class="center m-3 m-sm-4 mx-md-5">
+                        </form>
+                    </div>
+                    <div class="page col-12 admin" id="categories">
+                        <div id="category-overview">
+                            <form action="" class="pt-4" id="new-category">
+                                <legend>Create a New Category</legend>
+                                <div class="input-group">
+                                    <input type="text" class="col-4 form-control" placeholder="New Category Name"
+                                        id="new-category-name" required>
+                                    <input type="text" class="col-8 form-control" placeholder="New Category Description"
+                                        id="new-category-desc" required>
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-outline-success"
+                                            id="create-new-category">CREATE</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="row mb-2">
+                                <h4 class="col-12 mt-5">Manage Existing Categories</h4>
+                            </div>
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="list-group edit-labels" id="category-labels" role="tablist">
+                                    </div>
+                                </div>
+                                <div class="col-8">
+                                    <div class="tab-content" id="category-details">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page col-12 admin" id="platforms">
+                        <div id="platform-overview">
+                            <form action="" class="pt-4" id="new-platform">
+                                <legend>Create a New Platform</legend>
+                                <div class="input-group">
+                                    <input type="text" class="col-5 form-control" placeholder="New Platform Name"
+                                        id="new-platform-name" required>
+                                    <input type="text" class="col-7 form-control" placeholder="New Platform Version"
+                                        id="new-platform-version" required>
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-outline-success"
+                                            id="create-new-platform">CREATE</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="row mb-2">
+                                <h4 class="col-12 mt-5">Manage Existing Platforms</h4>
+                            </div>
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="list-group edit-labels" id="platform-labels" role="tablist">
+                                    </div>
+                                </div>
+                                <div class="col-8">
+                                    <div class="tab-content" id="platform-details">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page col-12 admin" id="games-admin">
+                        <div id="game-overview">
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="list-group edit-labels" id="game-labels" role="tablist">
+                                    </div>
+                                </div>
+                                <div class="col-8">
+                                    <div class="tab-content" id="game-details">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page col-12 mt-5" id="login">
+                        <div class="row" id="login-section">
+                            <div class="col-1 col-sm-2 col-md-3 col-xl-4"></div>
+                            <form id="login-form" class="col">
+                                <div class="form-group">
+                                    <label for="username">Username or Email</label>
+                                    <input type="text" id="username" class="form-control" autocomplete="username">
+                                </div>
+                                <div class="form-group">
+                                    <label for="password">Password</label>
+                                    <input type="password" id="password" class="form-control"
+                                        autocomplete="current-password">
+                                </div>
+                                <button type="submit" class="btn btn-block btn-success">Login</button>
+                                <div class="form-group mt-2 mb-5">
+                                    <span class="align-bottom">Don't have an account?</span>
+                                    <button type="button" class="btn btn-outline-dark btn-sm float-right"
+                                        id="sign-up">Sign Up</button>
+                                </div>
+                            </form>
+                            <div class="col-1 col-sm-2 col-md-3 col-xl-4"></div>
+                        </div>
+                        <div class="row" id="register-section">
+                            <div class="col-1 col-sm-2 col-md-3 col-xl-4"></div>
+                            <form class="col needs-validation" id="register-form">
+                                <div class="form-group">
+                                    <label for="new-username">Create a New Username</label>
+                                    <input type="text" id="new-username" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="new-email">Enter your Email</label>
+                                    <input type="email" id="new-email" class="form-control" pattern="^[\S]+@[\w\.]+$"
+                                        required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="new-password">Create a Strong Password</label>
+                                    <input type="password" id="new-password" class="form-control" pattern="^[\S]+$"
+                                        minlength="8" maxlength="25" required>
+                                    <small class="form-text text-muted">*Must contain at least 1 number, 1 lowercase
+                                        letter, 1 uppercase letter, and 1 special character</small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="confirm-password">Confirm your Password</label>
+                                    <input type="password" id="confirm-password" class="form-control" pattern="^[\S]+$"
+                                        minlength="8" maxlength="25" required>
+                                </div>
+                                <button type="submit" class="btn btn-block btn-success">Register</button>
+                                <div class="form-group mt-2 mb-5">
+                                    <span class="align-bottom">Already have an account?</span>
+                                    <button type="button" class="btn btn-outline-dark btn-sm float-right"
+                                        id="sign-in">Sign In</button>
+                                </div>
+                            </form>
+                            <div class="col-1 col-sm-2 col-md-3 col-xl-4"></div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; SP Games since 1960</span>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+</body>
+
+</html>

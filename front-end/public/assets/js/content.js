@@ -8,8 +8,9 @@ function loadContent() {
             case '/':
                 break;
             case '/games':
-                watchSearchConditions();
                 loadGameContent();
+                watchGameSelection();
+                watchSearchConditions();
                 loadFilterBar();
                 break;
             case '/profile':
@@ -17,9 +18,11 @@ function loadContent() {
                 watchProfileEdition();
                 break;
             case '/categories':
+                watchCategoryCreation();
                 loadCategoryContent();
                 break;
             case '/platforms':
+                watchPlatformCreation();
                 loadPlatformContent();
                 break;
             case '/games-admin':
@@ -35,7 +38,7 @@ function watchReviewCreation() {
         const CURRENT_RATING = $($this).val().toString();
         $('#current-rating').text(CURRENT_RATING);
     });
-    $('#new-review').on('submit', (event) => {
+    $('#new-review').one('submit', (event) => {
         event.preventDefault();
         const RATING = parseFloat($('#new-review-rating').val().toString());
         const CONTENT = $('#new-review-content').val();
@@ -121,9 +124,9 @@ function loadSingleGameContent(id) {
                 .then(sortReviews)
                 .then(reviews => {
                     const numOfReviews = reviews.length;
-                    const avgRating = reviews.map(r => parseFloat(r['rating'])).reduce((r1, r2) => r1 + r2) / numOfReviews;
+                    const avgRating = numOfReviews > 1 ? reviews.map(r => parseFloat(r['rating'])).reduce((r1, r2) => r1 + r2) / numOfReviews : (numOfReviews === 1 ? parseFloat(reviews[0]['rating']) : null);
                     $('#game-num-reviews').html(GameDetailsBlock('Number of Reviews: ', numOfReviews.toString()));
-                    $('#game-avg-rating').html(GameDetailsBlock('Mean Rating: ', `${avgRating.toFixed(2)} / 10`));
+                    $('#game-avg-rating').html(GameDetailsBlock('Mean Rating: ', avgRating ? `${ avgRating.toFixed(2) } / 10` : '~'));
                     return reviews.map(r => ReviewCard(r['username'], r['rating'], r['content'])).join('');
                 })
                 .then(r => {
@@ -133,12 +136,12 @@ function loadSingleGameContent(id) {
 
             /** @type {Game} */
             let { title, description, price, year, platforms, categories } = game;
-            $('#game-id').text(`Game ${ id }: ${ title }`);
+            $('#game-id').text(title);
             $('#game-image').attr('src', `http://localhost:5000/game/${ game.id }/image`);
             $('#game-title').text(title);
             $('#game-desc').text(description);
-            $('#game-price').html(GameDetailsBlock('Price: ', `S$${price}`));
-            $('#game-year').html(GameDetailsBlock('Year of Release: ', year.toString()));
+            $('#game-price').html(GameDetailsBlock('Price: ', `S$${ price }`));
+            $('#game-year').html(GameDetailsBlock('Year of Release: ', year ? year.toString() : '~'));
             $('#new-review button[type=\"submit\"]').attr('id', game.id);
             $('#game-categories').html(`<h5>Categories</h5><ul class=\"list-group\">${ categories.map(c => `<li class=\"list-group-item\">${ c.catname }</li>`).join('') }</ul>`);
             $('#game-platforms').html(`<h5>Platforms</h5><ul class=\"list-group\">${ platforms.map(p => `<li class=\"list-group-item\">${ p.platform } ${ p.version }</li>`).join('') }</ul>`);
@@ -170,7 +173,6 @@ function watchSearchConditions() {
         if ($(maxPrice).val() !== '') {
             c.push(((game) => parseFloat(game.price) < parseInt($(maxPrice).val().toString())));
         }
-        gamesSortCondition = $('#title-sort').is(':checked') ? 'title' : 'date';
         conditions = c;
         loadGameContent();
     });
@@ -195,17 +197,11 @@ function filter(conditions) {
 }
 
 /**
- *
- * @param {'title' | 'date'} by
+ * @param {Game[]} games
  */
-function sort(by = 'date') {
-    return (
-        /** @type {Game[]} */
-        games
-    ) => {
-        let copy = [...games];
-        return by === 'title' ? copy.sort((a, b) => a.title.localeCompare(b.title)) : copy.sort((a, b) => a.id - b.id);
-    };
+function sort(games) {
+    let copy = [...games];
+    return copy.sort((a, b) => a.title.localeCompare(b.title));
 }
 
 function loadFilterBar() {
@@ -230,7 +226,7 @@ function loadGameContent() {
     fetch('http://localhost:5000/games', { method: 'GET' })
         .then(res => res.json())
         .then(filter(conditions))
-        .then(sort(gamesSortCondition))
+        .then(sort)
         .then(async gamesFiltered => {
             let cont = '';
             for (let game of gamesFiltered) {
@@ -315,11 +311,11 @@ function loadProfileContent() {
     const user = { ...GLOBAL_USER };
     const { username, email, profile_pic_url } = user;
     $('#chg-profile').html(ProfileCard(username, email, profile_pic_url || ''));
+    watchProfilePicUpload();
 }
 
 function watchProfileEdition() {
     $('#chg-profile').on('submit', (event) => {
-        console.log('hi');
         event.preventDefault();
         const formData = new FormData();
         const USER_ID = GLOBAL_USER['userid'];
@@ -327,20 +323,31 @@ function watchProfileEdition() {
         formData.append('userImage', NEW_PROFILE_IMG);
         const NEW_USERNAME = $('#chg-username').val();
         const NEW_EMAIL = $('#chg-email').val();
-        const NEW_PASSWORD_RAW = $('#chg-password').val();
+        const NEW_PASSWORD_RAW = $('#chg-password').val().toString();
         const UPDATED_DETAILS = {
             username: NEW_USERNAME,
             email: NEW_EMAIL
         };
         if (NEW_PASSWORD_RAW !== '') {
-            UPDATED_DETAILS.password = NEW_PASSWORD_RAW;
+            if (validatePasswordStrength(NEW_PASSWORD_RAW)) {
+                UPDATED_DETAILS.password = NEW_PASSWORD_RAW;
+            }
+            else {
+                alert('Your password is not strong enough\n\nEnsure your password contains at least:\n* 1 lowercase letter,\n* 1 uppercase letter,\n* 1 number\n* 1 special character');
+                return;
+            }
         }
-        fetch(`http://localhost:5000/user/${ USER_ID }/image`, {
-            method: 'PATCH',
-            body: formData
-        })
-            .then(res => alert('Success'))
-            .catch(ignore);
+        if (NEW_PROFILE_IMG) {
+            fetch(`http://localhost:5000/user/${ USER_ID }/image`, {
+                method: 'PATCH',
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('sp-games-token')
+                },
+                body: formData
+            })
+                .then(res => alert('Success'))
+                .catch(ignore);
+        }
         fetch(`http://localhost:5000/users/${ USER_ID }`, {
             method: 'PUT',
             headers: {
@@ -349,7 +356,30 @@ function watchProfileEdition() {
             },
             body: JSON.stringify(UPDATED_DETAILS)
         })
-            .catch(ignore)
-            .finally(loadProfileContent);
+            .then(() => window.location.reload())
+            .catch(ignore);
+    });
+}
+
+function watchProfilePicUpload() {
+    $('#chg-pic').one('input', (event) => {
+        const $this = event.target;
+        const reader = new FileReader();
+        reader.onload = e => {
+            // @ts-ignore
+            $('#profile-pic').attr('src', e.target.result);
+        };
+        reader.readAsDataURL($($this).prop('files')[0]);
+    });
+}
+
+function watchGameSelection() {
+    $('.game-details').on('click', (event) => {
+        event.preventDefault();
+        const $this = $(event.target).parents('.game-details');
+        const gameElementId = $($this).attr('id').split('-');
+        const gid = gameElementId[gameElementId.length - 1];
+        history.pushState(null, null, '/game/' + gid);
+        $(window).trigger('hashchange');
     });
 }

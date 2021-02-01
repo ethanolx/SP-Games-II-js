@@ -1,18 +1,18 @@
-/**
- * Casually ignore an error
- * @param {Error} err
- * @returns
+"use strict";
+
+/*
+ *  Author:     Ethan Tan
+ *  Admin:      p2012085
+ *  Class:      DAAA/FT/1B/03
+ *  File:       templates.js
  */
-function ignore(err) {
-    return;
-}
 
 /** @typedef {{
  *      id: number,
  *      title: string,
  *      description: string,
  *      price: string,
- *      year: number,
+ *      year: number | null,
  *      categories: {
  *          catid: number,
  *          catname: string
@@ -23,3 +23,12 @@ function ignore(err) {
  *          version: string
  *      }[]}
  * } Game */
+
+/**
+ * Casually ignore an error
+ * @param {Error} err
+ * @returns
+ */
+function ignore(err) {
+    return;
+}

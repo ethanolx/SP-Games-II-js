@@ -31,8 +31,7 @@ CREATE TABLE platforms (
     `version` VARCHAR(20) DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    UNIQUE KEY `unique_index` (platform, `version`);
-
+    UNIQUE KEY `unique_index` (platform, `version`)
 );
 
 CREATE TABLE games (

@@ -2,10 +2,10 @@
     "name": "spgames",
     "version": "1.0.0",
     "description": "Year 1 / Semester 2 Back-End Web Development Mid-Semester Assignment",
-    "main": "src/server.js",
+    "main": "app/server.js",
     "scripts": {
         "test": "node tests/test.spec.js",
-        "start:dev": "nodemon --exitcrash --trace-warnings src/server.js",
+        "start:dev": "nodemon --exitcrash --trace-warnings app/server.js",
         "start": "node ."
     },
     "author": "Ethan Tan",

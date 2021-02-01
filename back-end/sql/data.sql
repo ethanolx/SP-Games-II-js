@@ -5,13 +5,13 @@ DELETE FROM
     users;
 
 INSERT INTO
-    users (username, email, `type`)
+    users (username, email, `type`, `password`)
 VALUES
-    ('ethanolx', 'ethan@gmail.com', 'Admin'),
-    ('Mary101', 'm101@yahoo.com.sg', 'Customer'),
-    ('JSmith', 'johnsmith@x.net', 'Customer'),
-    ('Jane Smithsonian', 'jsx@abc.mail', 'Customer'),
-    ('F00D4L1F3', 'joel@git.git', 'Admin');
+    ('ethanolx', 'ethan@gmail.com', 'Admin', '12345Abc'),
+    ('Mary101', 'm101@yahoo.com.sg', 'Customer', '12345Abc'),
+    ('JSmith', 'johnsmith@x.net', 'Customer', '12345Abc'),
+    ('Jane Smithsonian', 'jsx@abc.mail', 'Customer', '12345Abc'),
+    ('F00D4L1F3', 'joel@git.git', 'Admin', '12345Abc');
 
 -- categories table --
 DELETE FROM

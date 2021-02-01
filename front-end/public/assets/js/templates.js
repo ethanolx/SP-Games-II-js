@@ -1,9 +1,10 @@
 "use strict";
 
 /*
- *  Name:   Ethan Tan
- *  Admin:  p2012085
- *  Class:  DAAA/1A/03
+ *  Author:     Ethan Tan
+ *  Admin:      p2012085
+ *  Class:      DAAA/FT/1B/03
+ *  File:       templates.js
  */
 
 //# GAMES
@@ -23,7 +24,7 @@
 function GameCardOld(id, title, price, pic, avgRating, numberOfReviews) {
     return `
     <div class=\"card border-dark\">
-        <!-- <img src=\"${ pic }\" alt=\"Image for \'${ title }\'\" class=\"card-img-top\" onerror=\"this.src=\'/img/pic.jpg\'\"> -->
+        <!-- <img src=\"${ pic }\" alt=\"Image for \'${ title }\'\" class=\"card-img-top\" onerror=\"this.src=\'/img/generic/error.jpg\'\"> -->
         <section class=\"card-body\">
             <h5 class=\"card-title\">${ title }</h5>
             <p class=\"card-text\">$${ price.toFixed(2) }</p>
@@ -122,7 +123,7 @@ function ReviewCard(username, rating, content) {
     }
     return `
     <div class="col-xl-3 col-lg-4 col-md-6 col-12 mb-4">
-        <div class="card ${ border } h-100">
+        <div class="card ${ border } h-100 review-card">
             <div class="card-header ${ border } text-dark">
                 <i class="fas fa-star"></i>
                 <span>${ rating } / 10</span>
@@ -143,7 +144,7 @@ function ReviewCard(username, rating, content) {
 /**
  *
  * @param {string} label
- * @param {string} text
+ * @param {string | null} text
  * @returns
  */
 function GameDetailsBlock(label, text) {
@@ -166,9 +167,15 @@ function ProfileCard(username, email, profile_pic_url) {
     return `
     <fieldset>
         <legend>My Profile</legend>
-        <img src="${ profile_pic_url }" alt="hello" id="profile-pic" class="img-top img-fluid"
-            onerror="this.src='/img/pic.jpg'">
-        <div class="form-group">
+        <div class="form-row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-6">
+                <img src="${ profile_pic_url }" alt="hello" id="profile-pic" class="img-top img-fluid rounded center"
+                    onerror="this.src='/img/generic/blank.jpg'">
+            </div>
+            <div class="col-lg-3"></div>
+        </div>
+        <div class="form-group mt-2">
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text">Upload</span>
@@ -188,15 +195,18 @@ function ProfileCard(username, email, profile_pic_url) {
             <input type="email" id="chg-email" class="form-control" value="${ email }">
         </div>
         <div class="form-group">
-            <label for="chg-password">Password</label>
-            <input type="password" id="chg-password" class="form-control" value="">
+            <label for="chg-password">Change Password</label>
+            <input type="password" id="chg-password" class="form-control" value="" pattern="^[\\S]+$"
+            minlength="8" maxlength="25" placeholder="********">
         </div>
+        <small class="form-text text-muted">*Must contain at least 1 number, 1 lowercase
+            letter, 1 uppercase letter, and 1 special character</small>
         <div id="profile-edit-btns" class="input-group">
-            <div class="input-group-prepend">
-                <button type="reset" class="btn btn-warning">Reset</button>
+            <div class="input-group-prepend w-50">
+                <button type="reset" class="btn btn-warning w-100">Reset</button>
             </div>
-            <div class="input-group-append">
-                <button type="submit" class="btn btn-success">Save</button>
+            <div class="input-group-append w-50">
+                <button type="submit" class="btn btn-success w-100">Save</button>
             </div>
         </div>
     </fieldset>
@@ -365,7 +375,7 @@ function GameBaseBody() {
         <div class="form-row form-group pl-2">
             <label for="new-game-desc">New Game Description</label>
             <textarea type="text" id="new-game-desc" class="form-control"
-                placeholder="Fun and Exciting!" rows="3" required></textarea>
+                placeholder="Fun and Exciting!" rows="3" maxlength="250" required></textarea>
         </div>
         <div class="form-row">
             <div class="form-group col-6">
@@ -434,7 +444,7 @@ function PlatformCheckbox(id, platformFull) {
  * @param {number} id
  * @param {string} title
  * @param {string} description
- * @param {number} price
+ * @param {string} price
  * @param {number} year
  * @returns
  */
@@ -469,7 +479,7 @@ function GameBody(id, title, description, price, year) {
                     <div class="input-group-prepend">
                         <span class="input-group-text">S$</span>
                     </div>
-                    <input type="number" id="game-${ id }-price" class="form-control" value="${ price }" min="0" max="100"
+                    <input type="number" id="game-${ id }-price" class="form-control" value="${ parseFloat(price) }" min="0" max="100"
                         step="0.01" required>
                 </div>
             </div>

@@ -176,13 +176,16 @@ function watchGameEdition() {
         console.log(UPDATED_GAME);
         const formData = new FormData();
         formData.append('gameImage', NEW_GAME_IMG);
-        fetch(`http://localhost:5000/game/${ gid }/image`, {
-            method: 'PATCH',
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('sp-games-token')
-            },
-            body: formData
-        });
+        console.log(NEW_GAME_IMG)
+        if (NEW_GAME_IMG) {
+            fetch(`http://localhost:5000/game/${ gid }/image`, {
+                method: 'PATCH',
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('sp-games-token')
+                },
+                body: formData
+            });
+        }
         fetch(`http://localhost:5000/game/${ gid }`, {
             method: 'PUT',
             headers: {

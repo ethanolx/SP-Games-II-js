@@ -1,3 +1,12 @@
+"use strict";
+
+/*
+ *  Author:     Ethan Tan
+ *  Admin:      p2012085
+ *  Class:      DAAA/FT/1B/03
+ *  File:       startup.js
+ */
+
 $(async () => {
     await loadNavbar();
     loadPage();
@@ -5,9 +14,9 @@ $(async () => {
     watchNavRouting();
     watchHashChange();
     watchLogout();
-    watchAdministration();
-    watchGameSelection();
 });
+
+//# GLOBAL VARIABLES
 
 /** @type {Object} */
 let GLOBAL_USER;
@@ -15,18 +24,13 @@ let GLOBAL_USER;
 /** @type {((game: Game) => boolean)[]} */
 let conditions = [];
 
-/** @type {'title' | 'date'} */
-let gamesSortCondition = 'date';
-
 /** @type {'date' | 'rating' | 'user'} */
 let reviewsSortCondition = 'date';
 
 /** @type {'asc' | 'dsc'} */
 let reviewsSortOrder = 'asc';
 
-function watchHashChange() {
-    $(window).on('hashchange', loadPage);
-}
+//# SPA TECHNICALITIES
 
 function watchBackButton() {
     $(window).on('popstate', () => {
@@ -34,29 +38,21 @@ function watchBackButton() {
     });
 }
 
+function watchHashChange() {
+    $(window).on('hashchange', loadPage);
+}
+
 function watchNavRouting() {
-    $('a.router:not(#logout)').on('click', changePage);
-}
-
-function watchLogout() {
-    $('#logout').on('click', logout);
-}
-
-/**
- *
- * @param {Event} event
- */
-function changePage(event) {
-    const target = event.target;
-    const $this = $(target).hasClass('router') ? target : $(target).parents('.router');
-    event.preventDefault();
-    window.history.pushState(null, null, $($this).attr('href'));
-    $(window).trigger('hashchange');
+    $('a.router').on('click', changePage);
 }
 
 function loadPage() {
     const path = window.location.pathname;
+
+    // Hide all pages
     $('.page').hide();
+
+    // Show target page only
     if (path === '/') {
         $('#home').show();
     }
@@ -66,14 +62,64 @@ function loadPage() {
     else {
         $(`#${ path.substr(1) }`).show();
     }
+
+    // Load relevant content
     loadContent();
 }
 
-function toggleLogin() {
-    $('#login-nav').toggle();
-    $('#login').toggle();
-    $('#logout-nav').toggle();
+/**
+ *
+ * @param {Event} event
+ */
+function changePage(event) {
+    event.preventDefault();
+    const target = event.target;
+    const $this = $(target).hasClass('router') ? target : $(target).parents('.router');
+    window.history.pushState(null, null, $($this).attr('href'));
+    $(window).trigger('hashchange');
 }
+
+//# EVALUATE PROPER PERMISSIONS
+
+/**
+ * Checks if user is logged in
+ * @returns {Promise<boolean>}
+ */
+async function checkLogin() {
+    const TOKEN = localStorage.getItem('sp-games-token');
+    if (!TOKEN) {
+        return false;
+    }
+    return await fetch('http://localhost:5000/user/verify-login', {
+        method: 'POST',
+        headers: {
+            'Authorization': 'Bearer ' + TOKEN,
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(res => {
+            switch (res.status) {
+                case 401:
+                    throw new Error('Not logged in');
+            }
+            return res.json();
+        })
+        .then(user => {
+            GLOBAL_USER = user;
+            return true;
+        })
+        .catch(err => false);
+}
+
+/**
+ * Checks if user is logged in as an Administrator
+ * @returns {boolean}
+ */
+function checkPermissions() {
+    return GLOBAL_USER['type'] === 'Admin';
+}
+
+//# RESTRICT CONTENT TO BE RENDERED
 
 async function loadNavbar() {
     if (await checkLogin()) {
@@ -89,66 +135,47 @@ async function loadNavbar() {
         $('.admin').remove();
         $('.personalisation').remove();
         $('#profile').remove();
-        $('#logout-nav').hide();
         $('#new-review').remove();
+        $('#logout-nav').hide();
     }
 }
 
-async function checkLogin() {
-    const TOKEN = localStorage.getItem('sp-games-token');
-    if (!TOKEN) {
-        return false;
-    }
-    return await fetch('http://localhost:5000/user/verify-login', {
-        method: 'POST',
-        headers: {
-            'Authorization': 'Bearer ' + TOKEN,
-            'Content-Type': 'application/json'
-        }
-    })
-        .then(res => {
-            switch (res.status) {
-                case 403:
-                    throw new Error();
-            }
-            return res.json();
-        })
-        .then(user => {
-            GLOBAL_USER = user;
-            return true;
-        })
-        .catch(err => false);
+/**
+ * Toggle between login and logout status
+ */
+function toggleLogin() {
+    $('#login-nav').toggle();
+    $('#logout-nav').toggle();
+    $('#login').toggle();
 }
 
-function checkPermissions() {
-    return GLOBAL_USER['type'] === 'Admin';
+/**
+ * Monitor when user logs out
+ */
+function watchLogout() {
+    $('#logout').on('click', logout);
 }
 
-function logout() {
+/**
+ * Logs a user out
+ * @param {Event} event
+ */
+function logout(event) {
+    // Clear API JWT
     window.localStorage.removeItem('sp-games-token');
+
+    // Clear all details about the previous user
     GLOBAL_USER = {};
+
+    // Remove all elements which require the user to be logged in
     $('.admin-nav').remove();
     $('.admin').remove();
     $('.personalisation').remove();
     $('#profile').remove();
     $('#new-review').remove();
+
+    // Redirects user to home page
     history.pushState(null, null, '/');
     $(window).trigger('hashchange');
     toggleLogin();
-}
-
-function watchAdministration() {
-    watchCategoryCreation();
-    watchPlatformCreation();
-}
-
-function watchGameSelection() {
-    $('.game-details').on('click', (event) => {
-        event.preventDefault();
-        const $this = $(event.target).parents('.game-details');
-        const gameElementId = $($this).attr('id').split('-');
-        const gid = gameElementId[gameElementId.length - 1];
-        history.pushState(null, null, '/game/' + gid);
-        $(window).trigger('hashchange');
-    });
 }

@@ -2,9 +2,11 @@
     "name": "spgames",
     "version": "1.0.0",
     "description": "Year 1 / Semester 2 Back-End Web Development End-Semester Assignment",
-    "main": "src/server.js",
+    "main": "app/server.js",
     "scripts": {
-        "test": "nodemon --exitcrash src/server.js"
+        "test": "nodemon --exitcrash app/server.js",
+        "start": "node .",
+        "build": "Remove-Item -Recurse -Force .\\node_modules"
     },
     "repository": {
         "type": "git",
