@@ -1,7 +1,7 @@
 {
     "name": "spgames",
     "version": "1.0.0",
-    "description": "Year 1 / Semester 2 Back-End Web Development Mid-Semester Assignment",
+    "description": "Year 1 / Semester 2 Back-End Web Development End-Semester Assignment",
     "main": "app/server.js",
     "scripts": {
         "test": "node tests/test.spec.js",
@@ -28,10 +28,10 @@
     "type": "module",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/ethanolx/SP-Games-js.git"
+        "url": "git+https://github.com/ethanolx/SP-Games-II-js.git"
     },
     "bugs": {
-        "url": "https://github.com/ethanolx/SP-Games-js/issues"
+        "url": "https://github.com/ethanolx/SP-Games-II-js/issues"
     },
-    "homepage": "https://github.com/ethanolx/SP-Games-js#readme"
+    "homepage": "https://github.com/ethanolx/SP-Games-II-js#readme"
 }

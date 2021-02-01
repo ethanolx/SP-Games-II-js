@@ -244,14 +244,14 @@ function GenericBody(type, id, p1, p2) {
     const P1 = (type === 'category' ? 'Category Name' : 'Platform Name');
     const P2 = (type === 'category' ? 'Category Description' : 'Platform Version');
     return `
-    <form action="" id="${ type }-${ id }" class="tab-pane fade show ${ type }-info" role="tabpanel">
+    <form action="" id="${ type }-${ id }" class="tab-pane fade show ${ type }-info" role="tabpanel" autocomplete="off">
         <div class="form-row mt-2">
             <label for="${ type }-${ id }-name" class=\"col-form-label\">${ P1 }</label>
             <input type="text" id="${ type }-${ id }-name" value=\"${ p1 }\" class=\"form-control\" required />
         </div>
         <div class="form-row mt-2">
             <label for="${ type }-${ id }-desc" class=\"col-form-label\">${ P2 }</label>
-            <textarea id="${ type }-${ id }-desc" class=\"form-control\" required>${ p2 }</textarea>
+            <textarea id="${ type }-${ id }-desc" class=\"form-control\" rows="5" required>${ p2 }</textarea>
         </div>
         <div class="form-row mt-5">
             <button type=\"button\" class="btn btn-danger col del-btn">DELETE</button>

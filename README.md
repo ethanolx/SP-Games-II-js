@@ -12,36 +12,53 @@
 
 ### Setup
 
-## Back-End
+1.  Install NodeJS locally (at least v14.0) (run `node --version` to check)
+2.  Ensure npm is installed (run `npm --version` to check)
+3.  Navigate to `SP Games II/front-end` directory through command line
+4.  Run `npm install`
+5.  Configure Express Server (front) settings in the following file:
+    -   `app/config/server.conf.js`
+6.  Run `npm start` to start the front-end server
 
-## Program
+### File Structure
+
+### URLs
+
+/
+/home
+/games
+/game-:id
+/profile
+/categories
+/platforms
+/games-admin
+
+### Extra Features
+
+
+## Back-End
 
 ### Setup
 
-1. Install NodeJS locally (at least v14.0)
-2. Ensure npm is installed too (run `npm --version`)
-3. Run `npm install`
-4. Install MySQL Server locally
-5. Configure MySQL Server `root` account
-6. Run the following SQL Scripts (either 1 or 2) in MySQL Server:
-    1. init.sql & data.sql
-    2. dump.sql
-7. Navigate to 'SP Games' directory through command line
-8. Configure MySQL `root` configurations in the following files:
-    - `src/config/database.config.js`
-    - `src/tests/reset-database.js`
-9. Configure Express Server API settings in the following file:
-    - `src/config/server.config.js`
+1.  Install NodeJS locally (at least v14.0) (run `node --version` to check)
+2.  Ensure npm is installed (run `npm --version` to check)
+3.  Install MySQL Server locally
+4.  Configure MySQL Server `root` account
+5.  Start local MySQL Server
+6.  Run the following SQL Scripts (either 1 or 2) in MySQL Server:
+    1.  init.sql & data.sql  (as root user)
+    2.  dump.sql             (as root user using spgames database)
+7.  Navigate to `SP Games II/back-end` directory through command line
+8.  Run `npm install`
+9.  Configure MySQL `root` configurations in the following files:
+    -   `app/config/database.config.js`
+    -   `app/tests/reset-database.js`
+10. Configure Express Server (back) settings in the following file:
+    -   `app/config/server.config.js`
+11. Run `npm test` to test the API endpoints or
+12. Run `npm start` to start the back-end server
 
-### Running Program
-
-10. Run `npm start`
-
-### Running Tests
-
-10. Run `npm test`
-
-## File Structure
+### File Structure
 
     SP Games ---- assets ---- game-images
               |           |-- endpoints-supported.html
@@ -110,9 +127,6 @@
               |-- package-lock.json
               `-- README.md
 
-
-## API Coverage
----
 ### Endpoints supported:
 
 |   No. |   Method  |   Route                                       |   Body?   |   Code    |
@@ -148,9 +162,15 @@
 
 ### Modifications (from CA1)
 
-1.  Added middleware to evaluate
+1.  Added and mounted middleware to evaluate ids, data bodies, login status, current user and admin permissions
+2.  Added endpoints for category and platform management
+3.  Removed excess API endpoints (`/`, `/game/:gid/image/info`, and `*`)
+4.  Removed html templates
+5.  Renamed `src` directory to `app`
 
 ## See Also
 
-    docs ---- CA1 Brief.docx        (assignment brief)
-          `-- table-schema.docx     (MySQL table schema)
+    docs ---- CA1 Brief.docx        (CA1 assignment brief)
+          `-- CA2 Brief.docx        (CA2 assignment brief)
+
+    back-end / docs / table-schema.docx     (MySQL table schema)

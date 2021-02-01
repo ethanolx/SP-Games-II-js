@@ -1,3 +1,29 @@
+function loadPlatformContent() {
+    fetch('http://localhost:5000/platform', { method: 'GET' })
+        .then(res => res.json())
+        .then((
+            /** @type {{
+             *      id: number,
+             *      platform: string,
+             *      version: string
+             * }[]} */
+            platforms
+        ) => {
+            const platformsSorted = platforms.sort((p1, p2) => p1.platform.localeCompare(p2.platform) * 100 + p1.version.localeCompare(p2.version));
+            let platformLabels = '';
+            let platformData = '';
+            for (let platform of platformsSorted) {
+                platformLabels += PlatformLabel(platform['id'], `${ platform['platform'] } ${ platform['version'] }`);
+                platformData += PlatformBody(platform['id'], platform['platform'], platform['version']);
+            }
+            $('#platform-labels').html(platformLabels);
+            $('#platform-details').html(platformData);
+            watchPlatformDeletion();
+            watchPlatformEdition();
+        })
+        .catch(console.log);
+}
+
 function watchPlatformCreation() {
     $('#new-platform').on('submit', (event) => {
         event.preventDefault();
@@ -87,7 +113,7 @@ function watchPlatformDeletion() {
         fetch(`http://localhost:5000/platform/${ pid }`, {
             method: 'DELETE',
             headers: {
-                'Authorization': 'Bearer ' + localStorage['sp-games-token']
+                'Authorization': 'Bearer ' + localStorage.getItem('sp-games-token')
             }
         })
             .then(res => res.status)

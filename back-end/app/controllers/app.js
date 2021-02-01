@@ -1,5 +1,5 @@
 // Dependencies
-import express from 'express';
+import express, { json, urlencoded } from 'express';
 import cors from 'cors';
 
 // Routers
@@ -16,6 +16,9 @@ import reviews from './routes/reviews.js';
 const app = express();
 
 app.use(cors({ origin: 'http://localhost:3000' }));
+
+app.use(json());
+app.use(urlencoded({ extended: false }));
 
 app.use('/', restrictions);
 

@@ -1,5 +1,5 @@
 // Dependencies
-import express, { json, urlencoded } from 'express';
+import express from 'express';
 
 // Middleware
 import verifyData from '../../middleware/verify-data.js';
@@ -10,10 +10,6 @@ import Platforms from '../../models/Platforms.js';
 
 /**@type {express.Router} */
 const router = express.Router();
-
-// Parsing Middleware
-router.use(json());
-router.use(urlencoded({ extended: false }));
 
 // Route Handlers
 router.route('/platform')
@@ -38,7 +34,7 @@ router.route('/platform')
                 switch (err.code) {
                     case 'ER_DUP_KEY':
                     case 'ER_DUP_ENTRY':
-                        res.status(422).json({ message: `The platform \'${ PLATFORM.platform }\' already exists` });
+                        res.status(422).json({ message: `The platform \'${ PLATFORM.platform.toLowerCase() } ${PLATFORM.version.toLowerCase()}\' already exists` });
                         break;
                     default:
                         res.sendStatus(500);
@@ -65,7 +61,7 @@ router.route('/platform/:id')
                 switch (err.code) {
                     case 'ER_DUP_KEY':
                     case 'ER_DUP_ENTRY':
-                        res.status(422).json({ message: `The platform \'${ PLATFORM.platform } ${PLATFORM.version}\' already exists` });
+                        res.status(422).json({ message: `The platform \'${ PLATFORM.platform.toLowerCase() } ${PLATFORM.version.toLowerCase()}\' already exists` });
                         break;
                     default:
                         res.sendStatus(500);

@@ -1,5 +1,5 @@
 // Dependencies
-import express, { json, urlencoded } from 'express';
+import express from 'express';
 
 // Middleware
 import verifyData from '../../middleware/verify-data.js';
@@ -10,10 +10,6 @@ import Categories from '../../models/Categories.js';
 
 /**@type {express.Router} */
 const router = express.Router();
-
-// Parsing Middleware
-router.use(json());
-router.use(urlencoded({ extended: false }));
 
 // Route Handlers
 router.route('/category')

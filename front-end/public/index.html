@@ -24,12 +24,12 @@
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
-    <link href="/vendor_/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
     <!-- Dynamic -->
-    <script src="/vendor_/jquery/jquery.min.js"></script>
-    <script src="/vendor_/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="/vendor_/jquery-easing/jquery.easing.min.js"></script>
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Template Theme -->
     <link href="/css/theme/sb-admin-2.min.css" rel="stylesheet">
@@ -45,12 +45,20 @@
     <script src="/js/templates.js"></script>
 
     <!-- Dynamic -->
-    <script src="/js/session.js"></script>
-    <script src="/js/startup.js"></script>
-    <script src="/js/admin/categories.js"></script>
-    <script src="/js/admin/platforms.js"></script>
-    <script src="/js/admin/games.js"></script>
-    <script src="/js/content.js"></script>
+
+    <!-- Logistics -->
+    <script src="/js/session.js" defer></script>
+    <script src="/js/startup.js" defer></script>
+
+    <!-- Content -->
+    <script src="/js/content/games.js" async></script>
+    <script src="/js/content/game.js" async></script>
+    <script src="/js/content/profile.js" async></script>
+    <script src="/js/content/admin/categories.js" async></script>
+    <script src="/js/content/admin/platforms.js" async></script>
+    <script src="/js/content/admin/games.js" async></script>
+    <script src="/js/content.js" defer></script>
+
 </head>
 
 <body id="page-top">
@@ -159,12 +167,17 @@
                 <article>
                     <div class="page col-12 p-md-5 p-sm-4 p-3" id="home">
                         <h1>Welcome, dear Patrons!</h1>
-                        <img src="/img/generic/online-games.jpg" alt="" class="img-fluid mt-md-3 mb-md-4 mb-sm-3 mb-2 rounded img-thumbnail bg-primary">
-                        <p>We would like to invite you to join us on our quest to gaming domination. We spare no expense in bringing you the cream of the crop, at heavily subsidised prices. Satisfaction is our guarantee!</p>
+                        <img src="/img/generic/online-games.jpg" alt=""
+                            class="img-fluid mt-md-3 mb-md-4 mb-sm-3 mb-2 rounded img-thumbnail bg-primary">
+                        <p>We would like to invite you to join us on our quest to gaming domination. We spare no expense
+                            in bringing you the cream of the crop, at heavily subsidised prices. Satisfaction is our
+                            guarantee!</p>
                         <h3 class="mt-4">Our Vision</h3>
-                        <p>Here at SP Games, we aim to make fun and engaging online games available and affordable to all.</p>
+                        <p>Here at SP Games, we aim to make fun and engaging online games available and affordable to
+                            all.</p>
                         <h3 class="mt-4">History</h3>
-                        <p>SP Games was founded in the year 1960 by Singapore Polytechnic Alumni John and Jane Smith. Since then, we have not stopped to carry on their work.</p>
+                        <p>SP Games was founded in the year 1960 by Singapore Polytechnic Alumni John and Jane Smith.
+                            Since then, we have not stopped to carry on their work.</p>
                         <br />
                         <p>So come, take a look, and browse our wide collection of mobile, pc and console games...</p>
                     </div>
@@ -268,18 +281,18 @@
                             </div>
                         </div>
                         <div class="row mt-5">
-                            <h3 class="col-lg-5 col-md-3 col-12 mb-3 mb-md-0">Reviews</h3>
-                            <div class="col text-left text-md-right">
+                            <h3 class="col-md-auto col-12 mb-3 mb-md-0">Reviews</h3>
+                            <div class="col text-left text-md-right pt-2">
                                 <label for="sort-reviews-condition" id="review-sort-label">Sort By</label>
                             </div>
-                            <div class="col-sm-5 col-12">
+                            <div class="col-sm-auto col-12 mt-1 mt-sm-0">
                                 <select id="sort-reviews-condition" class="form-control">
                                     <option value="date" selected>Date Created</option>
                                     <option value="rating">Rating</option>
                                     <option value="user">User</option>
                                 </select>
                             </div>
-                            <div class="col-sm-5 col-12">
+                            <div class="col-sm-auto col-12 mt-2 mt-sm-0">
                                 <select id="sort-reviews-order" class="form-control">
                                     <option value="asc" selected>Ascending</option>
                                     <option value="dsc">Descending</option>

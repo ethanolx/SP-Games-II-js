@@ -6,6 +6,7 @@ import Users from '../../models/Users.js';
  * @type {express.Handler}
  */
 export default (req, res, next) => {
+    /** @type {number} */
     const USER_ID = res.locals.userid;
     Users.findOne(USER_ID, (err, result) => {
         if (err) {
@@ -18,7 +19,6 @@ export default (req, res, next) => {
             else {
                 /** @type {import('../../models/Users.js').User} */
                 const USER = result[0];
-                console.log(USER);
                 if (USER.type === 'Admin') {
                     next();
                 }

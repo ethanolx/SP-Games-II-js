@@ -1,5 +1,81 @@
+function loadAdminNewGameContent() {
+    fetch('http://localhost:5000/category', { method: 'GET' })
+        .then(res => res.json())
+        .then((
+            /** @type {Category[]} */
+            categoriesRaw
+        ) => {
+            const categories = categoriesRaw.sort((c1, c2) => c1.catname.localeCompare(c2.catname));
+            $('#new-game-categories').html(categories.map(category => {
+                return CategoryCheckbox(category['id'], category['catname']);
+            }).join(''));
+        });
+    fetch('http://localhost:5000/platform', { method: 'GET' })
+        .then(res => res.json())
+        .then((
+            /** @type {Platform[]} */
+            platformsRaw
+        ) => {
+            const platforms = platformsRaw.sort((p1, p2) => p1.platform.localeCompare(p2.platform) * 100 + p1.version.localeCompare(p2.version));
+            $('#new-game-platforms').html(platforms.map(platform => {
+                return PlatformCheckbox(platform['id'], `${ platform['platform'] } ${ platform['version'] }`);
+            }).join(''));
+        });
+}
+
+function loadAdminGameContent() {
+    fetch('http://localhost:5000/games', { method: 'GET' })
+        .then(res => res.json())
+        .then(
+            (
+                /** @type {Game[]} */
+                games
+            ) => {
+                let game_labels = '<a class="list-group-item list-group-item-action" data-toggle="list" href="#new-game" role="tab"> New Game </a>';
+                let game_details = GameBaseBody();
+                game_labels += games.map(g => GameLabel(g['gameid'], g['title'])).join('');
+                game_details += games.map(g => GameBody(g['gameid'], g['title'], g['description'], g['price'], g['year'])).join('');
+
+                $('#game-details').html(game_details);
+                $('#game-labels').html(game_labels);
+
+                return games;
+            })
+        .then(games => {
+            games.forEach(g => {
+                const gid = g['gameid'];
+                fetch('http://localhost:5000/category', { method: 'GET' })
+                    .then(res => res.json())
+                    .then((
+                        /** @type {Category[]} */
+                        categoriesRaw
+                    ) => {
+                        const categories = categoriesRaw.sort((c1, c2) => c1.catname.localeCompare(c2.catname));
+                        $(`#game-${ gid }-categories`).html(categories.map(category => {
+                            return CategoryExistingCheckbox(category['id'], category['catname'], gid, g.categories.map(c => c.catid).includes(category['id']));
+                        }).join(''));
+                    });
+                fetch('http://localhost:5000/platform', { method: 'GET' })
+                    .then(res => res.json())
+                    .then((
+                        /** @type {Platform[]} */
+                        platformsRaw
+                    ) => {
+                        const platforms = platformsRaw.sort((p1, p2) => p1.platform.localeCompare(p2.platform) * 100 + p1.version.localeCompare(p2.version));
+                        $(`#game-${ gid }-platforms`).html(platforms.map(platform => {
+                            return PlatformExistingCheckbox(platform['id'], `${ platform['platform'] } ${ platform['version'] }`, gid, g.platforms.map(p => p.pid).includes(platform['id']));
+                        }).join(''));
+                    });
+            });
+        })
+        .finally(loadAdminNewGameContent)
+        .finally(watchGameCreation)
+        .finally(watchGameEdition)
+        .finally(watchGameDeletion);
+}
+
 function watchGameCreation() {
-    $('#new-game').on('submit', (event) => {
+    $('#new-game').one('submit', (event) => {
         $(this).trigger('reset');
         event.preventDefault();
         const [title, description, priceRaw, yearRaw] = ['#new-game-title', '#new-game-desc', '#new-game-price', '#new-game-year'].map(id => $(id).val());
@@ -79,68 +155,6 @@ function watchGameCreation() {
     });
 }
 
-function loadAdminNewGameContent() {
-    fetch('http://localhost:5000/category', { method: 'GET' })
-        .then(res => res.json())
-        .then(categories => {
-            $('#new-game-categories').html(categories.map(category => {
-                return CategoryCheckbox(category['id'], category['catname']);
-            }));
-        });
-    fetch('http://localhost:5000/platform', { method: 'GET' })
-        .then(res => res.json())
-        .then(platforms => {
-            $('#new-game-platforms').html(platforms.map(platform => {
-                return PlatformCheckbox(platform['id'], `${ platform['platform'] } ${ platform['version'] }`);
-            }));
-        });
-}
-
-function loadAdminGameContent() {
-    fetch('http://localhost:5000/games', { method: 'GET' })
-        .then(res => res.json())
-        .then(
-            (
-                /** @type {Game[]} */
-                games
-            ) => {
-                let game_labels = '<a class="list-group-item list-group-item-action" data-toggle="list" href="#new-game" role="tab"> New Game </a>';
-                let game_details = GameBaseBody();
-                game_labels += games.map(g => GameLabel(g['gameid'], g['title'])).join('');
-                game_details += games.map(g => GameBody(g['gameid'], g['title'], g['description'], g['price'], g['year'])).join('');
-
-                $('#game-details').html(game_details);
-                $('#game-labels').html(game_labels);
-
-                return games;
-            })
-        .then(games => {
-            games.forEach(g => {
-                const gid = g['gameid'];
-                const categories = g.categories;
-                const platforms = g.platforms;
-                fetch('http://localhost:5000/category', { method: 'GET' })
-                    .then(res => res.json())
-                    .then(categories => {
-                        $(`#game-${ gid }-categories`).html(categories.map(category => {
-                            return CategoryExistingCheckbox(category['id'], category['catname'], gid, g.categories.map(c => c.catid).includes(category['id']));
-                        }).join(''));
-                    });
-                fetch('http://localhost:5000/platform', { method: 'GET' })
-                    .then(res => res.json())
-                    .then(platforms => {
-                        $(`#game-${ gid }-platforms`).html(platforms.map(platform => {
-                            return PlatformExistingCheckbox(platform['id'], `${ platform['platform'] } ${ platform['version'] }`, gid, g.platforms.map(p => p.pid).includes(platform['id']));
-                        }).join(''));
-                    });
-            });
-        })
-        .finally(loadAdminNewGameContent)
-        .finally(watchGameCreation)
-        .finally(watchGameEdition)
-        .finally(watchGameDeletion);
-}
-
 function watchGameEdition() {
     $('.game-info').on('submit', (event) => {
         event.preventDefault();
@@ -176,7 +190,7 @@ function watchGameEdition() {
         console.log(UPDATED_GAME);
         const formData = new FormData();
         formData.append('gameImage', NEW_GAME_IMG);
-        console.log(NEW_GAME_IMG)
+        console.log(NEW_GAME_IMG);
         if (NEW_GAME_IMG) {
             fetch(`http://localhost:5000/game/${ gid }/image`, {
                 method: 'PATCH',
@@ -220,7 +234,12 @@ function watchGameDeletion() {
         /** @type {string} */
         const gameSelected = $($this).parent().parent().prop('id');
         const gid = gameSelected.split('-')[1];
-        fetch(`http://localhost:5000/game/${ gid }`, { method: 'DELETE' })
+        fetch(`http://localhost:5000/game/${ gid }`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('sp-games-token')
+            }
+        })
             .then(res => res.status)
             .then(status => {
                 if (status === 204) {

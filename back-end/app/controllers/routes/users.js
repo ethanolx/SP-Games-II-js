@@ -1,5 +1,5 @@
 // Dependencies
-import express, { json, urlencoded } from 'express';
+import express from 'express';
 import multer from 'multer';
 import { extname, dirname, join } from 'path';
 import { fileURLToPath } from 'url';
@@ -36,11 +36,7 @@ const IMAGE_STORAGE = multer({
     }
 });
 
-// Parsing Middleware
-router.use(json());
-router.use(urlencoded({ extended: false }));
-
-// Static File Serving Middleware
+// Middleware to Serve Static Assets
 router.use(express.static(join(__dirname, '..', '..', '..', 'assets', 'user-images')));
 
 // Route Handlers

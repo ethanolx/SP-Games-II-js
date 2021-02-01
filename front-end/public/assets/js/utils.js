@@ -8,6 +8,16 @@
  */
 
 /** @typedef {{
+ *      userid?: number
+ *      username?: string
+ *      email?: string
+ *      password?: string
+ *      type?: 'Admin' | 'Customer',
+ *      profile_pic_url?: string
+ * }} User
+ */
+
+/** @typedef {{
  *      id: number,
  *      title: string,
  *      description: string,
@@ -23,6 +33,25 @@
  *          version: string
  *      }[]}
  * } Game */
+
+/** @typedef {{
+ *      id: number?,
+ *      catname: string,
+ *      description: string
+ * }} Category */
+
+/** @typedef {{
+ *      id: number?,
+ *      platform: string,
+ *      version: string
+ * }} Platform */
+
+/** @typedef {{
+ *      rating: string,
+ *      content: string,
+ *      created_at: string
+ * }} Review
+ */
 
 /**
  * Casually ignore an error

@@ -1,5 +1,5 @@
 // Dependencies
-import express, { json, urlencoded } from 'express';
+import express from 'express';
 import multer from 'multer';
 import { extname } from 'path';
 import { promisify } from 'util';
@@ -20,10 +20,6 @@ import { HOST, PORT, MAX_FILE_SIZE, MEDIA_TYPES_SUPPORTED } from '../../config/s
 
 /**@type {express.Router} */
 const router = express.Router();
-
-// Parsing Middleware
-router.use(json());
-router.use(urlencoded({ extended: false }));
 
 // Route Handlers
 router.route('/game')
@@ -152,7 +148,7 @@ router.route('/game/:gid/image')
             res.status(200).sendFile(FILES[0], { root: './assets/game-images' }, (err) => { if (err) logError(err); });
         }
         else {
-            res.sendStatus(404);
+            res.sendStatus(204);
         }
     })
     .patch((req, res, next) => {

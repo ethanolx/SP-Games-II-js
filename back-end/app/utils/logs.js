@@ -55,6 +55,7 @@ async function getFilesInDir(dir, ext = null) {
             return FILES_IN_DIR;
         }
     }
+    return [];
 }
 
 /**

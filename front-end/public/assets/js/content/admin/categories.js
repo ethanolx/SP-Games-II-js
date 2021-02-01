@@ -1,3 +1,29 @@
+function loadCategoryContent() {
+    fetch('http://localhost:5000/category', { method: 'GET' })
+        .then(res => res.json())
+        .then((
+            /** @type {{
+             *      id: number,
+             *      catname: string,
+             *      description: string
+             * }[]} */
+            categories
+        ) => {
+            const categoriesSorted = categories.sort((c1, c2) => c1.catname.localeCompare(c2.catname));
+            let categoryLabels = '';
+            let categoryData = '';
+            for (let category of categoriesSorted) {
+                categoryLabels += CategoryLabel(category['id'], category['catname']);
+                categoryData += CategoryBody(category['id'], category['catname'], category['description']);
+            }
+            $('#category-labels').html(categoryLabels);
+            $('#category-details').html(categoryData);
+            watchCategoryDeletion();
+            watchCategoryEdition();
+        })
+        .catch(ignore);
+}
+
 function watchCategoryCreation() {
     $('#new-category').on('submit', (event) => {
         event.preventDefault();
@@ -37,12 +63,8 @@ function watchCategoryCreation() {
     });
 }
 
-function aliasCategoryEdition() {
-
-}
-
 function watchCategoryEdition() {
-    $('.category-info').on('submit', (event) => {
+    $('.category-info').one('submit', (event) => {
         event.preventDefault();
         const $this = event.target;
         const cid = $($this).attr('id').split('-')[1];
@@ -82,13 +104,18 @@ function watchCategoryEdition() {
 }
 
 function watchCategoryDeletion() {
-    $('.del-btn').on('click', (event) => {
+    $('.del-btn').one('click', (event) => {
         event.preventDefault();
         const $this = event.target;
         /** @type {string} */
         const categorySelected = $($this).parent().parent().prop('id');
         const cid = categorySelected.split('-')[1];
-        fetch(`http://localhost:5000/category/${ cid }`, { method: 'DELETE' })
+        fetch(`http://localhost:5000/category/${ cid }`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('sp-games-token')
+            }
+        })
             .then(res => res.status)
             .then(status => {
                 if (status === 204) {

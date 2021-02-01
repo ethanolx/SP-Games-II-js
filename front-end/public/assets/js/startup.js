@@ -18,7 +18,7 @@ $(async () => {
 
 //# GLOBAL VARIABLES
 
-/** @type {Object} */
+/** @type {User} */
 let GLOBAL_USER;
 
 /** @type {((game: Game) => boolean)[]} */

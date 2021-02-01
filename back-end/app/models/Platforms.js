@@ -5,7 +5,7 @@ import query from '../utils/query.js';
  * Object representing a gaming platform
  * @typedef {Object} Platform
  * @property {string} platform          - Generic platform (i.e. Xbox, PC, Mobile)
- * @property {string | null} version    - More specific platform type (i.e. Xbox One, Mobile iOS)
+ * @property {string} version           - More specific platform type (i.e. Xbox One, Mobile iOS)
  */
 
 export default {
