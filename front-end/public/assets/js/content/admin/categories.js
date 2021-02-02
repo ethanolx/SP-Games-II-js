@@ -1,5 +1,5 @@
 function loadCategoryContent() {
-    fetch('http://localhost:5000/category', { method: 'GET' })
+    fetch(`http://${ BACK_END_HOST }:${ BACK_END_PORT }/category`, { method: 'GET' })
         .then(res => res.json())
         .then((
             /** @type {{
@@ -34,7 +34,7 @@ function watchCategoryCreation() {
                 catname: newCatName,
                 description: newCatDesc
             };
-            fetch('http://localhost:5000/category', {
+            fetch(`http://${ BACK_END_HOST }:${ BACK_END_PORT }/category`, {
                 method: 'POST',
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('sp-games-token'),
@@ -58,7 +58,7 @@ function watchCategoryCreation() {
                 .then(() => {
                     loadCategoryContent();
                 })
-                .catch(console.log);
+                .catch(ignore);
         }
     });
 }
@@ -74,7 +74,7 @@ function watchCategoryEdition() {
             catname: newCatName,
             description: newCatDesc
         };
-        fetch(`http://localhost:5000/category/${ cid }`, {
+        fetch(`http://${ BACK_END_HOST }:${ BACK_END_PORT }/category/${ cid }`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -99,7 +99,7 @@ function watchCategoryEdition() {
             .then(() => {
                 loadCategoryContent();
             })
-            .catch(console.log);
+            .catch(ignore);
     });
 }
 
@@ -110,7 +110,7 @@ function watchCategoryDeletion() {
         /** @type {string} */
         const categorySelected = $($this).parent().parent().prop('id');
         const cid = categorySelected.split('-')[1];
-        fetch(`http://localhost:5000/category/${ cid }`, {
+        fetch(`http://${ BACK_END_HOST }:${ BACK_END_PORT }/category/${ cid }`, {
             method: 'DELETE',
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('sp-games-token')
@@ -122,6 +122,6 @@ function watchCategoryDeletion() {
                     loadCategoryContent();
                 }
             })
-            .catch(console.log);
+            .catch(ignore);
     });
 }

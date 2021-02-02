@@ -20,7 +20,7 @@ app.use(cors({ origin: 'http://localhost:3000' }));
 app.use(json());
 app.use(urlencoded({ extended: false }));
 
-app.use('/', restrictions);
+// app.use('/', restrictions);
 
 app
     .use('/', users)

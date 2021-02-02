@@ -182,7 +182,7 @@ function ProfileCard(username, email, profile_pic_url) {
                 </div>
                 <div class="custom-file">
                     <input type="file" class="custom-file-input" id="chg-pic">
-                    <label class="custom-file-label" for="chg-pic">Choose New Profile Pic</label>
+                    <label class="custom-file-label" for="chg-pic">Choose Image</label>
                 </div>
             </div>
         </div>
@@ -194,14 +194,14 @@ function ProfileCard(username, email, profile_pic_url) {
             <label for="chg-email">Email</label>
             <input type="email" id="chg-email" class="form-control" value="${ email }">
         </div>
-        <div class="form-group">
+        <div class="form-group mb-0">
             <label for="chg-password">Change Password</label>
             <input type="password" id="chg-password" class="form-control" value="" pattern="^[\\S]+$"
             minlength="8" maxlength="25" placeholder="********">
         </div>
         <small class="form-text text-muted">*Must contain at least 1 number, 1 lowercase
             letter, 1 uppercase letter, and 1 special character</small>
-        <div id="profile-edit-btns" class="input-group">
+        <div id="profile-edit-btns" class="input-group mt-3">
             <div class="input-group-prepend w-50">
                 <button type="reset" class="btn btn-warning w-100">Reset</button>
             </div>

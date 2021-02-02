@@ -16,25 +16,11 @@ $(async () => {
     watchLogout();
 });
 
-//# GLOBAL VARIABLES
-
-/** @type {User} */
-let GLOBAL_USER;
-
-/** @type {((game: Game) => boolean)[]} */
-let conditions = [];
-
-/** @type {'date' | 'rating' | 'user'} */
-let reviewsSortCondition = 'date';
-
-/** @type {'asc' | 'dsc'} */
-let reviewsSortOrder = 'asc';
-
 //# SPA TECHNICALITIES
 
 function watchBackButton() {
     $(window).on('popstate', () => {
-        $(this).trigger('hashchange');
+        $(window).trigger('hashchange');
     });
 }
 
@@ -90,7 +76,7 @@ async function checkLogin() {
     if (!TOKEN) {
         return false;
     }
-    return await fetch('http://localhost:5000/user/verify-login', {
+    return await fetch(`http://${ BACK_END_HOST }:${ BACK_END_PORT }/user/verify-login`, {
         method: 'POST',
         headers: {
             'Authorization': 'Bearer ' + TOKEN,

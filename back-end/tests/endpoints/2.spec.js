@@ -1,8 +1,8 @@
 import fetch from 'node-fetch';
 import colors from 'colors';
-import { TEST_PORT, HOST } from '../../src/config/server.config.js';
-import { emptyCallback } from '../../src/utils/callbacks.js';
-import compareObjectToSignature from '../../src/utils/compare-object-to-signature.js';
+import { TEST_PORT, HOST } from '../../app/config/server.config.js';
+import { emptyCallback } from '../../app/utils/callbacks.js';
+import compareObjectToSignature from '../../app/utils/compare-object-to-signature.js';
 
 export default async () => {
     const MESSAGE = '2.  POST    /users';
@@ -11,7 +11,7 @@ export default async () => {
         body: JSON.stringify({
             username: "Terry Tan",
             email: "terry@gmail.com",
-            type: "Customer",
+            password: "12345Abc@",
             profile_pic_url: "https://www.abc.com/terry.jpg"
         }),
         headers: { 'Content-Type': 'application/json' }

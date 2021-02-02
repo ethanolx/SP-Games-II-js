@@ -41,9 +41,9 @@ export default {
      * @param {import('../utils/callbacks.js').Callback} callback
      */
     insert: (user, callback) => {
-        const CREATE_NEW_USER_SQL = 'INSERT INTO users (username, email, type, password, profile_pic_url) VALUES (?);';
-        const { username, email, type, password, profile_pic_url } = user;
-        query(CREATE_NEW_USER_SQL, callback, [[username, email, type, password, profile_pic_url]]);
+        const CREATE_NEW_USER_SQL = 'INSERT INTO users (username, email, password, profile_pic_url) VALUES (?);';
+        const { username, email, password, profile_pic_url } = user;
+        query(CREATE_NEW_USER_SQL, callback, [[username, email, password, profile_pic_url]]);
     },
 
     /**
@@ -77,8 +77,8 @@ export default {
                 const token = jwt.sign({ id: user.userid, type: user.type }, KEY, {
                     expiresIn: 86400 //expires in 24 hrs
                 });
-                console.log("@@token " + token);
                 delete user['password'];
+                // @ts-ignore
                 return callback(null, token);
             }
             else {

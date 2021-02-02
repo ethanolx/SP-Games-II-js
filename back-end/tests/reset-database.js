@@ -2,7 +2,7 @@
 import mysql from 'mysql2';
 import fs from 'fs';
 import { promisify } from 'util';
-import { emptyCallback } from '../src/utils/callbacks.js';
+import { emptyCallback } from '../app/utils/callbacks.js';
 
 /**
  * Resets data in database for testing
@@ -11,8 +11,8 @@ export default async () => {
     // Opens a temporary connection to reset the database
     const CONN = mysql.createConnection({
         host: 'localhost',
-        user: 'root',
-        password: 'password',
+        user: 'ethan',
+        password: '12345Abc',
         port: 3306,
         database: 'spgames',
         multipleStatements: true

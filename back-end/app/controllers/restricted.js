@@ -9,6 +9,7 @@ const router = express.Router();
 
 // Verify Login Status
 router
+    .get('/users/:id', verifyToken)
     .post(['/category', '/platform', '/user/:uid/game/:gid/review', '/game'], verifyToken)
     .put(['/category/:id', '/platform/:id', '/users/:id', '/game/:id'], verifyToken)
     .patch(['/user/:uid/image', '/game/:gid/image'], verifyToken)
@@ -16,9 +17,10 @@ router
 
 // Verify User is Modifying Their Details Only
 router
-    .post('/user/:uid/game/:gid/review', verifyUser('params', 'uid'))
-    .put('/users/:id', verifyUser('params', 'id'))
-    .patch('/user/:uid/image', verifyUser('params', 'uid'));
+    .get('/users/:id', verifyUser('uid'))
+    .post('/user/:uid/game/:gid/review', verifyUser('uid'))
+    .put('/users/:id', verifyUser('id'))
+    .patch('/user/:uid/image', verifyUser('uid'));
 
 // Verify User is an Administrator
 router

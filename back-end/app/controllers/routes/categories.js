@@ -47,7 +47,7 @@ router.route('/category')
     });
 
 router.route('/category/:id')
-    .all(verifyId('params', 'id'))
+    .all(verifyId('id'))
     .put(verifyData({
         catname: 'string',
         description: 'string'

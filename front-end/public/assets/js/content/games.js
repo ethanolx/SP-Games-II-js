@@ -66,7 +66,7 @@ function watchSearchConditions() {
  * Loads the filter bar
  */
 function loadFilterBar() {
-    fetch('http://localhost:5000/category', { method: 'GET' })
+    fetch(`http://${ BACK_END_HOST }:${ BACK_END_PORT }/category`, { method: 'GET' })
         .then(res => res.json())
         .then(categories => {
             let categoryFilterOptions = '<option value=\"Any\" selected>Any</option>';
@@ -76,7 +76,7 @@ function loadFilterBar() {
             ) => CategoryFilterOption(category.id, category.catname)).join('');
             $('#category-filter').html(categoryFilterOptions);
         });
-    fetch('http://localhost:5000/platform', { method: 'GET' })
+    fetch(`http://${ BACK_END_HOST }:${ BACK_END_PORT }/platform`, { method: 'GET' })
         .then(res => res.json())
         .then(platforms => {
             let platformFilterOptions = '<option value=\"Any\" selected>Any</option>';
@@ -92,8 +92,7 @@ function loadFilterBar() {
  * Load games with brief details
  */
 function loadGameContent() {
-    $('#games-content').empty();
-    fetch('http://localhost:5000/games', { method: 'GET' })
+    fetch(`http://${ BACK_END_HOST }:${ BACK_END_PORT }/games`, { method: 'GET' })
         .then(res => res.json())
         .then(filter(conditions))
         .then(sort)
@@ -101,7 +100,7 @@ function loadGameContent() {
             let content = '';
             for (let game of gamesFiltered) {
                 const gid = game['gameid'];
-                content += await fetch(`http://localhost:5000/game/${ gid }/review`, { method: 'GET' })
+                content += await fetch(`http://${ BACK_END_HOST }:${ BACK_END_PORT }/game/${ gid }/review`, { method: 'GET' })
                     .then(res => {
                         if (res.ok) {
                             return res.json();

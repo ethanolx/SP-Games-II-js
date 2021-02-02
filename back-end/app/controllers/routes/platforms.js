@@ -47,7 +47,7 @@ router.route('/platform')
     });
 
 router.route('/platform/:id')
-    .all(verifyId('params', 'id'))
+    .all(verifyId('id'))
     .put(verifyData({
         platform: 'string',
         version: 'string'

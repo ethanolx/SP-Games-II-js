@@ -54,7 +54,7 @@ function watchProfileEdition() {
             }
         }
         if (NEW_PROFILE_IMG) {
-            fetch(`http://localhost:5000/user/${ USER_ID }/image`, {
+            fetch(`http://${BACK_END_HOST}:${BACK_END_PORT}/user/${ USER_ID }/image`, {
                 method: 'PATCH',
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('sp-games-token')
@@ -68,7 +68,7 @@ function watchProfileEdition() {
                 })
                 .catch(ignore);
         }
-        fetch(`http://localhost:5000/users/${ USER_ID }`, {
+        fetch(`http://${BACK_END_HOST}:${BACK_END_PORT}/users/${ USER_ID }`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

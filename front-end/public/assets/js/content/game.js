@@ -49,13 +49,13 @@ function sortReviews(reviews) {
  * @param {number} id
  */
 function loadSingleGameContent(id) {
-    fetch(`http://localhost:5000/game/${ id }`, { method: 'GET' })
+    fetch(`http://${ BACK_END_HOST }:${ BACK_END_PORT }/game/${ id }`, { method: 'GET' })
         .then(res => res.json())
         .then(async (/** @type {Game} */ game) => {
             if (game === undefined) {
                 return;
             }
-            await fetch(`http://localhost:5000/game/${ id }/review`, { method: 'GET' })
+            await fetch(`http://${ BACK_END_HOST }:${ BACK_END_PORT }/game/${ id }/review`, { method: 'GET' })
                 .then(res => {
                     if (res.ok) {
                         return res.json();
@@ -75,7 +75,7 @@ function loadSingleGameContent(id) {
                 .then(r => {
                     $("#review-stack").html(r);
                 })
-                .catch(console.log);
+                .catch(ignore);
 
             /** @type {Game} */
             let { title, description, price, year, platforms, categories } = game;
@@ -89,7 +89,7 @@ function loadSingleGameContent(id) {
             $('#game-categories').html(`<h5>Categories</h5><ul class=\"list-group\">${ categories.map(c => `<li class=\"list-group-item\">${ c.catname }</li>`).join('') }</ul>`);
             $('#game-platforms').html(`<h5>Platforms</h5><ul class=\"list-group\">${ platforms.map(p => `<li class=\"list-group-item\">${ p.platform } ${ p.version }</li>`).join('') }</ul>`);
         })
-        .catch(console.log)
+        .catch(ignore)
         .finally(watchReviewSort)
         .finally(watchReviewCreation);
 }
@@ -106,7 +106,7 @@ function watchReviewCreation() {
         const CONTENT = $('#new-review-content').val();
         const userid = GLOBAL_USER['userid'];
         const gameid = parseInt($('#new-review button[type=\"submit\"]').attr('id'));
-        fetch(`http://localhost:5000/user/${ userid }/game/${ gameid }/review`, {
+        fetch(`http://${ BACK_END_HOST }:${ BACK_END_PORT }/user/${ userid }/game/${ gameid }/review`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

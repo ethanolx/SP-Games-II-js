@@ -1,8 +1,11 @@
+// Dependency
 import express from 'express';
-import { HOST, PORT } from '../../config/server.conf.js';
 
+/** @type {express.Router} */
 const router = express.Router();
 
+// Reject all non-GET requests
+// Redirect illegal routes to home
 router.all('*', (req, res) => {
     if (req.method !== 'GET') {
         res.sendStatus(405);

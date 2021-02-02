@@ -75,7 +75,7 @@ router.route('/games/:platform')
     });
 
 router.route('/game/:id')
-    .all(verifyId('params', 'id'))
+    .all(verifyId('id'))
     .get((req, res) => {
         const gid = parseInt(req.params.id);
         Games.findOneFull(gid, (err, result) => {
@@ -136,7 +136,7 @@ const IMAGE_STORAGE = multer({
 
 // Image Uploads
 router.route('/game/:gid/image')
-    .all(verifyId('params', 'gid'))
+    .all(verifyId('gid'))
     .get(async (req, res) => {
         const GAME_ID = parseInt(req.params.gid);
         const FILES = await findImagesOfGame(GAME_ID).catch(logError);
@@ -175,39 +175,5 @@ router.route('/game/:gid/image')
             res.sendStatus(204) :
             res.status(415).json({ media_types_supported: MEDIA_TYPES_SUPPORTED, max_file_size_bytes: MAX_FILE_SIZE });
     });
-
-// router.route('/game/:gid/image/info')
-//     .get(async (req, res) => {
-//         const GAMEID = req.params.gid;
-//         const RESPONSE = await fetch(`http://${ HOST }:${ PORT }/game/${ GAMEID }/image`, { method: 'GET' }).catch(logError);
-//         if (RESPONSE) {
-//             switch (RESPONSE.status) {
-//                 case 200:
-//                     const IMAGE_FILE = await RESPONSE.blob().catch(logError);
-//                     const TEMPLATE_OR_VOID = await promisify(readFile)('./assets/game-image-info.html').catch(logError);
-//                     if (!IMAGE_FILE) {
-//                         return;
-//                     }
-//                     const TEMPLATE = (TEMPLATE_OR_VOID ? TEMPLATE_OR_VOID.toString()
-//                         .replace(/\$host\$/, HOST)
-//                         .replace(/\$port\$/, PORT.toString())
-//                         .replace(/\$gid\$/g, GAMEID)
-//                         .replace(/\$size\$/, IMAGE_FILE.size.toString())
-//                         .replace(/\$type\$/, IMAGE_FILE.type) : '');
-//                     res.status(200).type('html').send(TEMPLATE);
-//                     return;
-//                 case 422:
-//                     res.status(422).json({ message: `Game with id ${ GAMEID } does not exist` });
-//                     return;
-//                 case 404:
-//                     res.status(404).json({ message: `Image for game with id ${ GAMEID } does not exist` });
-//                     return;
-//                 case 400:
-//                     res.status(400).json({ message: `${ GAMEID } is not a valid game id` });
-//                     return;
-//             }
-//         }
-//         res.sendStatus(204);
-//     });
 
 export default router;

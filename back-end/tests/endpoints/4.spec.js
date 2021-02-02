@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
 import colors from 'colors';
-import { TEST_PORT, HOST } from '../../src/config/server.config.js';
-import { emptyCallback } from '../../src/utils/callbacks.js';
+import { TEST_PORT, HOST } from '../../app/config/server.config.js';
+import { emptyCallback } from '../../app/utils/callbacks.js';
 
 export default async () => {
     const MESSAGE = '4.  POST    /category';

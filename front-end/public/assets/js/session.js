@@ -86,7 +86,7 @@ function register(event) {
             password: PASSWORD,
             profile_pic_url: null
         };
-        fetch('http://localhost:5000/users', {
+        fetch(`http://${ BACK_END_HOST }:${ BACK_END_PORT }/users`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -122,7 +122,7 @@ function login(event, username = null, password = null) {
         username: USERNAME_OR_EMAIL,
         password: PASSWORD
     };
-    fetch('http://localhost:5000/user/login', {
+    fetch(`http://${ BACK_END_HOST }:${ BACK_END_PORT }/user/login`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

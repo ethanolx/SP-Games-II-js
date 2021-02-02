@@ -1,201 +1,412 @@
-DROP DATABASE IF EXISTS spgames;
+DROP TABLE IF EXISTS `categories`;
 
-CREATE DATABASE spgames;
+CREATE TABLE `categories` (
+    `id` int NOT NULL AUTO_INCREMENT,
+    `catname` varchar(20) NOT NULL,
+    `description` text NOT NULL,
+    `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `id` (`id`),
+    UNIQUE KEY `catname` (`catname`)
+) ENGINE = InnoDB AUTO_INCREMENT = 22 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
 
-USE spgames;
-
-CREATE TABLE users (
-    userid INT AUTO_INCREMENT UNIQUE NOT NULL,
-    username VARCHAR(30) UNIQUE NOT NULL,
-    email VARCHAR(45) UNIQUE NOT NULL,
-    `type` ENUM('Customer', 'Admin') NOT NULL,
-    profile_pic_url VARCHAR(80) NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (userid)
-);
-
-CREATE TABLE categories (
-    id INT AUTO_INCREMENT UNIQUE NOT NULL,
-    catname VARCHAR(20) UNIQUE NOT NULL,
-    `description` TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (id)
-);
-
-CREATE TABLE platforms (
-    id INT AUTO_INCREMENT UNIQUE NOT NULL,
-    platform VARCHAR(15) NOT NULL,
-    `version` VARCHAR(20) DEFAULT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (id)
-);
-
-CREATE TABLE games (
-    id INT AUTO_INCREMENT UNIQUE NOT NULL,
-    title VARCHAR(25) UNIQUE NOT NULL,
-    `description` TEXT NOT NULL,
-    price DECIMAL(5, 2) NOT NULL,
-    year INT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (id)
-);
-
-CREATE TABLE reviews (
-    reviewid INT AUTO_INCREMENT UNIQUE NOT NULL,
-    userid INT NOT NULL,
-    gameid INT NOT NULL,
-    content TEXT NOT NULL,
-    rating DECIMAL(3, 1) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (reviewid),
-    FOREIGN KEY (userid) REFERENCES users(userid),
-    FOREIGN KEY (gameid) REFERENCES games(id) ON DELETE CASCADE
-);
-
-CREATE TABLE game_platform_asc (
-    id INT AUTO_INCREMENT UNIQUE NOT NULL,
-    gameid INT NOT NULL,
-    platformid INT NOT NULL,
-    PRIMARY KEY (id),
-    FOREIGN KEY (gameid) REFERENCES games(id) ON DELETE CASCADE,
-    FOREIGN KEY (platformid) REFERENCES platforms(id) ON DELETE CASCADE
-);
-
-CREATE TABLE game_category_asc (
-    id INT AUTO_INCREMENT UNIQUE NOT NULL,
-    gameid INT NOT NULL,
-    categoryid INT NOT NULL,
-    PRIMARY KEY (id),
-    FOREIGN KEY (gameid) REFERENCES games(id) ON DELETE CASCADE,
-    FOREIGN KEY (categoryid) REFERENCES categories(id) ON DELETE CASCADE
-);
-
-DELETE FROM
-    users;
+LOCK TABLES `categories` WRITE;
 
 INSERT INTO
-    users (username, email, `type`)
-VALUES
-    ('ethanolx', 'ethan@gmail.com', 'Admin'),
-    ('Mary101', 'm101@yahoo.com.sg', 'Customer'),
-    ('JSmith', 'johnsmith@x.net', 'Customer'),
-    ('Jane Smithsonian', 'jsx@abc.mail', 'Customer'),
-    ('F00D4L1F3', 'joel@git.git', 'Admin');
-
-DELETE FROM
-    categories;
-
-INSERT INTO
-    categories (catname, `description`)
+    `categories`
 VALUES
     (
+        5,
+        'Platformer',
+        'Platformer games get their name from the fact that the gameΓÇÖs character interacts with platforms (usually running, jumping, or falling) throughout the gameplay.',
+        '2021-02-01 08:09:55'
+    ),
+(
+        6,
+        'Shooter',
+        'Shooters let players use weapons to engage in the action, with the goal usually being to take out enemies or opposing players.',
+        '2021-02-01 08:15:23'
+    ),
+(
+        7,
+        'Fighting',
+        'Fighting games like Mortal Kombat and Street Fighter II focus the action on combat, and in most cases, hand-to-hand combat. Most fighting games feature a stable of playable characters, each one specializing in their own unique abilities or fighting style.',
+        '2021-02-01 08:15:48'
+    ),
+(
+        8,
+        'Beat-em Up',
+        'Beat-em up games, or brawlers, also focus on combat, but instead of facing a single opponent, players face wave after wave of enemies.',
+        '2021-02-01 08:18:09'
+    ),
+(
+        9,
+        'Stealth',
+        'Stealth games stress cunning and precision to resolve game challenges, and while other action or combat may help players accomplish the goal, like in Dishonored, stealth games usually encourage players to engage in the action covertly.',
+        '2021-02-01 08:18:43'
+    ),
+(
+        10,
+        'Survival',
+        'The survival horror game Resident Evil was one of the earliest (though a linear game), while more modern survival games like Fortnite take place in open-world game environments and give players access to resources to craft tools, weapons, and shelter to survive as long as possible.',
+        '2021-02-01 08:20:13'
+    ),
+(
+        11,
+        'Rhythm',
+        'Rhythm games like Dance Dance Revolution and Guitar Hero are music-based games that challenge players to keep in step with the rhythm of a song or soundtrack in the game by pressing a corresponding button on the controller at a precise time to accumulate points.',
+        '2021-02-01 08:20:29'
+    ),
+(
+        12,
+        'Survival Horror',
+        'Survival horror games like Resident Evil use mature themes and subject matter to portray grisly and gruesome settings (many of these games use blood and gore and are intended only for mature audiences).',
+        '2021-02-01 08:20:57'
+    ),
+(
+        13,
+        'Metroidvania',
+        'Metroidvania-type games are like basic action-adventure games, but aren\'t linear, and often require that the player backtrack, or is kept from progressing, until they find a specific item or special tool.',
+        '2021-02-01 08:21:25'
+    ),
+(
+        14,
+        'Text Adventure',
+        'Early text adventure games were called \"interactive fiction.\" And just as the name implies, the gameplay is text-based, meaning players use their keyboard to input commands in response to the game-programmed story arch or situation.',
+        '2021-02-01 08:23:07'
+    ),
+(
+        15,
+        'Graphic Adventures',
+        'As computers became more capable of creating graphics to support text, games evolved as well. For instance, early graphic adventure games used simple images to support the still text-based adventure.',
+        '2021-02-01 08:23:25'
+    ),
+(
+        16,
+        'Visual Novel',
+        'Extremely popular in Japan, most visual novels require players to build up character traits or statistics to advance the gameplay. The games often have multiple endings which are determined by how the player responds to specific points in the plot.',
+        '2021-02-01 08:23:46'
+    ),
+(
+        17,
+        'Interactive Movie',
+        'Laserdisc and CD-ROM technology allowed for the introduction of the interactive movie. Interactive movies contain pre-filmed live-action or animation sequences. The adventure is played out typically from a third-person perspective and the player controls the action during pivotal points in the story',
+        '2021-02-01 08:26:03'
+    ),
+(
+        18,
+        'Real-Time 3D',
+        'The latest evolution of adventure games is real-time 3D. Instead of pre-rendered scenes, players interact in a real-time 3D video game world. Shenmue and Heavy Rain are good examples of these types of games.',
+        '2021-02-01 08:26:22'
+    ),
+(
+        19,
+        'Action RPG',
+        'Action role-playing games take game elements of both action games and action-adventure games. A defining characteristic of action RPGs is that the combat takes place in real-time and depends on a playerΓÇÖs speed and accuracy to best foes, versus depending on high character attributes like charisma and dexterity.',
+        '2021-02-01 08:28:09'
+    ),
+(
+        20,
+        'MMORPG',
+        'Massive multiplayer online role-playing games (or MMORPGs) evolved as graphical variations of text-based multi-user dungeons (MUDs), which were developed in the late 1970s.  MMORPGs involve hundreds of players actively interacting with each other in the same world, and typically, all players share the same or a similar objective.',
+        '2021-02-01 08:28:25'
+    ),
+(
+        21,
         'Puzzle',
-        "Brain-racking and intriguing, these challenges are sure to elicit an 'Ah Ha!' from you"
-    ),
-    (
-        'First Person Shooter',
-        'You play from the perspective of the protagonist, fulfilling objectives to win'
-    ),
-    (
-        'E-Sports',
-        'Get a workout without having to leave your house!'
-    ),
-    (
-        'Text Adventures',
-        'Origin of all games to date. The original, if you will.'
+        'Brain \'racking',
+        '2021-02-01 08:36:01'
     );
 
-DELETE FROM
-    platforms;
+UNLOCK TABLES;
+
+DROP TABLE IF EXISTS `game_category_asc`;
+
+CREATE TABLE `game_category_asc` (
+    `id` int NOT NULL AUTO_INCREMENT,
+    `gameid` int NOT NULL,
+    `categoryid` int NOT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `id` (`id`),
+    KEY `gameid` (`gameid`),
+    KEY `categoryid` (`categoryid`),
+    CONSTRAINT `game_category_asc_ibfk_1` FOREIGN KEY (`gameid`) REFERENCES `games` (`id`) ON DELETE CASCADE,
+    CONSTRAINT `game_category_asc_ibfk_2` FOREIGN KEY (`categoryid`) REFERENCES `categories` (`id`) ON DELETE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 9 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
+
+LOCK TABLES `game_category_asc` WRITE;
 
 INSERT INTO
-    platforms (platform, `version`)
+    `game_category_asc`
 VALUES
-    ('PC', 'macOS'),
-    ('PC', 'Windows'),
-    ('Mobile', 'Android'),
-    ('Mobile', 'iOS'),
-    ('Xbox', '360'),
-    ('Xbox', 'One'),
-    ('Playstation', '1'),
-    ('Playstation', '2'),
-    ('Playstation', '3'),
-    ('Playstation', '4'),
-    ('Playstation', '5'),
-    ('Playstation', 'Portable'),
-    ('Nintendo', '3DS'),
-    ('Nintendo', 'Game Boy'),
-    ('Nintendo', 'Switch'),
-    ('Nintendo', 'Wii');
+    (3, 3, 8),
+(4, 3, 10),
+(5, 3, 19),
+(6, 2, 21),
+(7, 1, 19),
+(8, 1, 6);
 
-DELETE FROM
-    games;
+UNLOCK TABLES;
+
+DROP TABLE IF EXISTS `game_platform_asc`;
+
+CREATE TABLE `game_platform_asc` (
+    `id` int NOT NULL AUTO_INCREMENT,
+    `gameid` int NOT NULL,
+    `platformid` int NOT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `id` (`id`),
+    KEY `gameid` (`gameid`),
+    KEY `platformid` (`platformid`),
+    CONSTRAINT `game_platform_asc_ibfk_1` FOREIGN KEY (`gameid`) REFERENCES `games` (`id`) ON DELETE CASCADE,
+    CONSTRAINT `game_platform_asc_ibfk_2` FOREIGN KEY (`platformid`) REFERENCES `platforms` (`id`) ON DELETE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 14 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
+
+LOCK TABLES `game_platform_asc` WRITE;
 
 INSERT INTO
-    games (title, `description`, price, `year`)
+    `game_platform_asc`
+VALUES
+    (1, 1, 1),
+(2, 1, 2),
+(3, 1, 3),
+(4, 1, 4),
+(5, 2, 1),
+(6, 2, 2),
+(7, 3, 1),
+(8, 3, 2),
+(9, 3, 5),
+(10, 3, 6),
+(11, 3, 9),
+(12, 3, 10),
+(13, 3, 13);
+
+UNLOCK TABLES;
+
+DROP TABLE IF EXISTS `games`;
+
+CREATE TABLE `games` (
+    `id` int NOT NULL AUTO_INCREMENT,
+    `title` varchar(25) NOT NULL,
+    `description` text NOT NULL,
+    `price` decimal(5, 2) NOT NULL,
+    `year` int DEFAULT NULL,
+    `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `id` (`id`),
+    UNIQUE KEY `title` (`title`)
+) ENGINE = InnoDB AUTO_INCREMENT = 4 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
+
+LOCK TABLES `games` WRITE;
+
+INSERT INTO
+    `games`
 VALUES
     (
+        1,
         'Call of Duty',
         'Call of Duty is a first-person shooter video game based on id Tech 3, and was released on October 29, 2003. The game was developed by Infinity Ward and published by Activision. The game simulates the infantry and combined arms warfare of World War II.',
         26.99,
-        2003
+        2003,
+        '2021-02-01 03:13:03'
     ),
-    (
+(
+        2,
         'Baba is You',
         'Baba Is You is an award-winning puzzle game where you can change the rules by which you play. In every level, the rules themselves are present as blocks you can interact with; by manipulating them, you can change how the level works and cause surprising, unexpected interactions!',
         5.60,
-        2019
+        2019,
+        '2021-02-01 03:13:03'
+    ),
+(
+        3,
+        'Diablo III',
+        'Diablo III is a genre-defining action-RPG set in Sanctuary, a world ravaged by the eternal conflict between angels and demons.',
+        19.99,
+        2012,
+        '2021-02-01 08:33:25'
     );
 
-DELETE FROM
-    reviews;
+UNLOCK TABLES;
+
+DROP TABLE IF EXISTS `platforms`;
+
+CREATE TABLE `platforms` (
+    `id` int NOT NULL AUTO_INCREMENT,
+    `platform` varchar(15) NOT NULL,
+    `version` varchar(20) DEFAULT NULL,
+    `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `id` (`id`),
+    UNIQUE KEY `unique_index` (`platform`, `version`)
+) ENGINE = InnoDB AUTO_INCREMENT = 18 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
+
+LOCK TABLES `platforms` WRITE;
 
 INSERT INTO
-    reviews (userid, gameid, content, rating)
+    `platforms`
+VALUES
+    (1, 'PC', 'macOS', '2021-02-01 03:13:03'),
+(2, 'PC', 'Windows', '2021-02-01 03:13:03'),
+(3, 'Mobile', 'Android', '2021-02-01 03:13:03'),
+(4, 'Mobile', 'iOS', '2021-02-01 03:13:03'),
+(5, 'Xbox', '360', '2021-02-01 03:13:03'),
+(6, 'Xbox', 'One', '2021-02-01 03:13:03'),
+(7, 'Playstation', '1', '2021-02-01 03:13:03'),
+(8, 'Playstation', '2', '2021-02-01 03:13:03'),
+(9, 'Playstation', '3', '2021-02-01 03:13:03'),
+(10, 'Playstation', '4', '2021-02-01 03:13:03'),
+(11, 'Playstation', '5', '2021-02-01 03:13:03'),
+(
+        12,
+        'Playstation',
+        'Portable',
+        '2021-02-01 03:13:03'
+    ),
+(13, 'Nintendo', '3DS', '2021-02-01 03:13:03'),
+(14, 'Nintendo', 'Game Boy', '2021-02-01 03:13:03'),
+(15, 'Nintendo', 'Switch', '2021-02-01 03:13:03'),
+(16, 'Nintendo', 'Wii', '2021-02-01 03:13:03');
+
+UNLOCK TABLES;
+
+DROP TABLE IF EXISTS `reviews`;
+
+CREATE TABLE `reviews` (
+    `reviewid` int NOT NULL AUTO_INCREMENT,
+    `userid` int NOT NULL,
+    `gameid` int NOT NULL,
+    `content` text NOT NULL,
+    `rating` decimal(3, 1) NOT NULL,
+    `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`reviewid`),
+    UNIQUE KEY `reviewid` (`reviewid`),
+    KEY `userid` (`userid`),
+    KEY `gameid` (`gameid`),
+    CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`userid`),
+    CONSTRAINT `reviews_ibfk_2` FOREIGN KEY (`gameid`) REFERENCES `games` (`id`) ON DELETE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 15 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
+
+LOCK TABLES `reviews` WRITE;
+
+INSERT INTO
+    `reviews`
 VALUES
     (
+        1,
         1,
         2,
         'While the rules are simple, the game is not.',
-        8.6
+        8.6,
+        '2021-02-01 03:13:03'
     ),
-    (
+(
+        2,
         1,
         1,
         'Great game, shame about the politics',
-        7.0
+        7.0,
+        '2021-02-01 03:13:03'
     ),
-    (
+(
+        3,
         3,
         1,
-        "Call of Duty (COD) is a shooter that you shouldn't miss. The excellent campaign and fun online modes guarantee hundreds of hours of entertainment and fun.",
-        8.0
+        'Call of Duty (COD) is a shooter that you shouldn\'t miss. The excellent campaign and fun online modes guarantee hundreds of hours of entertainment and fun.',
+        8.0,
+        '2021-02-01 03:13:03'
     ),
-    (
+(
+        4,
         4,
         2,
-        "I don't really like Puzzle games, because I'm to dumb for them. But this Game is so awesome and cute and it's one of the best Games I've ever played.",
-        7.6
+        'I don\'t really like Puzzle games, because I\'m to dumb for them. But this Game is so awesome and cute and it\'s one of the best Games I\'ve ever played.',
+        7.6,
+        '2021-02-01 03:13:03'
+    ),
+(
+        5,
+        1,
+        2,
+        'I love this game',
+        5.0,
+        '2021-02-01 03:46:53'
+    ),
+(
+        13,
+        1,
+        2,
+        'I hate this game',
+        5.0,
+        '2021-02-01 03:57:11'
+    ),
+(14, 1, 2, 'a', 5.0, '2021-02-01 03:57:31');
+
+UNLOCK TABLES;
+
+DROP TABLE IF EXISTS `users`;
+
+CREATE TABLE `users` (
+    `userid` int NOT NULL AUTO_INCREMENT,
+    `username` varchar(30) NOT NULL,
+    `email` varchar(45) NOT NULL,
+    `password` varchar(25) NOT NULL,
+    `type` enum('Customer', 'Admin') NOT NULL DEFAULT 'Customer',
+    `profile_pic_url` varchar(80) DEFAULT NULL,
+    `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`userid`),
+    UNIQUE KEY `userid` (`userid`),
+    UNIQUE KEY `username` (`username`),
+    UNIQUE KEY `email` (`email`)
+) ENGINE = InnoDB AUTO_INCREMENT = 6 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
+
+LOCK TABLES `users` WRITE;
+
+INSERT INTO
+    `users`
+VALUES
+    (
+        1,
+        'ethanolx',
+        'ethan@gmail.com',
+        '12345Abc',
+        'Admin',
+        'http://localhost:5000/1.jpg',
+        '2021-02-01 03:13:03'
+    ),
+(
+        2,
+        'Mary101',
+        'm101@yahoo.com.sg',
+        '12345Abc',
+        'Customer',
+        NULL,
+        '2021-02-01 03:13:03'
+    ),
+(
+        3,
+        'JSmith',
+        'johnsmith@x.net',
+        '12345Abc',
+        'Customer',
+        NULL,
+        '2021-02-01 03:13:03'
+    ),
+(
+        4,
+        'Jane Smithsonian',
+        'jsx@abc.mail',
+        '12345Abc',
+        'Customer',
+        NULL,
+        '2021-02-01 03:13:03'
+    ),
+(
+        5,
+        'F00D4L1F3',
+        'joel@git.git',
+        '12345Abc',
+        'Admin',
+        NULL,
+        '2021-02-01 03:13:03'
     );
-
-DELETE FROM
-    game_platform_asc;
-
-INSERT INTO
-    game_platform_asc (gameid, platformid)
-VALUES
-    (1, 1),
-    (1, 2),
-    (1, 3),
-    (1, 4),
-    (2, 1),
-    (2, 2);
-
-DELETE FROM
-    game_category_asc;
-
-INSERT INTO
-    game_category_asc (gameid, categoryid)
-VALUES
-    (1, 2),
-    (2, 1);

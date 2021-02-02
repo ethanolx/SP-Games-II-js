@@ -13,7 +13,7 @@ const router = express.Router();
 
 // Route Handlers
 router.route('/game/:id/review')
-    .all(verifyId('params', 'id'))
+    .all(verifyId('id'))
     .get((req, res) => {
         // Extract and Process Data
         const GAME_ID = parseInt(req.params.id);
@@ -33,7 +33,7 @@ router.route('/game/:id/review')
     });
 
 router.route('/user/:uid/game/:gid/review')
-    .post(verifyId('params', 'uid'), verifyId('params', 'gid'), verifyData({
+    .post(verifyId('uid'), verifyId('gid'), verifyData({
         content: 'string',
         rating: 'number'
     }), (req, res) => {

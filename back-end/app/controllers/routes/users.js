@@ -58,7 +58,6 @@ router.route('/users')
         username: 'string',
         email: 'string',
         password: 'string',
-        type: 'string',
         profile_pic_url: 'string?'
     }), (req, res) => {
         /**@type {import('../../models/Users.js').User} */
@@ -74,7 +73,7 @@ router.route('/users')
         });
     });
 
-router.patch('/user/:uid/image', verifyId('params', 'uid'), IMAGE_STORAGE.single('userImage'), (req, res) => {
+router.patch('/user/:uid/image', verifyId('uid'), IMAGE_STORAGE.single('userImage'), (req, res) => {
     if (req.file) {
         const USER_ID = parseInt(req.params.uid);
         const NEW_PROFILE_PIC_URL = `http://${ HOST }:${ PORT }/${ USER_ID.toString() + extname(req.file.originalname) }`;
@@ -96,7 +95,7 @@ router.route('/user/verify-login')
     .post(verifyLogin);
 
 router.route('/users/:id')
-    .all(verifyId('params', 'id'))
+    .all(verifyId('id'))
     .get((req, res) => {
         const USER_ID = parseInt(req.params.id);
         const { token } = req.body;

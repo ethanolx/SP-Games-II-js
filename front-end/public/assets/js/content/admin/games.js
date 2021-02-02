@@ -1,5 +1,5 @@
 function loadAdminNewGameContent() {
-    fetch('http://localhost:5000/category', { method: 'GET' })
+    fetch(`http://${ BACK_END_HOST }:${ BACK_END_PORT }/category`, { method: 'GET' })
         .then(res => res.json())
         .then((
             /** @type {Category[]} */
@@ -10,7 +10,7 @@ function loadAdminNewGameContent() {
                 return CategoryCheckbox(category['id'], category['catname']);
             }).join(''));
         });
-    fetch('http://localhost:5000/platform', { method: 'GET' })
+    fetch(`http://${ BACK_END_HOST }:${ BACK_END_PORT }/platform`, { method: 'GET' })
         .then(res => res.json())
         .then((
             /** @type {Platform[]} */
@@ -24,7 +24,7 @@ function loadAdminNewGameContent() {
 }
 
 function loadAdminGameContent() {
-    fetch('http://localhost:5000/games', { method: 'GET' })
+    fetch(`http://${ BACK_END_HOST }:${ BACK_END_PORT }/games`, { method: 'GET' })
         .then(res => res.json())
         .then(
             (
@@ -44,7 +44,7 @@ function loadAdminGameContent() {
         .then(games => {
             games.forEach(g => {
                 const gid = g['gameid'];
-                fetch('http://localhost:5000/category', { method: 'GET' })
+                fetch(`http://${ BACK_END_HOST }:${ BACK_END_PORT }/category`, { method: 'GET' })
                     .then(res => res.json())
                     .then((
                         /** @type {Category[]} */
@@ -55,7 +55,7 @@ function loadAdminGameContent() {
                             return CategoryExistingCheckbox(category['id'], category['catname'], gid, g.categories.map(c => c.catid).includes(category['id']));
                         }).join(''));
                     });
-                fetch('http://localhost:5000/platform', { method: 'GET' })
+                fetch(`http://${ BACK_END_HOST }:${ BACK_END_PORT }/platform`, { method: 'GET' })
                     .then(res => res.json())
                     .then((
                         /** @type {Platform[]} */
@@ -109,7 +109,7 @@ function watchGameCreation() {
             alert('Every game must belong to at least 1 category and support at least 1 platform!');
         }
         else {
-            fetch('http://localhost:5000/game', {
+            fetch(`http://${ BACK_END_HOST }:${ BACK_END_PORT }/game`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -137,7 +137,7 @@ function watchGameCreation() {
                     const formData = new FormData();
                     formData.append('gameImage', file);
                     if (file !== '') {
-                        fetch(`http://localhost:5000/game/${ gid }/image`, {
+                        fetch(`http://${ BACK_END_HOST }:${ BACK_END_PORT }/game/${ gid }/image`, {
                             method: 'PATCH',
                             headers: {
                                 'Authorization': 'Bearer ' + localStorage.getItem('sp-games-token')
@@ -149,7 +149,7 @@ function watchGameCreation() {
                             .catch(err => alert(err['message']));
                     }
                 })
-                .catch(console.log)
+                .catch(ignore)
                 .finally(loadAdminGameContent);
         }
     });
@@ -187,12 +187,10 @@ function watchGameEdition() {
             categoryids: categoryids,
             platformids: platformids
         };
-        console.log(UPDATED_GAME);
         const formData = new FormData();
         formData.append('gameImage', NEW_GAME_IMG);
-        console.log(NEW_GAME_IMG);
         if (NEW_GAME_IMG) {
-            fetch(`http://localhost:5000/game/${ gid }/image`, {
+            fetch(`http://${ BACK_END_HOST }:${ BACK_END_PORT }/game/${ gid }/image`, {
                 method: 'PATCH',
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('sp-games-token')
@@ -200,7 +198,7 @@ function watchGameEdition() {
                 body: formData
             });
         }
-        fetch(`http://localhost:5000/game/${ gid }`, {
+        fetch(`http://${ BACK_END_HOST }:${ BACK_END_PORT }/game/${ gid }`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -222,7 +220,7 @@ function watchGameEdition() {
                         alert('Successfully updated!');
                 }
             })
-            .catch(console.log)
+            .catch(ignore)
             .finally(loadAdminGameContent);
     });
 }
@@ -234,7 +232,7 @@ function watchGameDeletion() {
         /** @type {string} */
         const gameSelected = $($this).parent().parent().prop('id');
         const gid = gameSelected.split('-')[1];
-        fetch(`http://localhost:5000/game/${ gid }`, {
+        fetch(`http://${ BACK_END_HOST }:${ BACK_END_PORT }/game/${ gid }`, {
             method: 'DELETE',
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('sp-games-token')
@@ -246,6 +244,6 @@ function watchGameDeletion() {
                     loadAdminGameContent();
                 }
             })
-            .catch(console.log);
+            .catch(ignore);
     });
 }

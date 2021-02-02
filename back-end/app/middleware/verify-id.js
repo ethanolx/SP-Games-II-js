@@ -10,18 +10,10 @@ import express from 'express';
  * @param {string} label
  * @returns {express.Handler}
  */
-export default (location, label) => {
+export default (label) => {
     return (req, res, next) => {
         /** @type { string} */
-        let id;
-        switch (location) {
-            case 'body':
-                id = req.body[label];
-                break;
-            case 'params':
-                id = req.params[label];
-                break;
-        }
+        const id = req.params[label];
         const PARSED_ID = parseInt(id);
         if (`${ PARSED_ID }` !== id) {
             res.status(400).json({ message: 'Invalid id provided' });

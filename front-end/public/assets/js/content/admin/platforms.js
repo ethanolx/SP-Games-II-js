@@ -1,5 +1,5 @@
 function loadPlatformContent() {
-    fetch('http://localhost:5000/platform', { method: 'GET' })
+    fetch(`http://${ BACK_END_HOST }:${ BACK_END_PORT }/platform`, { method: 'GET' })
         .then(res => res.json())
         .then((
             /** @type {{
@@ -21,7 +21,7 @@ function loadPlatformContent() {
             watchPlatformDeletion();
             watchPlatformEdition();
         })
-        .catch(console.log);
+        .catch(ignore);
 }
 
 function watchPlatformCreation() {
@@ -34,7 +34,7 @@ function watchPlatformCreation() {
                 platform: newPlatName,
                 version: newPlatVersion
             };
-            fetch('http://localhost:5000/platform', {
+            fetch(`http://${ BACK_END_HOST }:${ BACK_END_PORT }/platform`, {
                 method: 'POST',
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('sp-games-token'),
@@ -58,7 +58,7 @@ function watchPlatformCreation() {
                 .then(() => {
                     loadPlatformContent();
                 })
-                .catch(console.log);
+                .catch(ignore);
         }
     });
 }
@@ -74,7 +74,7 @@ function watchPlatformEdition() {
             platform: newPlatName,
             version: newPlatVersion
         };
-        fetch(`http://localhost:5000/platform/${ cid }`, {
+        fetch(`http://${ BACK_END_HOST }:${ BACK_END_PORT }/platform/${ cid }`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -99,7 +99,7 @@ function watchPlatformEdition() {
             .then(() => {
                 loadPlatformContent();
             })
-            .catch(console.log);
+            .catch(ignore);
     });
 }
 
@@ -110,7 +110,7 @@ function watchPlatformDeletion() {
         /** @type {string} */
         const platformSelected = $($this).parent().parent().prop('id');
         const pid = platformSelected.split('-')[1];
-        fetch(`http://localhost:5000/platform/${ pid }`, {
+        fetch(`http://${ BACK_END_HOST }:${ BACK_END_PORT }/platform/${ pid }`, {
             method: 'DELETE',
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('sp-games-token')
@@ -122,6 +122,6 @@ function watchPlatformDeletion() {
                     loadPlatformContent();
                 }
             })
-            .catch(console.log);
+            .catch(ignore);
     });
 }
