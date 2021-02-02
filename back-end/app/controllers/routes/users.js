@@ -41,19 +41,19 @@ router.use(express.static(join(__dirname, '..', '..', '..', 'assets', 'user-imag
 
 // Route Handlers
 router.route('/users')
-    .get((req, res) => {
-        Users.findAll((err, results) => {
-            if (err) {
-                res.sendStatus(500);
-            }
-            else if (results === null) {
-                res.status(200).json([]);
-            }
-            else {
-                res.status(200).json(results);
-            }
-        });
-    })
+    // .get((req, res) => {
+    //     Users.findAll((err, results) => {
+    //         if (err) {
+    //             res.sendStatus(500);
+    //         }
+    //         else if (results === null) {
+    //             res.status(200).json([]);
+    //         }
+    //         else {
+    //             res.status(200).json(results);
+    //         }
+    //     });
+    // })
     .post(verifyData({
         username: 'string',
         email: 'string',
@@ -98,7 +98,6 @@ router.route('/users/:id')
     .all(verifyId('id'))
     .get((req, res) => {
         const USER_ID = parseInt(req.params.id);
-        const { token } = req.body;
         Users.findOne(USER_ID, (err, result) => {
             if (err) {
                 res.sendStatus(500);
@@ -107,7 +106,9 @@ router.route('/users/:id')
                 res.sendStatus(404);
             }
             else {
-                res.status(200).json(result[0]);
+                const user = result[0];
+                delete user.password;
+                res.status(200).json(user);
             }
         });
     })
@@ -120,7 +121,7 @@ router.route('/users/:id')
                 res.sendStatus(500);
             }
             else {
-                res.status(200).json(result);
+                res.sendStatus(204);
             }
         });
     });
@@ -133,9 +134,8 @@ router.route('/user/login')
                 res.status(200).json({ token: result });
             }
             else {
-                // @ts-ignore
-                if (err.status === 500) {
-                    res.sendStatus(403);
+                if (err.code === 'custom') {
+                    res.sendStatus(401);
                 }
                 else {
                     res.sendStatus(500);

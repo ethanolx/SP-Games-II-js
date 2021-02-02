@@ -8,21 +8,16 @@ function loadContent() {
             case '/':
                 break;
             case '/games':
-                loadGameContent();
-                watchGameSelection();
-                watchSearchConditions();
                 loadFilterBar();
+                loadGameContent();
                 break;
             case '/profile':
                 loadProfileContent();
-                watchProfileEdition();
                 break;
             case '/categories':
-                watchCategoryCreation();
                 loadCategoryContent();
                 break;
             case '/platforms':
-                watchPlatformCreation();
                 loadPlatformContent();
                 break;
             case '/games-admin':

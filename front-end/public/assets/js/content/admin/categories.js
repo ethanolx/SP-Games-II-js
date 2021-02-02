@@ -1,4 +1,7 @@
 function loadCategoryContent() {
+    $('.category-info').off('submit');
+    $('#new-category').off('submit');
+    $('.del-btn').off('click');
     fetch(`http://${ BACK_END_HOST }:${ BACK_END_PORT }/category`, { method: 'GET' })
         .then(res => res.json())
         .then((
@@ -21,7 +24,8 @@ function loadCategoryContent() {
             watchCategoryDeletion();
             watchCategoryEdition();
         })
-        .catch(ignore);
+        .catch(ignore)
+        .finally(watchCategoryCreation);
 }
 
 function watchCategoryCreation() {
@@ -48,8 +52,7 @@ function watchCategoryCreation() {
                         case 400:
                         case 422:
                             res.json()
-                                .then(err => err['message'])
-                                .then(alert);
+                                .then(err => alert(err['message']));
                             return;
                         case 500:
                             throw Error('Error');
@@ -87,8 +90,7 @@ function watchCategoryEdition() {
                     case 400:
                     case 422:
                         res.json()
-                            .then(err => err['message'])
-                            .then(alert);
+                            .then(err => alert(err['message']));
                         return;
                     case 500:
                         throw Error('Error');
@@ -96,10 +98,8 @@ function watchCategoryEdition() {
                         alert('Successfully updated!');
                 }
             })
-            .then(() => {
-                loadCategoryContent();
-            })
-            .catch(ignore);
+            .catch(ignore)
+            .finally(loadCategoryContent);
     });
 }
 
@@ -116,12 +116,7 @@ function watchCategoryDeletion() {
                 'Authorization': 'Bearer ' + localStorage.getItem('sp-games-token')
             }
         })
-            .then(res => res.status)
-            .then(status => {
-                if (status === 204) {
-                    loadCategoryContent();
-                }
-            })
-            .catch(ignore);
+            .catch(ignore)
+            .finally(loadCategoryContent);
     });
 }

@@ -64,23 +64,23 @@ const Games = {
      * @param {string} version
      * @param {import('../utils/callbacks.js').Callback} callback
      */
-    findByPlatform: (platform, version, callback) => {
-        Platforms.findIds({ platform: platform, version: version }, (err, ids) => {
-            if (err) {
-                logError(err);
-                return callback(err, null);
-            }
-            else if (ids === null) {
-                return callback(null, null);
-            }
-            else {
-                /**@type {number[]} */
-                //@ts-ignore
-                const IDS = ids.map(wrapper => wrapper['id']);
-                return Games.findByPlatformIds(IDS, callback);
-            }
-        });
-    },
+    // findByPlatform: (platform, version, callback) => {
+    //     Platforms.findIds({ platform: platform, version: version }, (err, ids) => {
+    //         if (err) {
+    //             logError(err);
+    //             return callback(err, null);
+    //         }
+    //         else if (ids === null) {
+    //             return callback(null, null);
+    //         }
+    //         else {
+    //             /**@type {number[]} */
+    //             //@ts-ignore
+    //             const IDS = ids.map(wrapper => wrapper['id']);
+    //             return Games.findByPlatformIds(IDS, callback);
+    //         }
+    //     });
+    // },
 
     /**
      * Upload a new game
@@ -213,33 +213,33 @@ const Games = {
      * @param {number[]} platformids
      * @param {import('../utils/callbacks.js').Callback} callback
      */
-    findByPlatformIds: (platformids, callback) => {
-        const GET_ALL_GAMES_BY_PLATFORM_SQL = 'SELECT gameid FROM game_platform_asc WHERE platformid in (?);';
-        query(GET_ALL_GAMES_BY_PLATFORM_SQL, emptyCallback, [platformids], async (err, gameids) => {
-            if (err) {
-                logError(err);
-                return callback(err, null);
-            }
-            else {
-                //@ts-ignore
-                if (gameids.length === 0) {
-                    return callback(null, null);
-                }
-                else {
-                    //@ts-ignore
-                    const GAMES = await promisify(Games.findByGameIds)(gameids.map(wrapper => wrapper.gameid)).catch(logError);
-                    let gamesDetailed = [];
-                    // @ts-ignore
-                    for (let game of GAMES) {
-                        const CATEGORIES = await promisify(Categories.findByGame)(game.gameid).catch(logError);
-                        const PLATFORMS = await promisify(Platforms.findByGame)(game.gameid).catch(logError);
-                        gamesDetailed.push({ ...game, categories: CATEGORIES, platforms: PLATFORMS });
-                    }
-                    return callback(null, gamesDetailed);
-                }
-            }
-        });
-    },
+    // findByPlatformIds: (platformids, callback) => {
+    //     const GET_ALL_GAMES_BY_PLATFORM_SQL = 'SELECT gameid FROM game_platform_asc WHERE platformid in (?);';
+    //     query(GET_ALL_GAMES_BY_PLATFORM_SQL, emptyCallback, [platformids], async (err, gameids) => {
+    //         if (err) {
+    //             logError(err);
+    //             return callback(err, null);
+    //         }
+    //         else {
+    //             //@ts-ignore
+    //             if (gameids.length === 0) {
+    //                 return callback(null, null);
+    //             }
+    //             else {
+    //                 //@ts-ignore
+    //                 const GAMES = await promisify(Games.findByGameIds)(gameids.map(wrapper => wrapper.gameid)).catch(logError);
+    //                 let gamesDetailed = [];
+    //                 // @ts-ignore
+    //                 for (let game of GAMES) {
+    //                     const CATEGORIES = await promisify(Categories.findByGame)(game.gameid).catch(logError);
+    //                     const PLATFORMS = await promisify(Platforms.findByGame)(game.gameid).catch(logError);
+    //                     gamesDetailed.push({ ...game, categories: CATEGORIES, platforms: PLATFORMS });
+    //                 }
+    //                 return callback(null, gamesDetailed);
+    //             }
+    //         }
+    //     });
+    // },
 
     /**
      * Find one game by its id

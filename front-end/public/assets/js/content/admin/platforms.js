@@ -1,4 +1,7 @@
 function loadPlatformContent() {
+    $('.platform-info').off('submit');
+    $('#new-platform').off('submit');
+    $('.del-btn').off('click');
     fetch(`http://${ BACK_END_HOST }:${ BACK_END_PORT }/platform`, { method: 'GET' })
         .then(res => res.json())
         .then((
@@ -21,7 +24,8 @@ function loadPlatformContent() {
             watchPlatformDeletion();
             watchPlatformEdition();
         })
-        .catch(ignore);
+        .catch(ignore)
+        .finally(watchPlatformCreation);
 }
 
 function watchPlatformCreation() {
@@ -48,17 +52,14 @@ function watchPlatformCreation() {
                         case 400:
                         case 422:
                             res.json()
-                                .then(err => err['message'])
-                                .then(alert);
+                                .then(err => alert(err['message']));
                             return;
                         case 500:
                             throw Error('Error');
                     }
                 })
-                .then(() => {
-                    loadPlatformContent();
-                })
-                .catch(ignore);
+                .catch(ignore)
+                .finally(loadPlatformContent);
         }
     });
 }
@@ -87,8 +88,7 @@ function watchPlatformEdition() {
                     case 400:
                     case 422:
                         res.json()
-                            .then(err => err['message'])
-                            .then(alert);
+                            .then(err => alert(err['message']));
                         return;
                     case 500:
                         throw Error('Error');
@@ -116,12 +116,7 @@ function watchPlatformDeletion() {
                 'Authorization': 'Bearer ' + localStorage.getItem('sp-games-token')
             }
         })
-            .then(res => res.status)
-            .then(status => {
-                if (status === 204) {
-                    loadPlatformContent();
-                }
-            })
-            .catch(ignore);
+            .catch(ignore)
+            .finally(loadPlatformContent);
     });
 }

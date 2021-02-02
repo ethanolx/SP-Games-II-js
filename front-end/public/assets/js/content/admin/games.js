@@ -9,7 +9,8 @@ function loadAdminNewGameContent() {
             $('#new-game-categories').html(categories.map(category => {
                 return CategoryCheckbox(category['id'], category['catname']);
             }).join(''));
-        });
+        })
+        .catch(ignore);
     fetch(`http://${ BACK_END_HOST }:${ BACK_END_PORT }/platform`, { method: 'GET' })
         .then(res => res.json())
         .then((
@@ -20,7 +21,8 @@ function loadAdminNewGameContent() {
             $('#new-game-platforms').html(platforms.map(platform => {
                 return PlatformCheckbox(platform['id'], `${ platform['platform'] } ${ platform['version'] }`);
             }).join(''));
-        });
+        })
+        .catch(ignore);
 }
 
 function loadAdminGameContent() {
@@ -54,7 +56,8 @@ function loadAdminGameContent() {
                         $(`#game-${ gid }-categories`).html(categories.map(category => {
                             return CategoryExistingCheckbox(category['id'], category['catname'], gid, g.categories.map(c => c.catid).includes(category['id']));
                         }).join(''));
-                    });
+                    })
+                    .catch(ignore);
                 fetch(`http://${ BACK_END_HOST }:${ BACK_END_PORT }/platform`, { method: 'GET' })
                     .then(res => res.json())
                     .then((
@@ -65,9 +68,11 @@ function loadAdminGameContent() {
                         $(`#game-${ gid }-platforms`).html(platforms.map(platform => {
                             return PlatformExistingCheckbox(platform['id'], `${ platform['platform'] } ${ platform['version'] }`, gid, g.platforms.map(p => p.pid).includes(platform['id']));
                         }).join(''));
-                    });
+                    })
+                    .catch(ignore);
             });
         })
+        .catch(ignore)
         .finally(loadAdminNewGameContent)
         .finally(watchGameCreation)
         .finally(watchGameEdition)
@@ -136,7 +141,7 @@ function watchGameCreation() {
                     const file = $('#new-game-img').prop('files')[0];
                     const formData = new FormData();
                     formData.append('gameImage', file);
-                    if (file !== '') {
+                    if (file) {
                         fetch(`http://${ BACK_END_HOST }:${ BACK_END_PORT }/game/${ gid }/image`, {
                             method: 'PATCH',
                             headers: {
@@ -144,9 +149,12 @@ function watchGameCreation() {
                             },
                             body: formData
                         })
-                            .then(res => res.json())
-                            .then(alert)
-                            .catch(err => alert(err['message']));
+                            .then(res => {
+                                if (!res.ok) {
+                                    res.json().then(err => alert(`media types supported: ${ err['media_types_supported'] }\nmax file size: ${ (err['max_file_size_bytes'] / 1000000).toFixed(2) } MB`));
+                                }
+                            })
+                            .catch(ignore);
                     }
                 })
                 .catch(ignore)
@@ -196,7 +204,13 @@ function watchGameEdition() {
                     'Authorization': 'Bearer ' + localStorage.getItem('sp-games-token')
                 },
                 body: formData
-            });
+            })
+                .then(res => {
+                    if (!res.ok) {
+                        res.json().then(err => alert(`media types supported: ${ err['media_types_supported'] }\nmax file size: ${ (err['max_file_size_bytes'] / 1000000).toFixed(2) } MB`));
+                    }
+                })
+                .catch(alert);
         }
         fetch(`http://${ BACK_END_HOST }:${ BACK_END_PORT }/game/${ gid }`, {
             method: 'PUT',

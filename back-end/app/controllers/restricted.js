@@ -17,7 +17,7 @@ router
 
 // Verify User is Modifying Their Details Only
 router
-    .get('/users/:id', verifyUser('uid'))
+    .get('/users/:id', verifyUser('id'))
     .post('/user/:uid/game/:gid/review', verifyUser('uid'))
     .put('/users/:id', verifyUser('id'))
     .patch('/user/:uid/image', verifyUser('uid'));

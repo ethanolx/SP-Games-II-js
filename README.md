@@ -16,9 +16,9 @@
 2.  Ensure npm is installed                 (run `npm --version` to check)
 3.  Navigate to `SP Games II/front-end` directory through command line
 4.  Run `npm install`
-5.  Configure Express Server (front) settings in the following file:
+5.  Configure Express Server ([front](#front-end)) settings in the following file:
     -   `app/config/server.conf.js`
-6.  Configure Express Server (back) settings in the following file:
+6.  Configure Express Server ([back](#back-end)) settings in the following file:
     -   `public/assets/js/global-variables.js`
 7.  Run `npm start` to start the front-end server
 
@@ -97,8 +97,8 @@
 3.  Games are sorted and displayed alphabetically (ascending)
 4.  Reviews can be sorted by these conditions (both ascending and descending):
     1.  Date Created
-    2.  Ratings
-    3.  User who Posted
+    2.  Rating
+    3.  User
 5.  Members can edit and update their profiles, and upload profile images
 6.  Administrators have these additional privileges:
     1.  Update and delete existing categories
@@ -118,14 +118,14 @@ _[Click Here](#extra-features-back-end)_ to see extra features for the back-end
 4.  Configure MySQL Server `root` account
 5.  Start local MySQL Server
 6.  Run the following SQL Scripts (either 1 or 2) in MySQL Server:
-    1.  init.sql & data.sql  (as root user)
-    2.  dump.sql             (as root user using spgames database)
+    1.  init.sql & data.sql  (as root user using `spgames` database)
+    2.  dump.sql             (as root user)
 7.  Navigate to `SP Games II/back-end` directory through command line
 8.  Run `npm install`
 9.  Configure MySQL `root` configurations in the following files:
     -   `app/config/database.config.js`
     -   `app/tests/reset-database.js`
-10. Configure Express Server (back) settings in the following file:
+10. Configure Express Servers ([front](#front-end) & [back](#back-end)) settings in the following file:
     -   `app/config/server.config.js`
 11. Run `npm test` to test the API endpoints or
 12. Run `npm start` to start the back-end server
@@ -133,6 +133,7 @@ _[Click Here](#extra-features-back-end)_ to see extra features for the back-end
 ### File Structure
 
     back-end ---- app ---- config ---- database.config.js
+              |        |           |-- secret-key.js
               |        |           `-- server.config.js
               |        |
               |        |-- controllers ---- routes ---- categories.js
@@ -163,6 +164,7 @@ _[Click Here](#extra-features-back-end)_ to see extra features for the back-end
               |        |
               |        |-- utils ---- callbacks.js
               |        |          |-- compare-object-to-signature.js
+              |        |          |-- custom-error.js
               |        |          |-- get-current-date-and-time.js
               |        |          |-- image-upload-utilities
               |        |          |-- logs.js
@@ -196,6 +198,7 @@ _[Click Here](#extra-features-back-end)_ to see extra features for the back-end
               |          |              `-- 11.spec.js
               |          |
               |          |-- reset-database.js
+              |          |-- sample-token.js
               |          `-- test.spec.js
               |
               |-- jsconfig.json
@@ -236,12 +239,12 @@ _[Click Here](#extra-features-front-end)_ to see extra features for the front-en
 
 1.  Added one column (`password`) to `users` table
 2.  Added `user-images` folder under `assets` to store profile images
-2.  Added and mounted middleware to evaluate ids, data bodies, login status, current user and admin permissions
-2.  Added endpoints for category and platform management
-3.  Removed excess API endpoints (`/`, `/game/:gid/image/info`, and `*`)
-4.  Removed unnecessary API endpoints
-5.  Removed html templates
-6.  Renamed `src` directory to `app`
+3.  Added and mounted middleware to evaluate ids, data bodies, login status, current user and admin permissions
+4.  Added endpoints for category and platform management
+5.  Removed excess API endpoints (`/`, `/game/:gid/image/info`, and `*`)
+6.  Removed unnecessary API endpoints (`GET /users`, `GET /games/:platform`)
+7.  Removed html templates
+8.  Renamed `src` directory to `app`
 
 ## See Also
 

@@ -3,6 +3,7 @@ import colors from 'colors';
 import { TEST_PORT, HOST } from '../../app/config/server.config.js';
 import { emptyCallback } from '../../app/utils/callbacks.js';
 import compareObjectToSignature from '../../app/utils/compare-object-to-signature.js';
+import sampleToken from '../sample-token.js';
 
 export default async () => {
     const MESSAGE = '6.  POST    /game';
@@ -13,10 +14,13 @@ export default async () => {
             description: "Assassin's Creed Valhalla is an action role-playing video game developed by Ubisoft Montreal and published by Ubisoft",
             price: 69.90,
             platformids: [1, 2],
-            categoryids: [2, 5],
+            categoryids: [5, 6, 7],
             year: 2020
         }),
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + sampleToken
+        }
     })
         .then(res => {
             if (res.status === 201) {

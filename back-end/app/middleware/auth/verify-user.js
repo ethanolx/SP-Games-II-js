@@ -14,7 +14,7 @@ export default (label) => {
             next();
         }
         else {
-            res.status(401).json({ message: `No Access to User ${ TARGET_USER_ID }` });
+            res.status(403).json({ message: `No Access to User ${ TARGET_USER_ID }` });
         }
     };
 };

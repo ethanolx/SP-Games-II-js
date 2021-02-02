@@ -11,7 +11,7 @@ router.all('*', (req, res) => {
         res.sendStatus(405);
     }
     else {
-        res.redirect(`/`);
+        res.redirect('/');
     }
 });
 

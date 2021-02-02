@@ -9,12 +9,14 @@ export default async () => {
     return fetch(`http://${ HOST }:${ TEST_PORT }/users`, {
         method: 'POST',
         body: JSON.stringify({
-            username: "Terry Tan",
-            email: "terry@gmail.com",
+            username: "Manny Lim",
+            email: "ml@gmail.com",
             password: "12345Abc@",
             profile_pic_url: "https://www.abc.com/terry.jpg"
         }),
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+            'Content-Type': 'application/json'
+        }
     })
         .then(res => {
             if (res.status === 201) {

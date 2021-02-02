@@ -14,10 +14,10 @@ export default {
      * @param {Platform} platform
      * @param {import('../utils/callbacks.js').Callback} callback
      */
-    findIds: (platform, callback) => {
-        const GET_PLATFORM_ID_SQL = 'SELECT id FROM platforms WHERE platform = ? AND (ISNULL(?) OR version = ?);';
-        query(GET_PLATFORM_ID_SQL, callback, [platform.platform, platform.version, platform.version]);
-    },
+    // findIds: (platform, callback) => {
+    //     const GET_PLATFORM_ID_SQL = 'SELECT id FROM platforms WHERE platform = ? AND (ISNULL(?) OR version = ?);';
+    //     query(GET_PLATFORM_ID_SQL, callback, [platform.platform, platform.version, platform.version]);
+    // },
 
     /**
      * Find the platforms supported for a selected game

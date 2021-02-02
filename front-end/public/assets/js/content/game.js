@@ -49,6 +49,9 @@ function sortReviews(reviews) {
  * @param {number} id
  */
 function loadSingleGameContent(id) {
+    $('#sort-reviews-condition').off('input');
+    $('#sort-reviews-order').off('input');
+    $('#new-review').off('submit');
     fetch(`http://${ BACK_END_HOST }:${ BACK_END_PORT }/game/${ id }`, { method: 'GET' })
         .then(res => res.json())
         .then(async (/** @type {Game} */ game) => {
@@ -118,11 +121,9 @@ function watchReviewCreation() {
             })
         })
             .then(res => $('#new-review').trigger('reset'))
+            .catch(ignore)
             .finally(() => {
                 loadSingleGameContent(gameid);
             });
     });
 }
-
-
-

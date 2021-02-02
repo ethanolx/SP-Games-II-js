@@ -22,13 +22,13 @@ const SERVER = app.listen(TEST_PORT, () => {
 
 // Register Endpoints For Testing
 async function test() {
-    console.log(await e1());
+    // console.log(await e1());
     console.log(await e2());
     console.log(await e3());
     console.log(await e4());
     console.log(await e5());
     console.log(await e6());
-    console.log(await e7());
+    // console.log(await e7());
     console.log(await e8());
     console.log(await e9());
     console.log(await e10());
@@ -36,4 +36,4 @@ async function test() {
     SERVER.close(_ => console.log('\nEnd tests.'));
 }
 
-resetDatabase().then(_ => setTimeout(test, 2000));
+resetDatabase().then(() => setTimeout(test, 2000));

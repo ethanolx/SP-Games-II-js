@@ -3,10 +3,11 @@ import query from '../utils/query.js';
 import jwt from 'jsonwebtoken';
 import KEY from '../config/secret-key.js';
 import { emptyCallback } from '../utils/callbacks.js';
-
+import QueryError from '../utils/custom-error.js';
 /**
  * Object representing each user
  * @typedef {Object} User
+ * @property {number} [userid]              - ID of a user
  * @property {string} [username]            - Username of a user
  * @property {string} [email]               - User's email
  * @property {string} [password]            - User's password
@@ -73,20 +74,16 @@ export default {
                 /** @type {User} */
                 // @ts-ignore
                 const user = result[0];
-                // @ts-ignore
                 const token = jwt.sign({ id: user.userid, type: user.type }, KEY, {
-                    expiresIn: 86400 //expires in 24 hrs
+                    expiresIn: 86400
                 });
                 delete user['password'];
-                // @ts-ignore
                 return callback(null, token);
             }
             else {
-                var err2 = new Error("UserID/Password does not match.");
-                // @ts-ignore
-                err2.status = 500;
-                // @ts-ignore
-                return callback(err2, null);
+                /** @type {import('mysql2').QueryError} */
+                var er = new QueryError("Username/Email/Password does not match.", "custom");
+                return callback(er, null);
             }
         });
     }

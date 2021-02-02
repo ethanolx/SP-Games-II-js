@@ -3,6 +3,7 @@ import colors from 'colors';
 import { TEST_PORT, HOST } from '../../app/config/server.config.js';
 import { emptyCallback } from '../../app/utils/callbacks.js';
 import compareObjectToSignature from '../../app/utils/compare-object-to-signature.js';
+import sampleToken from '../sample-token.js';
 
 export default async () => {
     const MESSAGE = '10. POST    /user/:uid/game/:gid/review';
@@ -12,7 +13,10 @@ export default async () => {
             content: "Enjoyed the game! The story and gameplay was good!",
             rating: 5.0
         }),
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + sampleToken
+        }
     })
         .then(res => (res.status === 201 ? res.json() : false))
         .then(

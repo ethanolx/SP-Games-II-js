@@ -56,23 +56,23 @@ router.route('/games')
         });
     });
 
-router.route('/games/:platform')
-    .get((req, res) => {
-        const { platform } = req.params;
-        const { version } = req.query ?? null;
-        //@ts-ignore
-        Games.findByPlatform(platform, version, (err, results) => {
-            if (err) {
-                res.sendStatus(500);
-            }
-            else if (results === null) {
-                res.sendStatus(404);
-            }
-            else {
-                res.status(200).json(results);
-            }
-        });
-    });
+// router.route('/games/:platform')
+//     .get((req, res) => {
+//         const { platform } = req.params;
+//         const { version } = req.query ?? null;
+//         //@ts-ignore
+//         Games.findByPlatform(platform, version, (err, results) => {
+//             if (err) {
+//                 res.sendStatus(500);
+//             }
+//             else if (results === null) {
+//                 res.sendStatus(404);
+//             }
+//             else {
+//                 res.status(200).json(results);
+//             }
+//         });
+//     });
 
 router.route('/game/:id')
     .all(verifyId('id'))

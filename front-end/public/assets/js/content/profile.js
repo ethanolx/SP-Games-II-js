@@ -5,6 +5,7 @@ function loadProfileContent() {
     const user = { ...GLOBAL_USER };
     const { username, email, profile_pic_url } = user;
     $('#chg-profile').html(ProfileCard(username, email, profile_pic_url || ''));
+    watchProfileEdition();
     watchProfilePicUpload();
 }
 
@@ -27,7 +28,7 @@ function watchProfilePicUpload() {
  * Monitors when user updates their profile details
  */
 function watchProfileEdition() {
-    $('#chg-profile').on('submit', (event) => {
+    $('#chg-profile').one('submit', (event) => {
         event.preventDefault();
         const USER_ID = GLOBAL_USER.userid;
 
@@ -54,7 +55,7 @@ function watchProfileEdition() {
             }
         }
         if (NEW_PROFILE_IMG) {
-            fetch(`http://${BACK_END_HOST}:${BACK_END_PORT}/user/${ USER_ID }/image`, {
+            fetch(`http://${ BACK_END_HOST }:${ BACK_END_PORT }/user/${ USER_ID }/image`, {
                 method: 'PATCH',
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('sp-games-token')
@@ -63,12 +64,12 @@ function watchProfileEdition() {
             })
                 .then(res => {
                     if (!res.ok) {
-                        res.json().then(err => { throw err; });
+                        res.json().then(err => alert(`media types supported: ${err['media_types_supported']}\nmax file size: ${(err['max_file_size_bytes'] / 1000000).toFixed(2)} MB`));
                     }
                 })
                 .catch(ignore);
         }
-        fetch(`http://${BACK_END_HOST}:${BACK_END_PORT}/users/${ USER_ID }`, {
+        fetch(`http://${ BACK_END_HOST }:${ BACK_END_PORT }/users/${ USER_ID }`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -82,7 +83,21 @@ function watchProfileEdition() {
                 }
             })
             .then(() => alert('Successfully updated!'))
-            .catch(err => alert(err.message))
-            .finally(() => window.location.reload());
+            .catch(err => alert('Error encountered'))
+            .finally(() => {
+                const userid = GLOBAL_USER.userid;
+                fetch(`http://${ BACK_END_HOST }:${ BACK_END_PORT }/users/${ userid }`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('sp-games-token')
+                    }
+                })
+                    .then(res => res.json())
+                    .then(user => {
+                        GLOBAL_USER = user;
+                    })
+                    .catch(ignore)
+                    .finally(loadProfileContent);
+            });
     });
 }

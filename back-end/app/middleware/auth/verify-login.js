@@ -25,12 +25,14 @@ export default (req, res, next) => {
             const DECODED_TOKEN = decoded;
             Users.findOne(DECODED_TOKEN['id'], (err, result) => {
                 if (err || !result) {
-                    res.sendStatus(401)
+                    res.sendStatus(401);
                 }
                 else {
-                    res.status(200).json(result[0]);
+                    const user = result[0];
+                    delete user.password;
+                    res.status(200).json(user);
                 }
             });
         }
-    })
-}
+    });
+};

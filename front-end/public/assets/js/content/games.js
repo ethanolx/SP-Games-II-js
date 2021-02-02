@@ -66,6 +66,8 @@ function watchSearchConditions() {
  * Loads the filter bar
  */
 function loadFilterBar() {
+    conditions = [];
+    $('#search').trigger('reset');
     fetch(`http://${ BACK_END_HOST }:${ BACK_END_PORT }/category`, { method: 'GET' })
         .then(res => res.json())
         .then(categories => {
@@ -75,7 +77,8 @@ function loadFilterBar() {
                 category
             ) => CategoryFilterOption(category.id, category.catname)).join('');
             $('#category-filter').html(categoryFilterOptions);
-        });
+        })
+        .catch(ignore);
     fetch(`http://${ BACK_END_HOST }:${ BACK_END_PORT }/platform`, { method: 'GET' })
         .then(res => res.json())
         .then(platforms => {
@@ -85,13 +88,16 @@ function loadFilterBar() {
                 platform
             ) => PlatformFilterOption(platform.id, `${ platform.platform } ${ platform.version }`)).join('');
             $('#platform-filter').html(platformFilterOptions);
-        });
+        })
+        .catch(ignore);
 }
 
 /**
  * Load games with brief details
  */
 function loadGameContent() {
+    $('#search input, #search select').off('input');
+    $('.game-details').off('click');
     fetch(`http://${ BACK_END_HOST }:${ BACK_END_PORT }/games`, { method: 'GET' })
         .then(res => res.json())
         .then(filter(conditions))
@@ -127,15 +133,16 @@ function loadGameContent() {
                         }
                         return reviewsContent;
                     })
-                    .catch(ignore);
+                    .catch(err => '');
             }
             return content;
         })
         .then(content => {
             $('#games-content').html(content);
-            watchGameSelection();
         })
-        .catch(ignore);
+        .catch(ignore)
+        .finally(watchSearchConditions)
+        .finally(watchGameSelection);
 }
 
 /**

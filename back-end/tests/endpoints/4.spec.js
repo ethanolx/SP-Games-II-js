@@ -2,6 +2,7 @@ import fetch from 'node-fetch';
 import colors from 'colors';
 import { TEST_PORT, HOST } from '../../app/config/server.config.js';
 import { emptyCallback } from '../../app/utils/callbacks.js';
+import sampleToken from '../sample-token.js';
 
 export default async () => {
     const MESSAGE = '4.  POST    /category';
@@ -11,7 +12,10 @@ export default async () => {
             catname: "Action",
             description: "An action game emphasizes physical challenges, including hand–eye coordination and reaction-time"
         }),
-        headers: { 'content-type': 'application/json' }
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + sampleToken
+        }
     })
         .then(res => res.status === 204)
         .then(success =>
