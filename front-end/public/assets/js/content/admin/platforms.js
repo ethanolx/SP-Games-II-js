@@ -1,3 +1,12 @@
+"use strict";
+
+/*
+ *  Author:     Ethan Tan
+ *  Admin:      p2012085
+ *  Class:      DAAA/FT/1B/03
+ *  File:       platforms.js
+ */
+
 function loadPlatformContent() {
     $('.platform-info').off('submit');
     $('#new-platform').off('submit');

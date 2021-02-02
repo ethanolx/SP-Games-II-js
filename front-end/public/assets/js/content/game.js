@@ -1,3 +1,12 @@
+"use strict";
+
+/*
+ *  Author:     Ethan Tan
+ *  Admin:      p2012085
+ *  Class:      DAAA/FT/1B/03
+ *  File:       game.js
+ */
+
 /**
  * Monitor user's choice of review sorting
  */

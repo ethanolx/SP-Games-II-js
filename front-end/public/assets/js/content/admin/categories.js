@@ -1,3 +1,12 @@
+"use strict";
+
+/*
+ *  Author:     Ethan Tan
+ *  Admin:      p2012085
+ *  Class:      DAAA/FT/1B/03
+ *  File:       categories.js
+ */
+
 function loadCategoryContent() {
     $('.category-info').off('submit');
     $('#new-category').off('submit');
