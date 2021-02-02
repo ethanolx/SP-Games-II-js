@@ -208,22 +208,41 @@ _[Click Here](#extra-features-back-end)_ to see extra features for the back-end
 
 ### Endpoints Supported:
 
-|   No. |   Method  |   Route                                       |   Body?   |   Code    |
-|-------|-----------|-----------------------------------------------|-----------|-----------|
-|   1   |   GET     |   /users                                      |   NO      |   200     |
-|   2   |   POST    |   /users                                      |   YES     |   201     |
-|   3   |   GET     |   /users/:id/                                 |   NO      |   200     |
-|   4   |   POST    |   /category                                   |   YES     |   204     |
-|   5   |   PUT     |   /category/:id/                              |   YES     |   204     |
-|   6   |   POST    |   /game                                       |   YES     |   201     |
-|   7   |   GET     |   /games/:platform                            |   NO      |   200     |
-|   8   |   DELETE  |   /game/:id                                   |   NO      |   204     |
-|   9   |   PUT     |   /game/:id                                   |   YES     |   204     |
-|   10  |   POST    |   /user/:uid/game/:gid/review/                |   YES     |   201     |
-|   11  |   GET     |   /game/:id/review                            |   NO      |   200     |
-|   12  |   POST    |   <a id='post-img'></a>/game/:gid/image       |   YES     |   204     |
-|   13  |   GET     |   <a id='get-img'></a>/game/:gid/image        |   NO      |   200     |
-|   14  |   GET     |   <a id='get-info'></a>/game/:gid/image/info  |   NO      |   200     |
+|   No. |   Method  |   Route                           |   Body?   |   Code    |   Permission  |
+|-------|-----------|-----------------------------------|-----------|-----------|---------------|
+|   1   |   POST    |   /users                          |   YES     |   201     |   none        |
+|   2   |   GET     |   /users/:id                      |   NO      |   200     |   user        |
+|   3   |   PUT     |   /users/:id                      |   YES     |   204     |   user        |
+|   4   |   POST    |   /user/login                     |   YES     |   200     |   none        |
+|   5   |   POST    |   /user/verify-login              |   NO      |   201     |   user        |
+|   6   |   PATCH   |   /user/:uid/image                |   YES     |   204     |   user        |
+|       |           |                                   |           |           |               |
+|   7   |   GET     |   /category                       |   NO      |   200     |   none        |
+|   8   |   POST    |   /category                       |   YES     |   204     |   admin       |
+|   9   |   PUT     |   /category/:id                   |   YES     |   204     |   admin       |
+|   10  |   DELETE  |   /category/:id                   |   NO      |   204     |   admin       |
+|       |           |                                   |           |           |               |
+|   11  |   GET     |   /platform                       |   NO      |   200     |   none        |
+|   12  |   POST    |   /platform                       |   YES     |   204     |   admin       |
+|   13  |   PUT     |   /platform/:id                   |   YES     |   204     |   admin       |
+|   14  |   DELETE  |   /platform/:id                   |   NO      |   204     |   admin       |
+|       |           |                                   |           |           |               |
+|   15  |   POST    |   /user/:uid/game/:gid/review     |   YES     |   201     |   user        |
+|   16  |   GET     |   /game/:id/review                |   NO      |   200     |   none        |
+|       |           |                                   |           |           |               |
+|   17  |   GET     |   /games                          |   NO      |   200     |   none        |
+|   18  |   GET     |   /game/:id                       |   NO      |   200     |   none        |
+|   19  |   POST    |   /game                           |   YES     |   201     |   admin       |
+|   20  |   PUT     |   /game/:id                       |   YES     |   204     |   admin       |
+|   21  |   DELETE  |   /game/:id                       |   NO      |   204     |   admin       |
+|   22  |   PATCH   |   /game/:gid/image                |   YES     |   204     |   admin       |
+|   23  |   GET     |   /game/:gid/image                |   NO      |   200     |   none        |
+
+#### Permissions:
+
++   none:   no permissions required (accessible by the general public)
++   user:   modifications to the specified resource must be owned by the user making the changes
++   admin:  administrative permissions required (user's type must be 'Admin')
 
 ### Extra Features (back-end)
 

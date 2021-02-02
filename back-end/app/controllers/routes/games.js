@@ -148,7 +148,7 @@ router.route('/game/:gid/image')
             res.status(200).sendFile(FILES[0], { root: './assets/game-images' }, (err) => { if (err) logError(err); });
         }
         else {
-            res.sendStatus(204);
+            res.sendStatus(404);
         }
     })
     .patch((req, res, next) => {

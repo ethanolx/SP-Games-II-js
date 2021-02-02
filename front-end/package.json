@@ -4,9 +4,7 @@
     "description": "Year 1 / Semester 2 Back-End Web Development End-Semester Assignment",
     "main": "app/server.js",
     "scripts": {
-        "test": "nodemon --exitcrash app/server.js",
-        "start": "node .",
-        "build": "Remove-Item -Recurse -Force .\\node_modules"
+        "start": "node ."
     },
     "repository": {
         "type": "git",
