@@ -1,5 +1,5 @@
 {
-    "name": "spgames",
+    "name": "spgames-extended",
     "version": "1.0.0",
     "description": "Year 1 / Semester 2 Back-End Web Development End-Semester Assignment",
     "main": "app/server.js",

@@ -108,9 +108,10 @@ function PlatformFilterOption(id, platformFull) {
  * @param {string} username
  * @param {number} rating
  * @param {string} content
+ * @param {string} timestamp
  * @returns
  */
-function ReviewCard(username, rating, content) {
+function ReviewCard(username, rating, content, timestamp) {
     let border;
     if (rating > 7) {
         border = 'border-success';
@@ -131,8 +132,9 @@ function ReviewCard(username, rating, content) {
             <div class=\"card-body ${ border } px-3 text-justify\">
                 <span class=\"card-text\">${ content }</span>
             </div>
-            <div class=\"card-footer text-right ${ border } text-dark\">
-                <span class=\"card-text\">~ ${ username }</span>
+            <div class=\"card-footer ${ border } text-dark\">
+                <span class=\"card-text text-left d-none d-lg-inline\">${timestamp}</span>
+                <span class=\"card-text float-right\">~ ${ username }</span>
             </div>
         </div>
     </div>

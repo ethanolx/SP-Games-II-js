@@ -37,7 +37,7 @@ const IMAGE_STORAGE = multer({
 });
 
 // Middleware to Serve Static Assets
-router.use(express.static(join(__dirname, '..', '..', '..', 'assets', 'user-images')));
+router.use('/user-profile', express.static(join(__dirname, '..', '..', '..', 'assets', 'user-images')));
 
 // Route Handlers
 router.route('/users')
@@ -76,7 +76,7 @@ router.route('/users')
 router.patch('/user/:uid/image', verifyId('uid'), IMAGE_STORAGE.single('userImage'), (req, res) => {
     if (req.file) {
         const USER_ID = parseInt(req.params.uid);
-        const NEW_PROFILE_PIC_URL = `http://${ HOST }:${ PORT }/${ USER_ID.toString() + extname(req.file.originalname) }`;
+        const NEW_PROFILE_PIC_URL = `http://${ HOST }:${ PORT }/user-profile/${ USER_ID.toString() + extname(req.file.originalname) }`;
         Users.update(USER_ID, { profile_pic_url: NEW_PROFILE_PIC_URL }, (err, result) => {
             if (err) {
                 res.sendStatus(500);

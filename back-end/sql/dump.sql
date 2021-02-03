@@ -19,6 +19,8 @@
 -- Table structure for table `categories`
 --
 
+CREATE DATABASE IF NOT EXISTS `spgames`;
+
 USE `spgames`;
 
 DROP TABLE IF EXISTS `categories`;

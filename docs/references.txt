@@ -1,0 +1,20 @@
+generic
+1.  blank.jpg:
+    https://wallpapercave.com/w/wp3514108
+2.  favicon.png:
+    https://www.freepik.com
+    https://www.flaticon.com/
+3.  logo.png:
+    https://www.sp.edu.sg
+4.  not-found.jpg:
+    https://wallpapercave.com/w/wp8335004
+5.  online-games.jpg:
+    https://wallpapercave.com/w/wp8318724
+
+game-wallpapers
+1.  assassins-creed-wallpaper.jpg:
+    https://wallpapercave.com/w/wp6196495
+2.  cod-wallpaper.jpg:
+    https://wallpapercave.com/w/9IXmW92
+3.  diablo-iii-wallpaper.jpg:
+    https://wallpapercave.com/w/wp3782874

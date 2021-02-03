@@ -82,7 +82,7 @@ function loadSingleGameContent(id) {
                     const avgRating = numOfReviews > 1 ? reviews.map(r => parseFloat(r['rating'])).reduce((r1, r2) => r1 + r2) / numOfReviews : (numOfReviews === 1 ? parseFloat(reviews[0]['rating']) : null);
                     $('#game-num-reviews').html(GameDetailsBlock('Number of Reviews: ', numOfReviews.toString()));
                     $('#game-avg-rating').html(GameDetailsBlock('Mean Rating: ', avgRating ? `${ avgRating.toFixed(2) } / 10` : '~'));
-                    return reviews.map(r => ReviewCard(r['username'], parseFloat(r['rating']), r['content'])).join('');
+                    return reviews.map(r => ReviewCard(r['username'], parseFloat(r['rating']), r['content'], r['created_at'].split('T')[0])).join('');
                 })
                 .then(r => {
                     $("#review-stack").html(r);

@@ -5,7 +5,7 @@
 |   Author          | : |   Ethan Tan Wee En    |
 |   Admin No.       | : |   p2012085            |
 |   Class           | : |   DAAA/1B/03          |
-|   Languages       | : |   JS, HTML, (CSS)     |
+|   Languages       | : |   HTML, CSS, JS       |
 |   Date            | : |   February 2021       |
 
 ## Front-End
@@ -117,9 +117,8 @@ _[Click Here](#extra-features-back-end)_ to see extra features for the back-end
 3.  Install MySQL Server locally
 4.  Configure MySQL Server `root` account
 5.  Start local MySQL Server
-6.  Run the following SQL Scripts (either 1 or 2) in MySQL Server:
-    1.  init.sql & data.sql  (as root user using `spgames` database)
-    2.  dump.sql             (as root user)
+6.  Run the following SQL Script in your local MySQL Server:
+    -   `sql/dump.sql`  (as root user)
 7.  Navigate to `SP Games II/back-end` directory through command line
 8.  Run `npm install`
 9.  Configure MySQL `root` configurations in the following files:
@@ -175,14 +174,13 @@ _[Click Here](#extra-features-back-end)_ to see extra features for the back-end
               |-- assets ---- game-images
               |           `-- user-images
               |
-              |-- doc ---- table-schema.docx
+              |-- docs ---- table-schema.docx
+              |         `-- modifications.docx
               |
               |-- logs ---- error
               |         `-- history
               |
-              |-- sql ---- data.sql
-              |        |-- dump.sql
-              |        |-- init.sql
+              |-- sql ---- dump.sql
               |        `-- reset.sql
               |
               |-- tests ---- endpoints ---- 1.spec.js
@@ -257,17 +255,19 @@ _[Click Here](#extra-features-front-end)_ to see extra features for the front-en
 ### Modifications (from CA1)
 
 1.  Added one column (`password`) to `users` table
-2.  Added `user-images` folder under `assets` to store profile images
-3.  Added and mounted middleware to evaluate ids, data bodies, login status, current user and admin permissions
-4.  Added endpoints for category and platform management
-5.  Removed excess API endpoints (`/`, `/game/:gid/image/info`, and `*`)
-6.  Removed unnecessary API endpoints (`GET /users`, `GET /games/:platform`)
-7.  Removed html templates
-8.  Renamed `src` directory to `app`
+2.	Added unique key for platforms table (platform & version)
+3.  Added `user-images` folder under `assets` to store profile images
+4.  Added and mounted middleware to evaluate ids, data bodies, login status, current user and admin permissions
+5.  Added endpoints for category and platform management
+6.  Removed excess API endpoints (`/`, `/game/:gid/image/info`, and `*`)
+7.  Removed unnecessary API endpoints (`GET /users`, `GET /games/:platform`)
+8.  Removed html templates
+9.  Renamed `src` directory to `app`
 
 ## See Also
 
     docs ---- CA1 Brief.docx        (CA1 assignment brief)
-          `-- CA2 Brief.docx        (CA2 assignment brief)
+          |-- CA2 Brief.docx        (CA2 assignment brief)
+          `-- references.txt        (image sources)
 
     back-end / docs / table-schema.docx     (MySQL table schema)
